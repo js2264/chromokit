@@ -24,6 +24,20 @@ token or kit file is a major one.
     a no-break space and input read with `.` or `,` as the decimal separator.
   - `lib/colour.mjs`: chromomap's colour science (WCAG contrast, ΔE, Machado
     colour-blindness simulation).
+- **Hugo, for a personal or small site** (first used by jserizay.com):
+  - The sidebar and the previous/next links follow the site's `menu.main` when
+    there is one, Home first. A PDF or another site in the menu opens in a new
+    tab and is marked with an arrow.
+  - `params.links` puts icon links in the header (Scholar, ORCID, email…);
+    on narrow screens they move into the drawer.
+  - A page's `class` front matter is added to its layout, e.g. to widen it.
+  - `chromokit/extend-head.html` and `chromokit/extend-body.html` are empty
+    partials for a site to fill from its own `layouts/`.
+- **Icons:** book, calendar, graduation-cap, mail, map-pin, newspaper,
+  presentation and user; brand marks for Bioconductor, Bluesky, Google
+  Scholar, Mastodon, ORCID, PyPI and TypeScript.
+- `.cx-narrow`: shown on narrow screens only, the reverse of the header's
+  `__wide` items.
 - **Tests:**
   - `test/colours.test.mjs` holds the families, the states and the plot series
     to chromomap's thresholds;
@@ -36,6 +50,10 @@ token or kit file is a major one.
   - They are now the accent plus six family colours (seven in all, was six).
   - The old set failed under simulated protanopia.
   - The matplotlib, ECharts, Plotly and ggplot2 themes follow them.
+- **Bold text in a prose link** keeps the link's colour (it was painted as
+  plain text).
+- **The header's menu button** is hidden on a page with no sidebar, where it
+  had no drawer to open.
 - **The smallest text is 11 px** (was 10.9 px): the kicker, the table headers
   and the sidebar groups, in every adapter.
 - **`data-theme` on `<body>`** now switches the palette too, as Furo writes it.

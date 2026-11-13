@@ -128,6 +128,11 @@ select.cx-header__version:hover {
   .cx-header__menu {
     display: inline-flex;
   }
+
+  /* No sidebar on the page, no drawer to open */
+  body:not(:has(.cx-sidebar)) .cx-header__menu {
+    display: none;
+  }
 }
 
 /* ---- the foot of a page: previous / next cards, then the build line ----- */

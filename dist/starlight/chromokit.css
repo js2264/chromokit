@@ -351,6 +351,17 @@ body.quarto-dark {
   border: 0;
 }
 
+/* Shown on narrow screens only (where the header drops its `__wide` items). */
+.cx-narrow {
+  display: none;
+}
+
+@media (max-width: 60rem) {
+  .cx-narrow {
+    display: revert;
+  }
+}
+
 .cx-mono {
   font-family: var(--cx-mono);
   font-variant-numeric: slashed-zero tabular-nums;
@@ -1560,6 +1571,11 @@ select.cx-header__version:hover {
 
   .cx-header__menu {
     display: inline-flex;
+  }
+
+  /* No sidebar on the page, no drawer to open */
+  body:not(:has(.cx-sidebar)) .cx-header__menu {
+    display: none;
   }
 }
 

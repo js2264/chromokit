@@ -14,6 +14,19 @@ enableRobotsTXT = true
   css = ['site.css']
   # An optional button in the header:
   # cta = { text = 'Open the app', href = 'https://example.org' }
+  # Icon links in the header (in the drawer on narrow screens); the icon is a
+  # name from themes/chromokit/data/chromokit_icons.json:
+  # links = [
+  #   { name = 'Email', url = 'mailto:you@example.org', icon = 'mail' },
+  #   { name = 'ORCID', url = 'https://orcid.org/…', icon = 'orcid' },
+  # ]
+
+# With a menu, the sidebar and the previous/next links follow it, Home first.
+# Without one, they list the top-level pages, then each section.
+# [[menus.main]]
+#   name = 'About'
+#   pageRef = '/about'
+#   weight = 1
 
 [markup.highlight]
   noClasses = false

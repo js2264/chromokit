@@ -351,6 +351,17 @@ body.quarto-dark {
   border: 0;
 }
 
+/* Shown on narrow screens only (where the header drops its `__wide` items). */
+.cx-narrow {
+  display: none;
+}
+
+@media (max-width: 60rem) {
+  .cx-narrow {
+    display: revert;
+  }
+}
+
 .cx-mono {
   font-family: var(--cx-mono);
   font-variant-numeric: slashed-zero tabular-nums;
@@ -1561,6 +1572,11 @@ select.cx-header__version:hover {
   .cx-header__menu {
     display: inline-flex;
   }
+
+  /* No sidebar on the page, no drawer to open */
+  body:not(:has(.cx-sidebar)) .cx-header__menu {
+    display: none;
+  }
 }
 
 /* ---- the foot of a page: previous / next cards, then the build line ----- */
@@ -2499,7 +2515,7 @@ body.cx-page {
   border-radius: 4px;
 }
 
-.cx-prose a code {
+.cx-prose a :is(code, strong) {
   color: inherit;
 }
 

@@ -7,3 +7,4 @@
 <link rel="stylesheet" href="{{ "chromokit/chromokit.css" | relURL }}">
 {{ range site.Params.css }}<link rel="stylesheet" href="{{ . | relURL }}">{{ end }}
 <script defer src="{{ "chromokit/chromokit.js" | relURL }}"></script>
+{{ partial "chromokit/extend-head.html" . }}

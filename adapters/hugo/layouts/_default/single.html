@@ -1,6 +1,6 @@
 {{ define "main" }}
 {{- $toc := and (ne .Params.toc false) (gt (len .TableOfContents) 32) -}}
-<div class="cx-layout{{ if not $toc }} cx-layout--no-toc{{ end }}">
+<div class="cx-layout{{ if not $toc }} cx-layout--no-toc{{ end }}{{ with .Params.class }} {{ . }}{{ end }}">
   <aside class="cx-sidebar">{{ partial "chromokit/sidebar.html" . }}</aside>
   <main class="cx-main cx-ground" id="main">
     <article class="cx-content cx-prose">

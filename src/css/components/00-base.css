@@ -47,6 +47,17 @@
   border: 0;
 }
 
+/* Shown on narrow screens only (where the header drops its `__wide` items). */
+.cx-narrow {
+  display: none;
+}
+
+@media (max-width: 60rem) {
+  .cx-narrow {
+    display: revert;
+  }
+}
+
 .cx-mono {
   font-family: var(--cx-mono);
   font-variant-numeric: slashed-zero tabular-nums;

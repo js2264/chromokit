@@ -382,7 +382,7 @@ body.cx-page {
   border-radius: 4px;
 }
 
-.cx-prose a code {
+.cx-prose a :is(code, strong) {
   color: inherit;
 }
 
