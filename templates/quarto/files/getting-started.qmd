@@ -1,0 +1,31 @@
+---
+title: Get started
+subtitle: From installation to a first result.
+---
+
+## Installation
+
+```bash
+pip install {{name}}
+```
+
+::: {.callout-note}
+## Before you start
+A callout: tinted, with a coloured bar. `.callout-tip`, `-warning` and `-important` change its colour.
+:::
+
+## A first example
+
+```python
+import {{name}}
+
+result = {{name}}.run("input.txt", threads=4)
+print(result.summary())
+```
+
+| Option | Default | What it does |
+|---|---|---|
+| `--threads` | `1` | How many threads to use |
+| `--out` | `out/` | Where results go |
+
+Keys are drawn as keys: <kbd>Ctrl</kbd>+<kbd>K</kbd> searches the site.

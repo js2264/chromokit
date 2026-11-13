@@ -1,0 +1,10 @@
+{
+  "title": "Hugo",
+  "description": "A Hugo site with the chromokit theme: landing page, documentation section, shortcodes for tiles and callouts.",
+  "kit": {
+    "themes/chromokit": "dist/hugo"
+  },
+  "mark": ["static/mark.svg"],
+  "accent": "static/site.css",
+  "next": ["hugo server"]
+}

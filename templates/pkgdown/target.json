@@ -1,0 +1,13 @@
+{
+  "title": "pkgdown",
+  "description": "An R package's pkgdown site, by copy: the kit's Sass in pkgdown/extra.scss and the settings in _pkgdown.yml (or use the R template package: template: package: chromokit).",
+  "kit": {
+    "pkgdown/extra.scss": "dist/pkgdown/extra.scss"
+  },
+  "mark": ["man/figures/logo.svg", "pkgdown/favicon/favicon.svg"],
+  "accent": "pkgdown/extra.css",
+  "append": {
+    ".Rbuildignore": ["^_pkgdown\\.yml$", "^pkgdown$", "^docs$", "^chromokit\\.json$"]
+  },
+  "next": ["Rscript -e 'pkgdown::build_site()'"]
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Zensical",
+  "description": "Documentation for a Python package with Zensical (or Material for MkDocs), in the look of metacooler's docs.",
+  "kit": {
+    "overrides": "dist/zensical/overrides",
+    "docs/stylesheets/chromokit.css": "dist/zensical/stylesheets/chromokit.css",
+    "docs/javascripts/chromokit.js": "dist/zensical/javascripts/chromokit.js"
+  },
+  "mark": ["docs/assets/mark.svg"],
+  "accent": "docs/stylesheets/site.css",
+  "next": ["uv add --dev zensical   # or: pip install zensical", "uv run zensical serve"]
+}

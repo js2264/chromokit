@@ -1,0 +1,26 @@
+---
+title: {{name}}
+description: {{description}}
+template: splash
+editUrl: false
+---
+
+import Masthead from '../../chromokit/components/Masthead.astro'
+import Tile from '../../chromokit/components/Tile.astro'
+import Tiles from '../../chromokit/components/Tiles.astro'
+import mark from '../../assets/mark.svg'
+
+<div class="cx-landing">
+  <Masthead src={mark.src} name="{{name}}" />
+  <p class="cx-tagline">{{description}}</p>
+  <div class="cx-actions">
+    <a class="cx-button" href="https://github.com/{{repo}}">Source</a>
+    <a class="cx-button cx-button--filled" href="guides/quickstart/">Quickstart →</a>
+  </div>
+
+  <Tiles kicker="Start here">
+    <Tile href="guides/installation/" icon="download" title="Installation">pip, uv, conda or npm.</Tile>
+    <Tile href="guides/quickstart/" icon="rocket" title="Quickstart">A first result in five minutes.</Tile>
+    <Tile href="https://github.com/{{repo}}" icon="github" title="Source">The repository, issues and releases.</Tile>
+  </Tiles>
+</div>

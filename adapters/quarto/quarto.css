@@ -1,0 +1,560 @@
+/*
+ * chromokit for Quarto (HTML documents, websites, books): Quarto's Bootstrap
+ * layout in the look of doc.chromosomix.app.
+ *
+ * Compiled into Quarto's theme as the `scss:rules` of chromokit-light.scss and
+ * chromokit-dark.scss. Quarto loads one or the other and marks <body> with
+ * `quarto-light` or `quarto-dark`, which the token selectors follow.
+ */
+
+body {
+  font-family: var(--cx-sans);
+  color: var(--cx-text);
+  background-color: var(--cx-bg);
+}
+
+/* The ground: the grain behind the content, never behind the furniture. */
+#quarto-content,
+body.nav-fixed #quarto-content,
+.quarto-container {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--cx-border) 50%, transparent) 0.8px, transparent 1px);
+  background-size: var(--cx-grain) var(--cx-grain);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--cx-accent) 26%, transparent);
+}
+
+/* ---- the navbar: chromosomix's toolbar ---------------------------------- */
+#quarto-header .navbar {
+  min-height: var(--cx-header-h);
+  padding-top: 0;
+  padding-bottom: 0;
+  color: var(--cx-text);
+  background: var(--cx-bg-raised);
+  border-bottom: 1px solid var(--cx-border);
+  box-shadow: none;
+}
+
+#quarto-header .navbar-brand,
+#quarto-header .navbar-title {
+  font: 650 var(--cx-step-1) / 1.2 var(--cx-sans);
+  letter-spacing: -0.015em;
+  color: var(--cx-text);
+}
+
+#quarto-header .navbar-brand:hover .navbar-title {
+  color: var(--cx-accent);
+}
+
+#quarto-header .navbar-logo {
+  max-height: 26px;
+  border-radius: 0.22em;
+}
+
+#quarto-header .navbar-nav .nav-link {
+  font-size: calc(0.86 * var(--cx-rem));
+  color: var(--cx-text-dim);
+}
+
+#quarto-header .navbar-nav .nav-link:hover,
+#quarto-header .navbar-nav .nav-link.active {
+  color: var(--cx-text);
+}
+
+#quarto-header .navbar-nav .nav-link.active {
+  font-weight: 600;
+}
+
+/* Icon links and the colour-scheme toggle: bordered buttons. */
+#quarto-header .navbar-nav .nav-link:has(> .bi):not(:has(.menu-text)),
+#quarto-header .quarto-color-scheme-toggle,
+#quarto-header .quarto-navigation-tool {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  margin: 0 0 0 6px;
+  padding: 0 10px;
+  color: var(--cx-text);
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+  transition:
+    border-color 120ms,
+    color 120ms,
+    box-shadow 120ms,
+    transform 120ms;
+}
+
+#quarto-header .navbar-nav .nav-link:has(> .bi):not(:has(.menu-text)):hover,
+#quarto-header .quarto-color-scheme-toggle:hover,
+#quarto-header .quarto-navigation-tool:hover {
+  color: var(--cx-accent);
+  border-color: var(--cx-accent);
+  box-shadow: var(--cx-shadow-2);
+  transform: translateY(-1px);
+}
+
+/* Search: a bordered button like the others. */
+#quarto-header .aa-DetachedSearchButton {
+  height: 28px;
+  margin: 0 0 0 6px;
+  padding: 0 10px;
+  color: var(--cx-text);
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+}
+
+#quarto-header .aa-DetachedSearchButton:hover {
+  color: var(--cx-accent);
+  border-color: var(--cx-accent);
+}
+
+#quarto-header .aa-DetachedSearchButtonIcon {
+  width: 16px;
+  height: 16px;
+  color: inherit;
+}
+
+#quarto-header .aa-DetachedSearchButtonIcon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* ---- the sidebar: groups headed by kickers, items on a hairline -------- */
+#quarto-sidebar {
+  background: var(--cx-bg-raised);
+  border-right: 1px solid var(--cx-border);
+}
+
+#quarto-sidebar .sidebar-item .sidebar-link,
+#quarto-sidebar .sidebar-item-text {
+  font-size: calc(0.86 * var(--cx-rem));
+  color: var(--cx-text-dim);
+}
+
+#quarto-sidebar .sidebar-link:hover .menu-text {
+  color: var(--cx-text);
+}
+
+#quarto-sidebar .sidebar-link.active,
+#quarto-sidebar .sidebar-link.active .menu-text {
+  font-weight: 600;
+  color: var(--cx-text);
+}
+
+#quarto-sidebar .sidebar-item-section > .sidebar-item-container .sidebar-item-text,
+#quarto-sidebar .sidebar-section-item > .sidebar-item-container .sidebar-item-text,
+#quarto-sidebar .sidebar-item-section > .sidebar-item-container .menu-text {
+  font: 600 var(--cx-label) / 1.2 var(--cx-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cx-accent);
+}
+
+#quarto-sidebar .sidebar-section {
+  border-left: 1px solid var(--cx-border);
+}
+
+/* ---- "On this page" on a rail ------------------------------------------- */
+#TOC,
+#quarto-margin-sidebar nav[role='doc-toc'] {
+  font-size: calc(0.81 * var(--cx-rem));
+}
+
+#TOC > h2,
+#toc-title,
+nav[role='doc-toc'] > h2 {
+  margin-bottom: 12px;
+  font-size: var(--cx-step-1);
+  font-weight: 600;
+  color: var(--cx-text);
+}
+
+nav[role='doc-toc'] ul {
+  border-left: 1px solid var(--cx-border);
+}
+
+nav[role='doc-toc'] ul ul {
+  border-left: 0;
+}
+
+nav[role='doc-toc'] a.nav-link {
+  margin-left: -1px;
+  color: var(--cx-text-dim);
+  border-left: 1px solid transparent;
+}
+
+nav[role='doc-toc'] a.nav-link:hover {
+  color: var(--cx-text);
+}
+
+nav[role='doc-toc'] a.nav-link.active {
+  color: var(--cx-accent);
+  border-left-color: var(--cx-accent);
+}
+
+/* ---- the column of text ------------------------------------------------- */
+main.content,
+#quarto-document-content {
+  font-size: var(--cx-prose-size);
+  line-height: var(--cx-prose-line);
+  color: color-mix(in srgb, var(--cx-text) 86%, var(--cx-text-dim));
+}
+
+main.content :is(h1, h2, h3, h4, h5, h6),
+.quarto-title .title {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--cx-text);
+}
+
+.quarto-title .title,
+main.content h1 {
+  font-size: var(--cx-prose-h1);
+  line-height: 1.2;
+}
+
+main.content h2 {
+  margin-top: 2.75rem;
+  font-size: var(--cx-prose-h2);
+  line-height: 1.25;
+  border-bottom: 0;
+}
+
+main.content h3 {
+  margin-top: 2rem;
+  font-size: var(--cx-prose-h3);
+}
+
+.quarto-title .subtitle,
+.quarto-title-meta,
+.quarto-title-meta-heading {
+  color: var(--cx-text-dim);
+}
+
+.quarto-title-meta-heading {
+  font: 600 var(--cx-label) / 1.2 var(--cx-sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+main.content a:not(.cx-button, .cx-tile, .cx-card, .cx-control, .cx-badge, .nav-link, .btn) {
+  color: var(--cx-accent);
+  text-underline-offset: 0.2em;
+}
+
+main.content strong {
+  font-weight: 600;
+  color: var(--cx-text);
+}
+
+.anchorjs-link {
+  color: var(--cx-text-faint) !important;
+}
+
+/* Inline code, and the frame of a block. */
+main.content :not(pre) > code:not(.sourceCode) {
+  padding: 0.05em 0.3em;
+  font-size: 0.85em;
+  color: var(--cx-text);
+  background-color: var(--cx-bg-sunken);
+  border: 1px solid var(--cx-border);
+  border-radius: 4px;
+}
+
+main.content div.sourceCode,
+main.content pre:not(.sourceCode) {
+  margin: 1rem 0;
+  color: var(--cx-code-fg);
+  background: var(--cx-code-bg);
+  border: 1px solid var(--cx-border);
+  border-radius: 8px;
+  box-shadow: var(--cx-shadow-1);
+}
+
+main.content div.sourceCode pre.sourceCode,
+main.content pre:not(.sourceCode) {
+  padding: 12px 16px;
+  font: 400 var(--cx-step-0) / 1.65 var(--cx-mono);
+  font-variant-ligatures: none;
+  color: var(--cx-code-fg);
+  background: transparent;
+  border: 0;
+}
+
+main.content pre:not(.sourceCode) {
+  background: var(--cx-code-bg);
+}
+
+main.content div.sourceCode pre.sourceCode code {
+  color: inherit;
+}
+
+main.content .code-copy-button {
+  color: var(--cx-text-faint);
+}
+
+main.content .code-copy-button:hover {
+  color: var(--cx-text);
+}
+
+/* A shell block gets the terminal bar. */
+main.content div.sourceCode:has(> pre.bash),
+main.content div.sourceCode:has(> pre.sh),
+main.content div.sourceCode:has(> pre.shell),
+main.content div.sourceCode:has(> pre.console) {
+  position: relative;
+  padding-top: 34px;
+}
+
+main.content div.sourceCode:has(> pre.bash)::before,
+main.content div.sourceCode:has(> pre.sh)::before,
+main.content div.sourceCode:has(> pre.shell)::before,
+main.content div.sourceCode:has(> pre.console)::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 34px;
+  content: '';
+  border-bottom: 1px solid color-mix(in srgb, var(--cx-border) 55%, transparent);
+}
+
+main.content div.sourceCode:has(> pre.bash)::after,
+main.content div.sourceCode:has(> pre.sh)::after,
+main.content div.sourceCode:has(> pre.shell)::after,
+main.content div.sourceCode:has(> pre.console)::after {
+  position: absolute;
+  top: 12.5px;
+  left: 16px;
+  width: 34px;
+  height: 9px;
+  content: '';
+  background-color: var(--cx-code-dots);
+  -webkit-mask: var(--cx-terminal-dots) left center / contain no-repeat;
+  mask: var(--cx-terminal-dots) left center / contain no-repeat;
+}
+
+/* Syntax colours from the tokens, whichever palette Quarto loaded. */
+body code span.co,
+body code span.cn {
+  color: var(--cx-hl-comment);
+}
+
+body code span.kw,
+body code span.cf {
+  color: var(--cx-hl-keyword);
+}
+
+body code span.st,
+body code span.ch,
+body code span.ss,
+body code span.sc,
+body code span.vs {
+  color: var(--cx-hl-string);
+}
+
+body code span.fu {
+  color: var(--cx-hl-function);
+}
+
+body code span.fl,
+body code span.dv,
+body code span.bn {
+  color: var(--cx-hl-number);
+}
+
+body code span.va {
+  color: var(--cx-hl-variable);
+}
+
+body code span.op {
+  color: var(--cx-hl-operator);
+}
+
+body code span.ex,
+body code span.at,
+body code span.ot,
+body code span.im,
+body code span.bu {
+  color: var(--cx-hl-special);
+}
+
+/* Cell output. */
+.cell-output pre,
+.cell-output-stdout pre {
+  color: var(--cx-text-dim);
+}
+
+main.content kbd {
+  padding: 0.16em 0.42em;
+  font: 500 0.78em / 1 var(--cx-mono);
+  color: var(--cx-text);
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+/* ---- tables ------------------------------------------------------------- */
+main.content table:not(.cx-table) {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--cx-text);
+  --bs-table-border-color: var(--cx-border);
+  font-size: calc(0.85 * var(--cx-rem));
+  line-height: 1.6;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-1);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+main.content table:not(.cx-table) th {
+  padding: 8px 11px;
+  font: 600 var(--cx-label) / 1.4 var(--cx-sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cx-text-dim);
+  background: var(--cx-bg-sunken);
+  border-bottom: 1px solid var(--cx-border);
+}
+
+main.content table:not(.cx-table) td {
+  padding: 7px 11px;
+  border-bottom: 1px solid var(--cx-border);
+}
+
+main.content table:not(.cx-table) tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+main.content table > :not(caption) > * > * {
+  border-bottom-width: 0;
+}
+
+/* ---- callouts: tinted, a coloured bar ----------------------------------- */
+.callout {
+  --cx-aside: var(--cx-accent);
+  margin: 1.5rem 0;
+  background: color-mix(in srgb, var(--cx-aside) 8%, var(--cx-bg-raised));
+  border: 1px solid var(--cx-border) !important;
+  border-left: 3px solid var(--cx-aside) !important;
+  border-radius: var(--cx-radius);
+  box-shadow: none;
+}
+
+.callout.callout-style-default > .callout-header,
+.callout .callout-header {
+  color: var(--cx-aside);
+  background: transparent !important;
+  border-bottom: 0;
+}
+
+.callout .callout-title-container {
+  font-weight: 600;
+  color: var(--cx-aside);
+}
+
+.callout .callout-icon::before {
+  background-color: var(--cx-aside);
+}
+
+.callout-tip,
+.callout-important.callout-tip {
+  --cx-aside: var(--cx-ok);
+}
+
+.callout-warning,
+.callout-caution {
+  --cx-aside: var(--cx-warn);
+}
+
+.callout-important {
+  --cx-aside: var(--cx-danger);
+}
+
+/* ---- the page's end ---------------------------------------------------- */
+.page-navigation .nav-page a {
+  color: var(--cx-text-dim);
+}
+
+.page-navigation .nav-page {
+  padding: 14px 16px;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-1);
+}
+
+.page-navigation .nav-page:not(:has(a)) {
+  visibility: hidden;
+}
+
+.page-navigation .nav-page:hover {
+  border-color: var(--cx-border-strong);
+  box-shadow: var(--cx-shadow-2);
+}
+
+.page-navigation .nav-page-text {
+  font-weight: 600;
+  color: var(--cx-text);
+}
+
+.nav-footer {
+  font-size: var(--cx-step--1);
+  color: var(--cx-text-faint);
+  background: transparent;
+  border-top: 1px solid var(--cx-border);
+}
+
+.nav-footer a {
+  color: inherit;
+}
+
+/* ---- landing pages ------------------------------------------------------ */
+main.content .cx-landing {
+  padding-top: 1rem;
+}
+
+/* The masthead is the page's title: Quarto's own title block steps aside. */
+main.content:has(.cx-landing) #title-block-header {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+main.content .cx-masthead {
+  margin: 0;
+  font-size: clamp(2rem, 8vw, 3.6rem);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  border: 0;
+}
+
+main.content .cx-masthead img {
+  margin: 0;
+}
+
+main.content .cx-kicker {
+  margin: 3rem 0 0.6rem;
+}
+
+main.content .cx-tile,
+main.content .cx-button,
+main.content .cx-card {
+  text-decoration: none;
+}
+
+/* reveal.js slides keep their own layout: only the tokens and code apply. */
+.reveal .slides {
+  font-family: var(--cx-sans);
+}

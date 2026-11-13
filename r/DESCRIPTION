@@ -1,0 +1,24 @@
+Package: chromokit
+Type: Package
+Title: The 'chromokit' Look for 'pkgdown' Sites and 'ggplot2' Plots
+Version: 0.1.0
+Authors@R: person("Jacques", "Serizay", email = "jacquesserizay@gmail.com",
+    role = c("aut", "cre"))
+Description: The R side of 'chromokit' (<https://github.com/js2264/chromokit>),
+    a shared UI kit in the look of 'chromosomix': a 'pkgdown' template package
+    (set 'template: package: chromokit' in '_pkgdown.yml') that gives a
+    package's site the kit's palettes, light and dark, its header, code
+    frames, tables and callouts; and a 'ggplot2' theme and colour scales
+    from the same design tokens.
+License: MIT + file LICENSE
+URL: https://github.com/js2264/chromokit
+BugReports: https://github.com/js2264/chromokit/issues
+Encoding: UTF-8
+Depends: R (>= 4.1)
+Suggests:
+    ggplot2 (>= 3.4.0),
+    pkgdown (>= 2.1.0),
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.1.1

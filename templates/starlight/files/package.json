@@ -1,0 +1,18 @@
+{
+  "name": "{{slug}}-docs",
+  "private": true,
+  "type": "module",
+  "description": "The documentation site of {{name}}.",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "chromokit:check": "npx --yes github:js2264/chromokit check"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "0.42.8",
+    "astro": "7.4.5",
+    "sharp": "^0.34.0",
+    "starlight-theme-rapide": "0.6.0"
+  }
+}

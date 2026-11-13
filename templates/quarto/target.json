@@ -1,0 +1,10 @@
+{
+  "title": "Quarto website",
+  "description": "A Quarto website (or the start of a book) with the chromokit-html format.",
+  "kit": {
+    "_extensions/chromokit": "_extensions/chromokit"
+  },
+  "mark": ["assets/mark.svg"],
+  "accent": "styles.css",
+  "next": ["quarto preview"]
+}

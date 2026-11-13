@@ -1,0 +1,35 @@
+{{- /* Previous and next within the section, by weight; then the build line. */ -}}
+{{- $prev := false -}}{{- $next := false -}}
+{{- if and .IsPage .Section -}}
+  {{- $pages := (where site.RegularPages "Section" .Section).ByWeight -}}
+  {{- $here := .RelPermalink -}}
+  {{- range $i, $p := $pages -}}
+    {{- if eq $p.RelPermalink $here -}}
+      {{- if gt $i 0 }}{{ $prev = index $pages (sub $i 1) }}{{ end -}}
+      {{- if lt (add $i 1) (len $pages) }}{{ $next = index $pages (add $i 1) }}{{ end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+<footer class="cx-page-footer">
+  {{ if or $prev $next }}
+  <nav class="cx-pagination" aria-label="Pages">
+    {{ with $prev }}
+    <a class="cx-pagination__link cx-pagination__link--prev" href="{{ .RelPermalink }}" rel="prev">
+      {{ partial "chromokit/icon.html" "arrow-left" }}
+      <span class="cx-pagination__text"><span class="cx-pagination__direction">Previous</span><span class="cx-pagination__title">{{ .LinkTitle }}</span></span>
+    </a>
+    {{ else }}<span></span>{{ end }}
+    {{ with $next }}
+    <a class="cx-pagination__link cx-pagination__link--next" href="{{ .RelPermalink }}" rel="next">
+      <span class="cx-pagination__text"><span class="cx-pagination__direction">Next</span><span class="cx-pagination__title">{{ .LinkTitle }}</span></span>
+      {{ partial "chromokit/icon.html" "arrow-right" }}
+    </a>
+    {{ end }}
+  </nav>
+  {{ end }}
+  <p class="cx-build">
+    {{ site.Params.footer | default (printf "Documentation of %s" site.Title) }}{{ with site.Params.version }} v{{ . }}{{ end }}
+    {{ with site.Params.repo }}· <a href="{{ . }}">source</a>{{ end }}
+    · built with <a href="https://gohugo.io/">Hugo</a> and <a href="https://github.com/js2264/chromokit">chromokit</a>
+  </p>
+</footer>

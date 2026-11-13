@@ -1,0 +1,85 @@
+name: CI
+
+# Every push and pull request: the kit's outputs are up to date with their
+# sources, the tests pass, every starter initialises cleanly, and the R
+# package checks.
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  kit:
+    name: Build, test and starters
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: dist/ is up to date with its sources
+        run: npm run check
+
+      - run: npm test
+
+      - name: Every starter initialises, and checks clean
+        run: |
+          for target in $(node bin/chromokit.mjs targets | awk '{print $1}'); do
+            dir="$RUNNER_TEMP/starter-$target"
+            node bin/chromokit.mjs init "$target" "$dir" --name example --repo js2264/example
+            node bin/chromokit.mjs check "$dir"
+          done
+
+      - name: The tarball holds what the command line needs
+        run: |
+          npm pack --dry-run --json > "$RUNNER_TEMP/pack.json"
+          node -e '
+            const files = require(process.argv[1])[0].files.map((f) => f.path)
+            for (const need of ["bin/chromokit.mjs", "lib/cli.mjs", "dist/css/chromokit.css", "templates/zensical/target.json", "dist/starlight/index.mjs", "_extensions/chromokit/_extension.yml"])
+              if (!files.includes(need)) { console.error("missing from the package: " + need); process.exit(1) }
+            console.log(files.length + " files in the package")
+          ' "$RUNNER_TEMP/pack.json"
+
+  r:
+    name: R package
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: r
+          extra-packages: any::rcmdcheck, any::roxygen2
+          needs: check
+
+      - name: The documentation is roxygen's
+        working-directory: r
+        run: |
+          Rscript -e 'roxygen2::roxygenise()'
+          git diff --exit-code -- man NAMESPACE || (echo "::error::Run roxygen2::roxygenise() in r/ and commit man/ and NAMESPACE" && exit 1)
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          working-directory: r
+          args: 'c("--no-manual", "--as-cran")'
+          error-on: '"warning"'

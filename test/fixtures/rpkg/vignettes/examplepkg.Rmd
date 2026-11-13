@@ -1,0 +1,38 @@
+---
+title: "Getting started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup}
+library(examplepkg)
+```
+
+## The decay curve
+
+A contact map falls off with distance:
+
+```{r}
+s <- 10^(3:7)
+data.frame(s = s, p = contact_decay(s))
+```
+
+```{r, fig.alt = "The decay curve on a log scale"}
+plot(s, contact_decay(s), log = "xy", type = "b")
+```
+
+### A table
+
+| Distance | Frequency |
+|---:|---:|
+| 1 kb | 1e-3 |
+| 1 Mb | 1e-6 |
+
+Some inline `code`, a [link](https://example.org) and a shell command:
+
+```bash
+R CMD INSTALL .
+```

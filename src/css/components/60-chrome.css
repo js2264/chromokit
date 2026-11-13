@@ -1,0 +1,398 @@
+/*
+ * A site's furniture: the header, the previous/next cards and the build line.
+ *
+ * The header is chromosomix's toolbar: 53px on the raised surface with a
+ * hairline under it, solid rather than frosted. The mark, the name, a small
+ * accented "docs" and the version on the left; the search well in the middle;
+ * bordered buttons on the right.
+ */
+
+.cx-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: var(--cx-header-h);
+  padding: 0 16px;
+  color: var(--cx-text);
+  background-color: var(--cx-bg-raised);
+  border-bottom: 1px solid var(--cx-border);
+}
+
+.cx-header__brand,
+.cx-header__actions {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  min-width: 0;
+}
+
+.cx-header__brand {
+  gap: 10px;
+}
+
+.cx-header__actions {
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.cx-header__search {
+  flex: 0 1 352px;
+  min-width: 0;
+}
+
+.cx-header__title,
+a.cx-header__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  font: 650 var(--cx-step-1) / 1.2 var(--cx-sans);
+  letter-spacing: -0.015em;
+  color: var(--cx-text);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 120ms;
+}
+
+a.cx-header__title:hover {
+  color: var(--cx-accent);
+}
+
+.cx-header__mark,
+.cx-header__title img,
+.cx-header__title svg {
+  display: block;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 0.22em;
+}
+
+/* "docs", in the small accented capitals, beside the name. */
+.cx-header__kicker {
+  font: 600 var(--cx-label) / 1.2 var(--cx-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cx-accent);
+}
+
+.cx-header__version {
+  padding: 4px 7px;
+  font: 400 var(--cx-step--2) / 1rem var(--cx-mono);
+  color: var(--cx-text-dim);
+  white-space: nowrap;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+}
+
+select.cx-header__version {
+  max-width: 11rem;
+  padding: 0.3rem 0.4rem;
+  cursor: pointer;
+}
+
+select.cx-header__version:hover {
+  color: var(--cx-text);
+  border-color: var(--cx-accent);
+}
+
+.cx-header__menu {
+  display: none;
+}
+
+@media (max-width: 60rem) {
+  .cx-header .cx-header__kicker,
+  .cx-header .cx-header__version,
+  .cx-header .cx-header__search,
+  .cx-header .cx-header__wide {
+    display: none;
+  }
+
+  .cx-header {
+    gap: 12px;
+  }
+
+  .cx-header__brand {
+    flex: 1 1 auto;
+  }
+
+  .cx-header__actions {
+    flex: none;
+  }
+
+  .cx-header__menu {
+    display: inline-flex;
+  }
+}
+
+/* ---- the foot of a page: previous / next cards, then the build line ----- */
+.cx-page-footer {
+  margin-top: 56px;
+}
+
+.cx-pagination {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.cx-pagination[hidden] {
+  display: none;
+}
+
+.cx-pagination__link,
+a.cx-pagination__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 14px 16px;
+  color: var(--cx-text-dim);
+  text-decoration: none;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-1);
+  transition:
+    border-color 120ms,
+    box-shadow 120ms;
+}
+
+a.cx-pagination__link:hover,
+a.cx-pagination__link:focus {
+  color: var(--cx-text-dim);
+  border-color: var(--cx-border-strong);
+  box-shadow: var(--cx-shadow-2);
+}
+
+.cx-pagination__link--next {
+  grid-column: 2;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.cx-pagination__link svg {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentcolor;
+}
+
+.cx-pagination__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cx-pagination__direction {
+  font-size: var(--cx-step--1);
+  line-height: 1.4;
+  color: var(--cx-text-faint);
+}
+
+.cx-pagination__title {
+  overflow: hidden;
+  font-size: calc(1.06 * var(--cx-rem));
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--cx-text);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cx-build {
+  margin: 28px 0 0;
+  font-size: var(--cx-step--1);
+  line-height: 1.6;
+  color: var(--cx-text-faint);
+}
+
+.cx-build a {
+  color: inherit;
+}
+
+/* ---- the app's status bar: one line of quiet readouts ------------------- */
+.cx-statusbar {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.2rem;
+  padding: 0.3rem 1rem;
+  overflow: hidden;
+  font-size: var(--cx-step--1);
+  color: var(--cx-text-faint);
+  background: var(--cx-bg-raised);
+  border-top: 1px solid var(--cx-border);
+}
+
+.cx-status-item {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: baseline;
+  gap: 0.35rem;
+  white-space: nowrap;
+}
+
+.cx-status-item__label {
+  font-size: var(--cx-step--2);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cx-status-item__value {
+  font-family: var(--cx-mono);
+  font-variant-numeric: slashed-zero tabular-nums;
+  color: var(--cx-text-dim);
+}
+
+/* ---- tabs: words with an accent rule under the chosen one --------------- */
+.cx-tabs {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  box-shadow: 0 -1px var(--cx-border) inset;
+}
+
+.cx-tab,
+button.cx-tab {
+  padding: 8px 16px 7px;
+  font: 400 var(--cx-step-0) / 1.4 var(--cx-sans);
+  color: var(--cx-text-dim);
+  white-space: nowrap;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  border-bottom: 2px solid transparent;
+}
+
+.cx-tab:hover {
+  color: var(--cx-text);
+}
+
+.cx-tab[aria-selected='true'],
+.cx-tab.is-active {
+  color: var(--cx-text);
+  border-bottom-color: var(--cx-accent);
+}
+
+.cx-tabpanel[hidden] {
+  display: none;
+}
+
+/* A segmented control: two to five choices that share one frame. */
+.cx-segmented {
+  display: inline-flex;
+  padding: 2px;
+  background: var(--cx-bg-sunken);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+}
+
+.cx-segmented > button,
+.cx-segmented > label {
+  padding: 0.22rem 0.6rem;
+  font: 400 var(--cx-step--1) / 1.2 var(--cx-sans);
+  color: var(--cx-text-dim);
+  cursor: pointer;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.cx-segmented > [aria-pressed='true'],
+.cx-segmented > .is-active,
+.cx-segmented > :has(input:checked) {
+  color: var(--cx-accent);
+  background: var(--cx-bg-raised);
+  border-color: var(--cx-border);
+  box-shadow: var(--cx-shadow-1);
+}
+
+.cx-segmented input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- a note in the corner, with an optional progress bar ---------------- */
+.cx-toast {
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 24rem;
+  max-width: calc(100vw - 2rem);
+  padding: 0.55rem 0.6rem 0.6rem;
+  font-size: var(--cx-step--1);
+  color: var(--cx-text);
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-2);
+}
+
+.cx-toast__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.cx-toasts {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 50;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.cx-progress {
+  height: 0.3rem;
+  overflow: hidden;
+  background: var(--cx-bg-sunken);
+  border-radius: 999px;
+}
+
+.cx-progress__fill {
+  height: 100%;
+  background: var(--cx-accent);
+  border-radius: inherit;
+  transition: width 200ms;
+}
+
+.cx-progress--indeterminate .cx-progress__fill {
+  width: 35%;
+  animation: cx-progress 1.2s ease-in-out infinite;
+}
+
+@keyframes cx-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(300%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cx-progress--indeterminate .cx-progress__fill {
+    animation: none;
+  }
+
+  .cx-control,
+  .cx-tile,
+  .cx-card {
+    transition: none;
+  }
+}

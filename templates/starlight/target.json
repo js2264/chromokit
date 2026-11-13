@@ -1,0 +1,10 @@
+{
+  "title": "Astro Starlight",
+  "description": "A documentation site with Astro Starlight and the Rapide theme, in the look of doc.chromosomix.app.",
+  "kit": {
+    "src/chromokit": "dist/starlight"
+  },
+  "mark": ["src/assets/mark.svg", "public/favicon.svg"],
+  "accent": "src/styles/site.css",
+  "next": ["npm install", "npm run dev"]
+}

@@ -1,0 +1,95 @@
+/*
+ * chromokit for Hugo: Chroma's classes (`markup.highlight.noClasses = false`)
+ * coloured from the tokens, in both palettes.
+ */
+.cx-code .highlight,
+.cx-code pre.chroma {
+  margin: 0;
+  background: transparent;
+}
+
+.chroma .c,
+.chroma .ch,
+.chroma .cm,
+.chroma .c1,
+.chroma .cs,
+.chroma .cp,
+.chroma .cpf {
+  color: var(--cx-hl-comment);
+}
+
+.chroma .k,
+.chroma .kd,
+.chroma .kn,
+.chroma .kp,
+.chroma .kr,
+.chroma .kt {
+  color: var(--cx-hl-keyword);
+}
+
+.chroma .s,
+.chroma .sa,
+.chroma .sb,
+.chroma .sc,
+.chroma .sd,
+.chroma .s1,
+.chroma .s2,
+.chroma .se,
+.chroma .sh,
+.chroma .si,
+.chroma .sx,
+.chroma .sr,
+.chroma .ss {
+  color: var(--cx-hl-string);
+}
+
+.chroma .nf,
+.chroma .fm,
+.chroma .nb,
+.chroma .bp {
+  color: var(--cx-hl-function);
+}
+
+.chroma .m,
+.chroma .mb,
+.chroma .mf,
+.chroma .mh,
+.chroma .mi,
+.chroma .il,
+.chroma .mo {
+  color: var(--cx-hl-number);
+}
+
+.chroma .kc,
+.chroma .no {
+  color: var(--cx-hl-constant);
+}
+
+.chroma .nv,
+.chroma .vc,
+.chroma .vg,
+.chroma .vi {
+  color: var(--cx-hl-variable);
+}
+
+.chroma .o,
+.chroma .ow {
+  color: var(--cx-hl-operator);
+}
+
+.chroma .p {
+  color: var(--cx-hl-punctuation);
+}
+
+.chroma .nc,
+.chroma .nd,
+.chroma .nn,
+.chroma .na,
+.chroma .nt {
+  color: var(--cx-hl-special);
+}
+
+.chroma .line,
+.chroma .cl {
+  display: inline;
+}

@@ -1,0 +1,488 @@
+/*
+ * A whole page with no framework under it: plain HTML, Hugo, an app's own
+ * about page. Element defaults live here, scoped under `.cx-page` (on <body>)
+ * and `.cx-prose` (on the column of text), so nothing leaks into a host that
+ * did not ask for it.
+ *
+ * Layout: a sticky `.cx-header`, then `.cx-layout` — the navigation sidebar,
+ * the content column and the "On this page" list — which folds to one column,
+ * the sidebar becoming a drawer, on narrow screens.
+ */
+
+html:has(> body.cx-page) {
+  color-scheme: light dark;
+  background-color: var(--cx-bg);
+  scroll-padding-top: calc(var(--cx-header-h) + 24px);
+}
+
+body.cx-page {
+  margin: 0;
+  font: 400 var(--cx-prose-size) / var(--cx-prose-line) var(--cx-sans);
+  color: var(--cx-text);
+  background-color: var(--cx-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizelegibility;
+}
+
+.cx-page ::selection {
+  background: color-mix(in srgb, var(--cx-accent) 26%, transparent);
+}
+
+.cx-page *,
+.cx-page *::before,
+.cx-page *::after {
+  box-sizing: border-box;
+}
+
+/* ---- the three columns ------------------------------------------------- */
+.cx-layout {
+  display: grid;
+  grid-template-columns: var(--cx-sidebar-w) minmax(0, 1fr) minmax(0, var(--cx-toc-w));
+  min-height: calc(100vh - var(--cx-header-h));
+}
+
+.cx-layout--no-toc {
+  grid-template-columns: var(--cx-sidebar-w) minmax(0, 1fr);
+}
+
+.cx-layout--wide {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.cx-sidebar {
+  position: sticky;
+  top: var(--cx-header-h);
+  align-self: start;
+  height: calc(100vh - var(--cx-header-h));
+  padding: 22px 16px 32px 18px;
+  overflow-y: auto;
+  scrollbar-color: var(--cx-border) transparent;
+}
+
+/* The sidebar's band is painted on the layout, which is as tall as the page,
+   so it does not stop at the window's height on a long page. */
+.cx-layout:has(> .cx-sidebar) {
+  background-image: linear-gradient(
+    to right,
+    var(--cx-bg-raised) calc(var(--cx-sidebar-w) - 1px),
+    var(--cx-border) calc(var(--cx-sidebar-w) - 1px),
+    var(--cx-border) var(--cx-sidebar-w),
+    transparent var(--cx-sidebar-w)
+  );
+}
+
+.cx-main {
+  min-width: 0;
+}
+
+.cx-content {
+  max-width: calc(var(--cx-content-w) + 2 * var(--cx-pad-x));
+  margin: 0 auto;
+  padding: 32px var(--cx-pad-x) 48px;
+}
+
+.cx-toc {
+  position: sticky;
+  top: var(--cx-header-h);
+  align-self: start;
+  max-height: calc(100vh - var(--cx-header-h));
+  padding: 30px 16px 32px;
+  overflow-y: auto;
+}
+
+/* ---- the navigation: groups under kickers, items on a hairline --------- */
+.cx-nav {
+  font-size: calc(0.86 * var(--cx-rem));
+  line-height: 1.4;
+}
+
+.cx-nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cx-nav a {
+  display: block;
+  padding: 5px 8px 5px 4px;
+  color: var(--cx-text-dim);
+  text-decoration: none;
+  transition: color 120ms;
+}
+
+.cx-nav a:hover {
+  color: var(--cx-text);
+}
+
+.cx-nav a[aria-current='page'] {
+  font-weight: 600;
+  color: var(--cx-text);
+}
+
+.cx-nav__group {
+  margin-top: 14px;
+}
+
+.cx-nav__group:first-child {
+  margin-top: 0;
+}
+
+.cx-nav__group > details > summary,
+.cx-nav__label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px 6px 4px;
+  font: 600 var(--cx-label) / 1.2 var(--cx-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cx-accent);
+  list-style: none;
+  cursor: pointer;
+}
+
+.cx-nav__group > details > summary::-webkit-details-marker {
+  display: none;
+}
+
+.cx-nav__group > details > summary::before {
+  flex: none;
+  order: -1;
+  width: 13px;
+  height: 13px;
+  content: '';
+  background-color: var(--cx-text-dim);
+  -webkit-mask: var(--cx-icon-chevron) center / contain no-repeat;
+  mask: var(--cx-icon-chevron) center / contain no-repeat;
+  transform: rotate(-90deg);
+  transition: transform 150ms;
+}
+
+.cx-nav__group > details[open] > summary::before {
+  transform: none;
+}
+
+.cx-nav__group ul {
+  margin: 2px 0 2px 10px;
+  border-left: 1px solid var(--cx-border);
+}
+
+.cx-nav__group ul a {
+  margin-left: -1px;
+  padding-left: 18px;
+  border-left: 1px solid transparent;
+}
+
+.cx-nav__group ul a[aria-current='page'] {
+  border-left-color: var(--cx-accent);
+}
+
+/* ---- "On this page" ----------------------------------------------------- */
+.cx-toc__title {
+  margin: 0 0 12px;
+  font-size: var(--cx-step-1);
+  font-weight: 600;
+  color: var(--cx-text);
+}
+
+.cx-toc ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cx-toc > ul,
+.cx-toc nav > ul {
+  border-left: 1px solid var(--cx-border);
+}
+
+.cx-toc a {
+  display: block;
+  margin-left: -1px;
+  padding: 3px 0 3px 14px;
+  font-size: calc(0.81 * var(--cx-rem));
+  line-height: 1.4;
+  color: var(--cx-text-dim);
+  text-decoration: none;
+  border-left: 1px solid transparent;
+}
+
+.cx-toc ul ul a {
+  padding-left: 26px;
+}
+
+.cx-toc a:hover {
+  color: var(--cx-text);
+}
+
+.cx-toc a.is-active {
+  color: var(--cx-accent);
+  border-left-color: var(--cx-accent);
+}
+
+/* ---- narrow screens: no TOC, then the sidebar as a drawer --------------- */
+@media (max-width: 76rem) {
+  .cx-layout {
+    grid-template-columns: var(--cx-sidebar-w) minmax(0, 1fr);
+  }
+
+  .cx-toc {
+    display: none;
+  }
+}
+
+.cx-drawer-toggle {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@media (max-width: 60rem) {
+  .cx-layout,
+  .cx-layout--no-toc {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .cx-layout:has(> .cx-sidebar) {
+    background-image: none;
+  }
+
+  .cx-sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 20;
+    background: var(--cx-bg-raised);
+    border-right: 1px solid var(--cx-border);
+    width: var(--cx-sidebar-w);
+    max-width: 85vw;
+    height: 100%;
+    transform: translateX(-100%);
+    transition: transform 200ms;
+  }
+
+  .cx-drawer-toggle:checked ~ .cx-layout .cx-sidebar {
+    transform: none;
+    box-shadow: var(--cx-shadow-2);
+  }
+
+  .cx-drawer-scrim {
+    position: fixed;
+    inset: 0;
+    z-index: 15;
+    display: none;
+    background: color-mix(in srgb, var(--cx-bg-sunken) 60%, transparent);
+  }
+
+  .cx-drawer-toggle:checked ~ .cx-drawer-scrim {
+    display: block;
+  }
+
+  .cx-content {
+    padding: 24px 16px 40px;
+  }
+}
+
+/* ---- prose: the column of text ------------------------------------------ */
+.cx-prose {
+  font-size: var(--cx-prose-size);
+  line-height: var(--cx-prose-line);
+  color: color-mix(in srgb, var(--cx-text) 86%, var(--cx-text-dim));
+}
+
+.cx-prose :is(h1, h2, h3, h4, h5, h6):where(:not([class*='cx-'])) {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--cx-text);
+}
+
+.cx-prose h1:where(:not([class*='cx-'])) {
+  margin: 0 0 24px;
+  font-size: var(--cx-prose-h1);
+  line-height: 1.2;
+}
+
+.cx-prose h2:where(:not([class*='cx-'])) {
+  margin: 44px 0 14px;
+  font-size: var(--cx-prose-h2);
+  line-height: 1.25;
+}
+
+.cx-prose h3:where(:not([class*='cx-'])) {
+  margin: 32px 0 10px;
+  font-size: var(--cx-prose-h3);
+  line-height: 1.3;
+}
+
+.cx-prose h2 + h3 {
+  margin-top: 16px;
+}
+
+.cx-prose h4:where(:not([class*='cx-'])) {
+  margin: 26px 0 8px;
+  font-size: var(--cx-prose-h4);
+  line-height: 1.35;
+}
+
+.cx-prose :is(h5, h6):where(:not([class*='cx-'])) {
+  margin: 22px 0 8px;
+  font-size: var(--cx-prose-h5);
+}
+
+.cx-prose :is(p, ul, ol, dl, blockquote):where(:not([class*='cx-'])) {
+  margin: 16px 0;
+}
+
+.cx-prose li + li {
+  margin-top: 4px;
+}
+
+.cx-prose a:where(:not([class*='cx-'])) {
+  color: var(--cx-accent);
+  text-underline-offset: 0.2em;
+}
+
+.cx-prose a:where(:not([class*='cx-'])):hover {
+  color: color-mix(in srgb, var(--cx-accent) 78%, var(--cx-text));
+}
+
+.cx-prose strong {
+  font-weight: 600;
+  color: var(--cx-text);
+}
+
+.cx-prose hr {
+  margin: 32px 0;
+  border: 0;
+  border-bottom: 1px solid var(--cx-border);
+}
+
+.cx-prose blockquote {
+  margin-left: 0;
+  padding-left: 1rem;
+  color: var(--cx-text-dim);
+  border-left: 3px solid var(--cx-border);
+}
+
+.cx-prose img:where(:not([class*='cx-'])) {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.cx-prose :not(pre) > code {
+  padding: 0.05em 0.3em;
+  font-family: var(--cx-mono);
+  font-size: 0.85em;
+  font-variant-ligatures: none;
+  color: var(--cx-text);
+  background-color: var(--cx-bg-sunken);
+  border: 1px solid var(--cx-border);
+  border-radius: 4px;
+}
+
+.cx-prose a code {
+  color: inherit;
+}
+
+.cx-prose kbd {
+  padding: 0.16em 0.42em;
+  font: 500 0.78em / 1 var(--cx-mono);
+  color: var(--cx-text);
+  white-space: nowrap;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+}
+
+/* A bare <pre> gets the code frame; a terminal one opts in with a class. */
+.cx-prose pre {
+  margin: 16px 0;
+  padding: 12px 16px;
+  overflow-x: auto;
+  font: 400 var(--cx-step-0) / 1.65 var(--cx-mono);
+  font-variant-ligatures: none;
+  color: var(--cx-code-fg);
+  background: var(--cx-code-bg);
+  border: 1px solid var(--cx-border);
+  border-radius: 8px;
+  box-shadow: var(--cx-shadow-1);
+}
+
+.cx-prose .cx-code pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.cx-prose pre code {
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+}
+
+.cx-prose table:not([class]) {
+  width: 100%;
+  margin: 20px 0;
+  font-size: calc(0.85 * var(--cx-rem));
+  line-height: 1.6;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-1);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.cx-prose table:not([class]) th {
+  padding: 8px 11px;
+  font: 600 var(--cx-label) / 1.4 var(--cx-sans);
+  letter-spacing: 0.1em;
+  text-align: start;
+  text-transform: uppercase;
+  color: var(--cx-text-dim);
+  background: var(--cx-bg-sunken);
+  border-bottom: 1px solid var(--cx-border);
+}
+
+.cx-prose table:not([class]) thead th:first-child {
+  border-top-left-radius: var(--cx-radius);
+}
+
+.cx-prose table:not([class]) thead th:last-child {
+  border-top-right-radius: var(--cx-radius);
+}
+
+.cx-prose table:not([class]) td {
+  padding: 7px 11px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--cx-border);
+}
+
+.cx-prose table:not([class]) tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* A heading's anchor: a link glyph on hover rather than a pilcrow. */
+.cx-prose .cx-anchor {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  vertical-align: middle;
+  color: var(--cx-text-faint);
+  background-color: currentcolor;
+  opacity: 0;
+  -webkit-mask: var(--cx-icon-link) center / contain no-repeat;
+  mask: var(--cx-icon-link) center / contain no-repeat;
+}
+
+.cx-prose :is(h2, h3, h4):hover .cx-anchor,
+.cx-prose .cx-anchor:focus {
+  opacity: 1;
+}

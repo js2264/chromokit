@@ -1,0 +1,26 @@
+---
+title: "{{name}}"
+page-layout: full
+toc: false
+sidebar: false
+---
+
+::: {.cx-landing}
+
+<h1 class="cx-masthead"><img src="assets/mark.svg" alt="" width="64" height="64"><span>{{name}}</span></h1>
+
+<p class="cx-tagline">{{description}}</p>
+
+<div class="cx-actions">
+<a class="cx-button" href="https://github.com/{{repo}}">Source</a>
+<a class="cx-button cx-button--filled" href="getting-started.html">Get started →</a>
+</div>
+
+<p class="cx-kicker">Start here</p>
+
+<div class="cx-tiles">
+<a class="cx-tile" href="getting-started.html"><span class="cx-glyph">🚀</span><strong>Get started</strong><span class="cx-tile-text">Install it and run a first example.</span></a>
+<a class="cx-tile" href="https://github.com/{{repo}}"><span class="cx-glyph">⌥</span><strong>Source</strong><span class="cx-tile-text">The repository, issues and releases.</span></a>
+</div>
+
+:::

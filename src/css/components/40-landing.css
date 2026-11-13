@@ -1,0 +1,109 @@
+/*
+ * A landing page: the mark beside the name, a tagline, an install line, two
+ * buttons, a row of badges, then groups of tiles under their kickers.
+ */
+
+.cx-landing {
+  box-sizing: border-box;
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 3rem 0 4rem;
+}
+
+.cx-masthead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3em;
+  margin: 0;
+  padding: 0;
+  font-size: clamp(2rem, 8vw, 3.6rem);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--cx-text);
+  border: 0;
+}
+
+.cx-masthead img,
+.cx-masthead svg {
+  flex: none;
+  width: 0.92em;
+  height: 0.92em;
+  border-radius: 0.2em;
+}
+
+.cx-tagline {
+  max-width: 36rem;
+  margin: 1.1rem auto 0;
+  font-size: calc(1.19 * var(--cx-rem));
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--cx-text);
+}
+
+.cx-lede {
+  max-width: 600px;
+  margin: 0.6rem auto 0;
+  font-size: calc(0.97 * var(--cx-rem));
+  line-height: 1.65;
+  text-align: center;
+  color: var(--cx-text-dim);
+}
+
+.cx-lede strong {
+  color: inherit;
+}
+
+.cx-install {
+  max-width: 340px;
+  margin: 1.4rem auto 0;
+}
+
+.cx-install .cx-code,
+.cx-install pre {
+  margin: 0;
+}
+
+.cx-actions,
+.cx-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cx-actions {
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+}
+
+.cx-badges {
+  gap: 6px;
+  margin-top: 1.4rem;
+}
+
+.cx-badges img {
+  display: block;
+  height: 20px;
+  border-radius: 0;
+}
+
+/* Zensical and Starlight put a Markdown paragraph between the wrapper and the
+   links: the paragraph becomes the row. */
+.cx-actions > p,
+.cx-badges > p {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: inherit;
+  margin: 0;
+}
+
+.cx-tiles > p {
+  display: contents;
+}
+
+.cx-landing .cx-kicker {
+  margin: 3rem 0 0.6rem;
+}

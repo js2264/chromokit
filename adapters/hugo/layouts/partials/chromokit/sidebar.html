@@ -1,0 +1,24 @@
+{{- /* Top-level pages, then each section as a group under its kicker, by weight. */ -}}
+{{- $current := . -}}
+<nav class="cx-nav" aria-label="Pages">
+  <ul>
+    <li class="cx-nav__group"><ul style="margin:0;border:0">
+      <li><a href="{{ "/" | relURL }}"{{ if .IsHome }} aria-current="page"{{ end }}>Home</a></li>
+      {{ range (where site.RegularPages "Section" "").ByWeight }}
+      <li><a href="{{ .RelPermalink }}"{{ if eq .RelPermalink $current.RelPermalink }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a></li>
+      {{ end }}
+    </ul></li>
+    {{ range site.Sections.ByWeight }}
+    <li class="cx-nav__group">
+      <details open>
+        <summary>{{ .LinkTitle }}</summary>
+        <ul>
+          {{ range .Pages.ByWeight }}
+          <li><a href="{{ .RelPermalink }}"{{ if eq .RelPermalink $current.RelPermalink }} aria-current="page"{{ end }}>{{ .LinkTitle }}</a></li>
+          {{ end }}
+        </ul>
+      </details>
+    </li>
+    {{ end }}
+  </ul>
+</nav>

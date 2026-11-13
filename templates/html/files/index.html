@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{name}}</title>
+  <meta name="description" content="{{description}}">
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <script src="assets/chromokit/theme.js"></script>
+  <link rel="stylesheet" href="assets/chromokit/chromokit.css">
+  <link rel="stylesheet" href="assets/site.css">
+  <script defer src="assets/chromokit/chromokit.js"></script>
+</head>
+<body class="cx-page">
+  <header class="cx-header">
+    <div class="cx-header__brand">
+      <a class="cx-header__title" href="index.html"><img src="assets/mark.svg" alt="" width="26" height="26"><span>{{name}}</span></a>
+      <span class="cx-header__kicker" aria-hidden="true">docs</span>
+      <span class="cx-header__version">v0.1.0</span>
+    </div>
+    <div class="cx-header__actions">
+      <a class="cx-control cx-control--icon" href="https://github.com/{{repo}}" aria-label="Source">{{icon:github}}</a>
+      <button type="button" class="cx-control cx-control--icon cx-theme-toggle" data-cx-theme-toggle aria-label="Theme">
+        <span class="cx-theme-icon cx-theme-icon--system">{{icon:monitor}}</span>
+        <span class="cx-theme-icon cx-theme-icon--light">{{icon:sun}}</span>
+        <span class="cx-theme-icon cx-theme-icon--dark">{{icon:moon}}</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="cx-ground" style="min-height: calc(100vh - var(--cx-header-h))">
+    <div class="cx-landing" style="padding-inline: 16px">
+      <h1 class="cx-masthead"><img src="assets/mark.svg" alt="" width="64" height="64"><span>{{name}}</span></h1>
+      <p class="cx-tagline">{{description}}</p>
+      <div class="cx-install">
+        <div class="cx-code cx-code--terminal"><pre><code>pip install {{name}}</code></pre></div>
+      </div>
+      <div class="cx-actions">
+        <a class="cx-button" href="https://github.com/{{repo}}">Source {{icon:github}}</a>
+        <a class="cx-button cx-button--filled" href="docs.html">Get started {{icon:arrow-right}}</a>
+      </div>
+
+      <p class="cx-kicker">Start here</p>
+      <div class="cx-tiles">
+        <a class="cx-tile" href="docs.html"><span class="cx-glyph">{{icon:rocket}}</span><strong>Get started</strong><span class="cx-tile-text">Install it and run a first example.</span></a>
+        <a class="cx-tile" href="docs.html#reference"><span class="cx-glyph">{{icon:braces}}</span><strong>Reference</strong><span class="cx-tile-text">Every function and option.</span></a>
+        <a class="cx-tile" href="https://github.com/{{repo}}"><span class="cx-glyph">{{icon:github}}</span><strong>Source</strong><span class="cx-tile-text">The repository, issues and releases.</span></a>
+      </div>
+
+      <p class="cx-build" style="text-align: center">{{name}} · <a href="https://github.com/{{repo}}">source</a> · © {{year}} {{author}}</p>
+    </div>
+  </main>
+</body>
+</html>

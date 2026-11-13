@@ -1,0 +1,25 @@
+---
+/**
+ * chromokit: Starlight's footer (edit link, previous and next pages), a line
+ * saying what this documentation is, and the arrow keys that turn the page.
+ */
+import Default from '@astrojs/starlight/components/Footer.astro'
+import config from 'virtual:chromokit/config'
+---
+
+<Default />
+<p class="cx-build">
+  {config.footer}{config.version && ` v${String(config.version).replace(/^v/, '')}`}
+  {config.repository && (
+    <>
+      {' · '}
+      <a href={config.repository}>source</a>
+    </>
+  )}
+  {' · built with '}
+  <a href="https://starlight.astro.build/">Starlight</a>
+</p>
+
+<script>
+  import './keys.js'
+</script>

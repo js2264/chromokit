@@ -1,0 +1,632 @@
+/*
+ * chromokit for pkgdown (Bootstrap 5): an R package's site in the look of
+ * doc.chromosomix.app.
+ *
+ * pkgdown compiles this file with Bootstrap through bslib, so it is written in
+ * the CSS that libsass passes through untouched: hex colours, no `rgb(… / …)`,
+ * no `min()` or `max()`. Light and dark follow `data-bs-theme`, which pkgdown's
+ * light switch (`template: light-switch: true`) writes on <html>.
+ */
+
+/* ---- Bootstrap's own variables, re-pointed at the tokens ---------------- */
+:root,
+[data-bs-theme] {
+  --bs-body-bg: var(--cx-bg);
+  --bs-body-color: var(--cx-text);
+  --bs-emphasis-color: var(--cx-text);
+  --bs-secondary-color: var(--cx-text-dim);
+  --bs-tertiary-color: var(--cx-text-faint);
+  --bs-secondary-bg: var(--cx-bg-sunken);
+  --bs-tertiary-bg: var(--cx-bg-sunken);
+  --bs-border-color: var(--cx-border);
+  --bs-border-color-translucent: var(--cx-border);
+  --bs-border-radius: var(--cx-radius);
+  --bs-body-font-family: var(--cx-sans);
+  --bs-font-sans-serif: var(--cx-sans);
+  --bs-font-monospace: var(--cx-mono);
+  --bs-link-color: var(--cx-accent);
+  --bs-link-hover-color: var(--cx-accent);
+  --bs-code-color: var(--cx-text);
+  --bs-heading-color: var(--cx-text);
+  --bs-dropdown-bg: var(--cx-bg-raised);
+}
+
+body {
+  font-family: var(--cx-sans);
+  color: var(--cx-text);
+  background-color: var(--cx-bg);
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--cx-border) 50%, transparent) 0.8px, transparent 1px);
+  background-size: var(--cx-grain) var(--cx-grain);
+}
+
+::selection {
+  background: color-mix(in srgb, var(--cx-accent) 26%, transparent);
+}
+
+/* ---- the navbar: chromosomix's toolbar ---------------------------------- */
+.navbar {
+  min-height: var(--cx-header-h);
+  padding-top: 0;
+  padding-bottom: 0;
+  background: var(--cx-bg-raised) !important;
+  border-bottom: 1px solid var(--cx-border);
+  box-shadow: none;
+}
+
+.navbar .container {
+  max-width: none;
+  padding-right: 16px;
+  padding-left: 16px;
+}
+
+.navbar-brand,
+.navbar-brand:focus {
+  font: 650 var(--cx-step-1) / 1.2 var(--cx-sans);
+  letter-spacing: -0.015em;
+  color: var(--cx-text);
+}
+
+.navbar-brand:hover {
+  color: var(--cx-accent);
+}
+
+/* The version, as a chip. */
+.navbar .nav-text.text-muted {
+  padding: 4px 7px;
+  font: 400 var(--cx-step--2) / 1rem var(--cx-mono);
+  color: var(--cx-text-dim) !important;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+}
+
+.navbar .nav-text.text-danger {
+  padding: 4px 7px;
+  font: 400 var(--cx-step--2) / 1rem var(--cx-mono);
+  color: var(--cx-warn) !important;
+  background: var(--cx-warn-soft);
+  border: 1px solid var(--cx-warn);
+  border-radius: var(--cx-radius);
+}
+
+.navbar .nav-link {
+  font-size: calc(0.86 * var(--cx-rem));
+  color: var(--cx-text-dim);
+  transition: color 120ms;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:focus {
+  color: var(--cx-text);
+}
+
+.navbar .nav-item.active > .nav-link,
+.navbar .nav-link.active {
+  font-weight: 600;
+  color: var(--cx-text);
+}
+
+/* The search field: the sunken well. */
+.navbar #search-input,
+.navbar .form-control {
+  height: auto;
+  padding: 0.3rem 0.7rem;
+  font: 400 var(--cx-step--1) / 1.45 var(--cx-sans);
+  color: var(--cx-text);
+  background: var(--cx-bg-sunken);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+  box-shadow: none;
+}
+
+.navbar #search-input::placeholder {
+  color: var(--cx-text-dim);
+}
+
+.navbar #search-input:focus {
+  border-color: var(--cx-accent);
+  outline: none;
+  box-shadow: none;
+}
+
+/* GitHub and the light switch: bordered buttons that lift on hover. */
+.navbar .nav-link.external-link[aria-label],
+.navbar #dropdown-lightswitch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  margin: 0 0 0 6px;
+  padding: 0 10px;
+  color: var(--cx-text);
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+  transition:
+    border-color 120ms,
+    color 120ms,
+    box-shadow 120ms,
+    transform 120ms;
+}
+
+.navbar .nav-link.external-link[aria-label]:hover,
+.navbar #dropdown-lightswitch:hover {
+  color: var(--cx-accent);
+  border-color: var(--cx-accent);
+  box-shadow: var(--cx-shadow-2);
+  transform: translateY(-1px);
+}
+
+.navbar .nav-link.external-link[aria-label] .fa-lg {
+  font-size: 1rem;
+}
+
+.navbar #dropdown-lightswitch::after {
+  display: none;
+}
+
+.dropdown-menu {
+  --bs-dropdown-bg: var(--cx-bg-raised);
+  --bs-dropdown-color: var(--cx-text);
+  --bs-dropdown-link-color: var(--cx-text);
+  --bs-dropdown-link-hover-color: var(--cx-text);
+  --bs-dropdown-link-hover-bg: var(--cx-bg-sunken);
+  --bs-dropdown-link-active-color: var(--cx-accent);
+  --bs-dropdown-link-active-bg: var(--cx-accent-soft);
+  --bs-dropdown-border-color: var(--cx-border);
+  --bs-dropdown-header-color: var(--cx-accent);
+  font-size: var(--cx-step--1);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-2);
+}
+
+.dropdown-header {
+  font: 600 var(--cx-label) / 1.2 var(--cx-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.navbar-toggler {
+  padding: 0.25rem 0.5rem;
+  border-color: var(--cx-border-strong);
+}
+
+/* ---- the column of text ------------------------------------------------- */
+main {
+  font-size: var(--cx-prose-size);
+  line-height: var(--cx-prose-line);
+  color: color-mix(in srgb, var(--cx-text) 86%, var(--cx-text-dim));
+}
+
+main :is(h1, h2, h3, h4, h5, h6),
+.page-header h1 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--cx-text);
+}
+
+.page-header {
+  margin-top: 2rem;
+  border-bottom: 0;
+}
+
+.page-header h1,
+main h1 {
+  font-size: var(--cx-prose-h1);
+  line-height: 1.2;
+}
+
+main h2 {
+  margin-top: 2.75rem;
+  font-size: var(--cx-prose-h2);
+  line-height: 1.25;
+}
+
+main h3 {
+  margin-top: 2rem;
+  font-size: var(--cx-prose-h3);
+}
+
+main h4 {
+  font-size: var(--cx-prose-h4);
+}
+
+.page-header small,
+.page-header .dont-index {
+  font-size: var(--cx-step--1);
+  color: var(--cx-text-faint);
+}
+
+main a,
+.template-home aside a {
+  color: var(--cx-accent);
+  text-underline-offset: 0.2em;
+}
+
+main a:hover {
+  color: color-mix(in srgb, var(--cx-accent) 78%, var(--cx-text));
+}
+
+main strong {
+  font-weight: 600;
+  color: var(--cx-text);
+}
+
+a.anchor {
+  width: 16px;
+  height: 16px;
+  margin-left: 6px;
+  background: none;
+  background-color: var(--cx-text-faint);
+  -webkit-mask: var(--cx-icon-link) center / contain no-repeat;
+  mask: var(--cx-icon-link) center / contain no-repeat;
+}
+
+/* Inline code; a function name in code is a link, in the accent. */
+main :not(pre) > code {
+  padding: 0.05em 0.3em;
+  font-size: 0.85em;
+  color: var(--cx-text);
+  background-color: var(--cx-bg-sunken);
+  border: 1px solid var(--cx-border);
+  border-radius: 4px;
+}
+
+main code a,
+main a > code {
+  color: var(--cx-accent);
+}
+
+main dt code,
+main h1 code,
+main h2 code,
+main h3 code {
+  padding: 0;
+  font-size: 0.92em;
+  background: none;
+  border: 0;
+}
+
+kbd {
+  padding: 0.16em 0.42em;
+  font: 500 0.78em / 1 var(--cx-mono);
+  color: var(--cx-text);
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+/* ---- code: framed, Vitesse colours ------------------------------------- */
+div.sourceCode,
+main pre {
+  position: relative;
+  margin: 1rem 0;
+  color: var(--cx-code-fg);
+  background: var(--cx-code-bg);
+  border: 1px solid var(--cx-border);
+  border-radius: 8px;
+  box-shadow: var(--cx-shadow-1);
+}
+
+div.sourceCode pre,
+main pre pre {
+  margin: 0;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+main pre {
+  padding: 12px 16px;
+  font: 400 var(--cx-step-0) / 1.65 var(--cx-mono);
+  font-variant-ligatures: none;
+}
+
+main pre code {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+}
+
+/* A shell block gets the terminal bar. */
+div.sourceCode:has(> pre.bash),
+div.sourceCode:has(> pre.sh),
+div.sourceCode:has(> pre.shell),
+div.sourceCode:has(> pre.console) {
+  padding-top: 34px;
+}
+
+div.sourceCode:has(> pre.bash)::before,
+div.sourceCode:has(> pre.sh)::before,
+div.sourceCode:has(> pre.shell)::before,
+div.sourceCode:has(> pre.console)::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 34px;
+  content: '';
+  border-bottom: 1px solid color-mix(in srgb, var(--cx-border) 55%, transparent);
+}
+
+div.sourceCode:has(> pre.bash)::after,
+div.sourceCode:has(> pre.sh)::after,
+div.sourceCode:has(> pre.shell)::after,
+div.sourceCode:has(> pre.console)::after {
+  position: absolute;
+  top: 12.5px;
+  left: 16px;
+  width: 34px;
+  height: 9px;
+  content: '';
+  background-color: var(--cx-code-dots);
+  -webkit-mask: var(--cx-terminal-dots) left center / contain no-repeat;
+  mask: var(--cx-terminal-dots) left center / contain no-repeat;
+}
+
+div.sourceCode pre code > span > a:first-child::before {
+  text-decoration: none;
+}
+
+/* Copy buttons on examples. */
+.btn-copy-ex {
+  top: 6px;
+  right: 6px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--cx-text-faint);
+  background: var(--cx-code-bg);
+  border: 1px solid var(--cx-border);
+  border-radius: 4px;
+}
+
+.btn-copy-ex:hover {
+  color: var(--cx-text);
+  border-color: var(--cx-border-strong);
+}
+
+/* Syntax colours, for both palettes: the dark highlight theme pkgdown adds
+   sits under [data-bs-theme="dark"], which these outrank. */
+code span.co,
+code span.cn,
+:root[data-bs-theme] code span.co {
+  color: var(--cx-hl-comment);
+}
+
+code span.kw,
+code span.cf,
+:root[data-bs-theme] code span.kw,
+:root[data-bs-theme] code span.cf {
+  color: var(--cx-hl-keyword);
+}
+
+code span.st,
+code span.ch,
+code span.ss,
+code span.sc,
+:root[data-bs-theme] code span.st,
+:root[data-bs-theme] code span.ch,
+:root[data-bs-theme] code span.ss,
+:root[data-bs-theme] code span.sc {
+  color: var(--cx-hl-string);
+}
+
+code span.fu,
+:root[data-bs-theme] code span.fu {
+  color: var(--cx-hl-function);
+}
+
+code span.fl,
+code span.dv,
+code span.bn,
+:root[data-bs-theme] code span.fl,
+:root[data-bs-theme] code span.dv,
+:root[data-bs-theme] code span.bn {
+  color: var(--cx-hl-number);
+}
+
+code span.va,
+:root[data-bs-theme] code span.va {
+  color: var(--cx-hl-variable);
+}
+
+code span.op,
+:root[data-bs-theme] code span.op {
+  color: var(--cx-hl-operator);
+}
+
+code span.ex,
+code span.at,
+code span.ot,
+:root[data-bs-theme] code span.ex,
+:root[data-bs-theme] code span.at,
+:root[data-bs-theme] code span.ot {
+  color: var(--cx-hl-special);
+}
+
+/* Example output on reference pages. */
+.r-out,
+.r-out code {
+  color: var(--cx-text-dim);
+}
+
+/* ---- tables ------------------------------------------------------------- */
+main .table,
+main table {
+  --bs-table-bg: transparent;
+  --bs-table-color: var(--cx-text);
+  --bs-table-border-color: var(--cx-border);
+  --bs-table-striped-bg: transparent;
+  --bs-table-hover-bg: var(--cx-bg-sunken);
+  display: table;
+  width: 100%;
+  margin: 1.25rem 0;
+  font-size: calc(0.85 * var(--cx-rem));
+  line-height: 1.6;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-1);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+main table th {
+  padding: 8px 11px;
+  font: 600 var(--cx-label) / 1.4 var(--cx-sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cx-text-dim);
+  background: var(--cx-bg-sunken);
+  border-bottom: 1px solid var(--cx-border);
+}
+
+main table td {
+  padding: 7px 11px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--cx-border);
+}
+
+main table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+/* ---- callouts: blockquotes and Bootstrap alerts ------------------------ */
+main blockquote,
+main .callout,
+main .alert {
+  --cx-aside: var(--cx-accent);
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  font-size: calc(0.94 * var(--cx-rem));
+  color: var(--cx-text);
+  background: color-mix(in srgb, var(--cx-aside) 8%, var(--cx-bg-raised));
+  border: 1px solid var(--cx-border);
+  border-left: 3px solid var(--cx-aside);
+  border-radius: var(--cx-radius);
+}
+
+main blockquote > :last-child,
+main .alert > :last-child {
+  margin-bottom: 0;
+}
+
+main .alert-warning,
+main .callout-warning {
+  --cx-aside: var(--cx-warn);
+}
+
+main .alert-danger,
+main .callout-important {
+  --cx-aside: var(--cx-danger);
+}
+
+main .alert-success,
+main .callout-tip {
+  --cx-aside: var(--cx-ok);
+}
+
+/* ---- the sidebar: groups headed by kickers; "On this page" on a rail --- */
+aside h2,
+#toc h2,
+.template-home aside h2 {
+  margin: 1.4rem 0 0.5rem;
+  font: 600 var(--cx-label) / 1.2 var(--cx-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cx-accent);
+}
+
+aside ul,
+aside .list-unstyled {
+  font-size: calc(0.86 * var(--cx-rem));
+  color: var(--cx-text-dim);
+}
+
+aside .roles {
+  color: var(--cx-text-faint);
+}
+
+#toc > .nav {
+  border-left: 1px solid var(--cx-border);
+}
+
+#toc .nav-link {
+  margin-left: -1px;
+  padding: 3px 0 3px 14px;
+  font-size: calc(0.81 * var(--cx-rem));
+  color: var(--cx-text-dim);
+  background: none;
+  border-left: 1px solid transparent;
+  border-radius: 0;
+}
+
+#toc .nav-link:hover {
+  color: var(--cx-text);
+}
+
+#toc .nav-link.active {
+  color: var(--cx-accent);
+  background: none;
+  border-left-color: var(--cx-accent);
+}
+
+#toc .nav .nav .nav-link {
+  padding-left: 26px;
+}
+
+/* ---- the reference index ------------------------------------------------ */
+main dl dt {
+  margin-top: 0.75rem;
+  font-weight: 500;
+}
+
+main dl dd {
+  margin-left: 0;
+  color: var(--cx-text-dim);
+}
+
+.ref-index h2,
+.template-reference-index main h2 {
+  margin-top: 2.25rem;
+}
+
+/* ---- the footer: one quiet line ---------------------------------------- */
+footer {
+  margin-top: 3.5rem;
+  padding-top: 1.25rem;
+  font-size: var(--cx-step--1);
+  color: var(--cx-text-faint);
+  background: transparent;
+  border-top: 1px solid var(--cx-border);
+}
+
+footer a {
+  color: inherit;
+}
+
+/* ---- odds and ends ------------------------------------------------------ */
+.tooltip-inner {
+  color: var(--cx-text);
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  box-shadow: var(--cx-shadow-2);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--cx-accent);
+  --bs-btn-border-color: var(--cx-accent);
+  --bs-btn-color: var(--cx-on-accent);
+  --bs-btn-hover-bg: var(--cx-accent);
+  --bs-btn-hover-border-color: var(--cx-accent);
+  --bs-btn-hover-color: var(--cx-on-accent);
+}
+
+img.logo {
+  border-radius: 0.2em;
+}

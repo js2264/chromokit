@@ -1,0 +1,74 @@
+name: Drift from chromosomix
+
+# Weekly: has chromosomix's look moved on since chromokit snapshotted it?
+# Reads chromosomix's stylesheet (a public repository; nothing is written to
+# it) and compares its tokens with tokens/chromosomix.json. A difference opens,
+# or updates, one issue here; agreement closes it. Taking the new values up is
+# a deliberate `npm run import -- <chromosomix checkout>` and `npm run build`.
+
+on:
+  schedule:
+    - cron: "41 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/checkout@v7
+        with:
+          repository: js2264/chromosomix
+          path: chromosomix
+          sparse-checkout: src/ui/styles.css
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Compare
+        id: compare
+        run: |
+          set +e
+          node scripts/drift.mjs chromosomix > "$RUNNER_TEMP/drift.txt"
+          status=$?
+          cat "$RUNNER_TEMP/drift.txt"
+          echo "drifted=$([ $status -eq 1 ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          [ $status -le 1 ]
+
+      - name: Open or update the issue
+        if: steps.compare.outputs.drifted == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          title="chromosomix's tokens have moved on"
+          sha="$(git -C chromosomix rev-parse HEAD)"
+          {
+            echo "chromosomix's \`src/ui/styles.css\` at js2264/chromosomix@$sha declares tokens that differ from chromokit's snapshot:"
+            echo
+            echo '```'
+            cat "$RUNNER_TEMP/drift.txt"
+            echo '```'
+            echo
+            echo "Opened by .github/workflows/drift.yml."
+          } > "$RUNNER_TEMP/body.md"
+          number="$(gh issue list --state open --search "in:title \"$title\"" --json number --jq '.[0].number')"
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh issue create --title "$title" --body-file "$RUNNER_TEMP/body.md"
+          fi
+
+      - name: Close the issue when they agree again
+        if: steps.compare.outputs.drifted == 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          number="$(gh issue list --state open --search "in:title \"chromosomix's tokens have moved on\"" --json number --jq '.[0].number')"
+          if [ -n "$number" ]; then gh issue close "$number" --comment "The snapshot matches chromosomix again."; fi

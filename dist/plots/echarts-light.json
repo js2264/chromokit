@@ -1,0 +1,144 @@
+{
+  "color": [
+    "#1f5fa9",
+    "#c4501e",
+    "#1d6b3f",
+    "#8a5200",
+    "#7a3e9d",
+    "#54565a"
+  ],
+  "backgroundColor": "transparent",
+  "textStyle": {
+    "fontFamily": "system-ui, -apple-system, \"Segoe UI\", Inter, Roboto, sans-serif",
+    "color": "#17181a"
+  },
+  "title": {
+    "textStyle": {
+      "color": "#17181a",
+      "fontWeight": 600
+    },
+    "subtextStyle": {
+      "color": "#54565a"
+    }
+  },
+  "legend": {
+    "textStyle": {
+      "color": "#54565a"
+    }
+  },
+  "tooltip": {
+    "backgroundColor": "#ffffff",
+    "borderColor": "#8d8f93",
+    "textStyle": {
+      "color": "#17181a"
+    }
+  },
+  "categoryAxis": {
+    "axisLine": {
+      "show": true,
+      "lineStyle": {
+        "color": "#8d8f93"
+      }
+    },
+    "axisTick": {
+      "show": true,
+      "lineStyle": {
+        "color": "#8d8f93"
+      }
+    },
+    "axisLabel": {
+      "color": "#54565a"
+    },
+    "splitLine": {
+      "show": true,
+      "lineStyle": {
+        "color": "#d2d3d6",
+        "type": "dashed"
+      }
+    },
+    "nameTextStyle": {
+      "color": "#54565a"
+    }
+  },
+  "valueAxis": {
+    "axisLine": {
+      "show": true,
+      "lineStyle": {
+        "color": "#8d8f93"
+      }
+    },
+    "axisTick": {
+      "show": true,
+      "lineStyle": {
+        "color": "#8d8f93"
+      }
+    },
+    "axisLabel": {
+      "color": "#54565a"
+    },
+    "splitLine": {
+      "show": true,
+      "lineStyle": {
+        "color": "#d2d3d6",
+        "type": "dashed"
+      }
+    },
+    "nameTextStyle": {
+      "color": "#54565a"
+    }
+  },
+  "logAxis": {
+    "axisLine": {
+      "show": true,
+      "lineStyle": {
+        "color": "#8d8f93"
+      }
+    },
+    "axisTick": {
+      "show": true,
+      "lineStyle": {
+        "color": "#8d8f93"
+      }
+    },
+    "axisLabel": {
+      "color": "#54565a"
+    },
+    "splitLine": {
+      "show": true,
+      "lineStyle": {
+        "color": "#d2d3d6",
+        "type": "dashed"
+      }
+    },
+    "nameTextStyle": {
+      "color": "#54565a"
+    }
+  },
+  "timeAxis": {
+    "axisLine": {
+      "show": true,
+      "lineStyle": {
+        "color": "#8d8f93"
+      }
+    },
+    "axisTick": {
+      "show": true,
+      "lineStyle": {
+        "color": "#8d8f93"
+      }
+    },
+    "axisLabel": {
+      "color": "#54565a"
+    },
+    "splitLine": {
+      "show": true,
+      "lineStyle": {
+        "color": "#d2d3d6",
+        "type": "dashed"
+      }
+    },
+    "nameTextStyle": {
+      "color": "#54565a"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+url: https://js2264.github.io/chromokit/r/
+template:
+  package: chromokit
+reference:
+  - title: Colours
+    contents:
+      - chromokit_colours
+      - chromokit_palette
+  - title: ggplot2
+    contents:
+      - theme_chromokit
+      - scale_colour_chromokit

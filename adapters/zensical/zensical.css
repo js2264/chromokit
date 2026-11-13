@@ -1,0 +1,1316 @@
+/*
+ * chromokit for Zensical (and Material for MkDocs): zensical's "modern" theme
+ * restyled as doc.chromosomix.app, as metacooler's documentation first did.
+ *
+ * Neutral greys, one blue accent, a dotted-grid page, a solid full-height
+ * sidebar with uppercase group labels, framed code with a terminal bar,
+ * callouts and tables on the raised surface, and the in-column footer with
+ * previous/next cards (overrides/partials/cx-page-footer.html).
+ *
+ * zensical sizes its own UI in rem against a 20px root (html{font-size:125%}),
+ * so this file sizes in px, and sets --cx-rem to 16px for the core components.
+ */
+
+:root {
+  --cx-rem: 0.8rem;
+}
+
+/* zensical's own variables, re-pointed at the tokens. Set on the same
+   attribute selector the theme's palette uses, so these win by source order. */
+[data-md-color-scheme] {
+  --md-default-bg-color: var(--cx-bg);
+  --md-default-bg-color--light: color-mix(in srgb, var(--cx-bg) 72%, transparent);
+  --md-default-bg-color--lighter: color-mix(in srgb, var(--cx-bg) 30%, transparent);
+  --md-default-bg-color--lightest: color-mix(in srgb, var(--cx-bg) 12%, transparent);
+  --md-default-fg-color: var(--cx-text);
+  --md-default-fg-color--light: var(--cx-text-dim);
+  --md-default-fg-color--lighter: var(--cx-text-faint);
+  --md-default-fg-color--lightest: color-mix(in srgb, var(--cx-border) 70%, transparent);
+
+  --md-primary-fg-color: var(--cx-accent);
+  --md-primary-fg-color--light: var(--cx-accent);
+  --md-primary-fg-color--dark: var(--cx-accent);
+  --md-primary-bg-color: var(--cx-on-accent);
+  --md-primary-bg-color--light: color-mix(in srgb, var(--cx-on-accent) 70%, transparent);
+  --md-accent-fg-color: var(--cx-accent);
+  --md-accent-fg-color--transparent: var(--cx-accent-soft);
+  --md-accent-bg-color: var(--cx-on-accent);
+  --md-accent-bg-color--light: color-mix(in srgb, var(--cx-on-accent) 70%, transparent);
+
+  --md-typeset-color: var(--cx-text);
+  --md-typeset-a-color: var(--cx-accent);
+  --md-typeset-mark-color: color-mix(in srgb, var(--cx-warn) 28%, transparent);
+  --md-typeset-table-color: var(--cx-border);
+  --md-typeset-table-color--light: color-mix(in srgb, var(--cx-bg-sunken) 60%, transparent);
+  --md-typeset-kbd-color: var(--cx-bg-raised);
+  --md-typeset-kbd-accent-color: var(--cx-bg-raised);
+  --md-typeset-kbd-border-color: var(--cx-border-strong);
+
+  --md-code-bg-color: var(--cx-bg-sunken);
+  --md-code-fg-color: var(--cx-text);
+  --md-code-hl-color: var(--cx-accent);
+  --md-code-hl-color--light: color-mix(in srgb, var(--cx-accent) 14%, transparent);
+  --md-code-hl-comment-color: var(--cx-hl-comment);
+  --md-code-hl-keyword-color: var(--cx-hl-keyword);
+  --md-code-hl-string-color: var(--cx-hl-string);
+  --md-code-hl-function-color: var(--cx-hl-function);
+  --md-code-hl-constant-color: var(--cx-hl-constant);
+  --md-code-hl-number-color: var(--cx-hl-number);
+  --md-code-hl-name-color: var(--cx-code-fg);
+  --md-code-hl-variable-color: var(--cx-hl-variable);
+  --md-code-hl-operator-color: var(--cx-hl-operator);
+  --md-code-hl-punctuation-color: var(--cx-hl-punctuation);
+  --md-code-hl-special-color: var(--cx-hl-special);
+  --md-code-hl-generic-color: var(--cx-code-fg);
+
+  --md-admonition-fg-color: var(--cx-text);
+  --md-admonition-bg-color: var(--cx-bg-raised);
+  --md-shadow-z1: var(--cx-shadow-1);
+  --md-shadow-z2: var(--cx-shadow-2);
+  --md-shadow-z3: var(--cx-shadow-2);
+}
+
+/* ------------------------------------------------------------------------ */
+/* Base                                                                      */
+/* ------------------------------------------------------------------------ */
+
+/* Keep zensical's 20px rem at every width: the reference does not scale up
+   on large screens. */
+html {
+  font-size: 125%;
+}
+
+body {
+  --md-text-font-family: var(--cx-sans);
+  --md-code-font-family: var(--cx-mono);
+  background-color: var(--cx-bg);
+  color: var(--cx-text);
+}
+
+/* The dotted grid behind the content, as on chromosomix */
+.md-container {
+  background-image: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--cx-border) 50%, transparent) 0.8px,
+    transparent 1px
+  );
+  background-size: 10px 10px;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--cx-accent) 26%, transparent);
+}
+
+/* ------------------------------------------------------------------------ */
+/* Header                                                                    */
+/* ------------------------------------------------------------------------ */
+
+.md-header.cx-header {
+  height: var(--cx-header-h);
+  color: var(--cx-text);
+  background-color: var(--cx-bg-raised);
+  border-bottom: 1px solid var(--cx-border);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.cx-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 100%;
+  max-width: none;
+  padding: 0 16px;
+}
+
+.cx-header__brand,
+.cx-header__actions {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  min-width: 0;
+}
+
+.cx-header__brand {
+  gap: 10px;
+}
+
+.cx-header__actions {
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.cx-header__search {
+  flex: 0 1 352px;
+  min-width: 0;
+}
+
+.cx-header__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  color: var(--cx-text);
+  white-space: nowrap;
+  transition: color 0.12s;
+}
+
+.cx-header__title:hover {
+  color: var(--cx-accent);
+}
+
+.cx-header__title img {
+  display: block;
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 0.22em;
+}
+
+.cx-header__kicker {
+  font: 600 10.9px / 1.2 var(--cx-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cx-accent);
+}
+
+.cx-header__version {
+  padding: 4px 7px;
+  font: 11.5px / 16px var(--cx-mono);
+  color: var(--cx-text-dim);
+  white-space: nowrap;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+}
+
+@media screen and (max-width: 59.984375em) {
+  .cx-header__kicker,
+  .cx-header__version,
+  .cx-header__search {
+    display: none;
+  }
+
+  .cx-header__inner {
+    gap: 12px;
+  }
+
+  .cx-header__brand {
+    flex: 1 1 auto;
+  }
+
+  .cx-header__actions {
+    flex: none;
+  }
+}
+
+/* Search: a sunken field with its shortcut, no icon */
+.cx-header .md-search {
+  padding: 0;
+}
+
+.cx-header .md-search__button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: auto;
+  padding: 5px 8px 5px 11px;
+  font: 400 12.5px / 1.45 var(--cx-sans);
+  color: var(--cx-text-dim);
+  text-align: left;
+  background: var(--cx-bg-sunken);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+  transition: border-color 0.12s, color 0.12s;
+}
+
+.cx-header .md-search__button:hover,
+.cx-header .md-search__button:focus {
+  color: var(--cx-text);
+  background: var(--cx-bg-sunken);
+  border-color: var(--cx-accent);
+}
+
+.cx-header .md-search__button::before {
+  display: none;
+}
+
+.cx-header .md-search__button::after {
+  position: static;
+  padding: 1px 6px;
+  font: 11.5px / 1.45 var(--cx-mono);
+  color: var(--cx-text-dim);
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+}
+
+/* Header buttons: GitHub, the theme toggle and (narrow screens) search */
+.cx-header__icon-button,
+.cx-header__actions .md-header__button.md-icon {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  margin: 0;
+  padding: 0 10px;
+  color: var(--cx-text);
+  cursor: pointer;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+  opacity: 1;
+  transition: border-color 0.12s, color 0.12s, box-shadow 0.12s, transform 0.12s;
+}
+
+.cx-header__actions .md-header__button.md-icon[hidden] {
+  display: none;
+}
+
+/* The search field takes over from the search button once there is room */
+@media screen and (min-width: 60em) {
+  .cx-header__actions .cx-header__search-toggle {
+    display: none;
+  }
+}
+
+.cx-header__icon-button:hover,
+.cx-header__actions .md-header__button.md-icon:hover {
+  color: var(--cx-accent);
+  border-color: var(--cx-accent);
+  box-shadow: var(--cx-shadow-2);
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.cx-header__icon-button svg,
+.cx-header .md-header__button.md-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.cx-header__icon-button svg {
+  fill: currentcolor;
+}
+
+.cx-header__menu.md-header__button {
+  margin: 0 -4px 0 -8px;
+  padding: 8px;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Layout                                                                    */
+/* ------------------------------------------------------------------------ */
+
+.md-main__inner.md-grid {
+  max-width: none;
+  margin: 0;
+}
+
+.md-content__inner {
+  margin: 0;
+  padding: 32px 16px 40px;
+}
+
+.md-content__inner::before {
+  display: none;
+}
+
+.md-sidebar {
+  padding: 0;
+}
+
+@media screen and (min-width: 60em) {
+  .md-sidebar {
+    top: var(--cx-header-h);
+  }
+}
+
+.md-typeset :target {
+  --md-scroll-margin: calc(var(--cx-header-h) + 24px);
+}
+
+@media screen and (min-width: 45em) {
+  .md-content__inner {
+    padding: 32px var(--cx-pad-x) 48px;
+  }
+}
+
+/* Content and TOC, sidebar folded away (tablets) */
+@media screen and (min-width: 60em) {
+  .md-content__inner {
+    max-width: calc(var(--cx-content-w) + 2 * var(--cx-pad-x));
+  }
+
+  .md-sidebar--secondary {
+    flex: 0 0 240px;
+    width: 240px;
+  }
+}
+
+/* Full layout: sidebar | content | TOC. As in Starlight, the slack beyond
+   their natural widths is split evenly between the content pane (whose
+   column hugs the TOC) and the TOC pane. */
+@media screen and (min-width: 76.25em) {
+  /* The sidebar's band is painted on .md-main, which always reaches the
+     bottom of the window, so it does not stop short on a short page. */
+  .md-main:has(> .md-main__inner > .md-sidebar--primary:not([hidden])) {
+    background-image: linear-gradient(
+      to right,
+      var(--cx-bg-raised) calc(var(--cx-sidebar-w) - 1px),
+      var(--cx-border) calc(var(--cx-sidebar-w) - 1px),
+      var(--cx-border) var(--cx-sidebar-w),
+      transparent var(--cx-sidebar-w)
+    );
+  }
+
+  .md-sidebar--primary {
+    flex: 0 0 var(--cx-sidebar-w);
+    width: var(--cx-sidebar-w);
+  }
+
+  .md-sidebar--secondary {
+    flex: 1 1 var(--cx-toc-w);
+    width: auto;
+    min-width: 0;
+  }
+
+  .md-sidebar--primary:not([hidden]) ~ .md-sidebar--secondary:not([hidden]) ~ .md-content {
+    flex: 0 1
+      calc(
+        var(--cx-content-w) + 2 * var(--cx-pad-x) +
+          (100% - var(--cx-sidebar-w) - var(--cx-content-w) - 2 * var(--cx-pad-x) - var(--cx-toc-w)) / 2
+      );
+  }
+
+  .md-sidebar--primary:not([hidden]) ~ .md-sidebar--secondary:not([hidden]) ~ .md-content > .md-content__inner {
+    margin-left: auto;
+  }
+
+  [dir="ltr"] .md-sidebar--primary:not([hidden]) ~ .md-content > .md-content__inner,
+  [dir="ltr"] .md-sidebar--secondary:not([hidden]) ~ .md-content > .md-content__inner {
+    margin-right: 0;
+  }
+
+  [dir="ltr"] .md-sidebar--primary:not([hidden]) ~ .md-content > .md-content__inner {
+    margin-left: auto;
+  }
+}
+
+/* Sidebar scroll areas */
+.md-sidebar__scrollwrap {
+  scrollbar-color: var(--cx-border) transparent;
+}
+
+@supports selector(::-webkit-scrollbar) {
+  [dir="ltr"] .md-sidebar__inner {
+    padding-right: 0;
+  }
+}
+
+/* ------------------------------------------------------------------------ */
+/* Primary navigation (left sidebar)                                         */
+/* ------------------------------------------------------------------------ */
+
+.md-nav {
+  font-size: 13.8px;
+  line-height: 1.4;
+}
+
+.md-nav--primary .md-nav__list {
+  gap: 0;
+}
+
+.md-nav__link {
+  border-radius: 0;
+}
+
+/* Code in page titles reads as plain monospace in the navigation */
+.md-nav code {
+  padding: 0;
+  font-size: 0.94em;
+  color: inherit;
+  background: none;
+  border: 0;
+}
+
+.md-nav--primary .md-nav__link {
+  margin: 0;
+  padding: 5px 8px;
+  color: var(--cx-text-dim);
+  border-radius: 0;
+  transition: color 0.12s;
+}
+
+.md-nav--primary .md-nav__item .md-nav__link--active,
+.md-nav--primary .md-nav__item .md-nav__link--active code {
+  color: var(--cx-text);
+  font-weight: 600;
+  background: none;
+}
+
+.md-nav--primary .md-nav__link[for]:hover:not(.md-nav__link--active),
+.md-nav--primary .md-nav__link[for]:focus:not(.md-nav__link--active),
+.md-nav--primary .md-nav__link[href]:hover:not(.md-nav__link--active),
+.md-nav--primary .md-nav__link[href]:focus:not(.md-nav__link--active) {
+  color: var(--cx-text);
+  background: none;
+}
+
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary .md-sidebar__inner {
+    padding: 22px 16px 32px 18px;
+  }
+
+  .md-nav--primary,
+  .md-nav--primary .md-nav__item--section {
+    margin: 0;
+  }
+
+  /* Groups: an uppercase accent label with a chevron, collapsible */
+  .md-nav--primary .md-nav__item--section {
+    margin-top: 14px;
+  }
+
+  .md-nav--primary > .md-nav__list > .md-nav__item--section:first-child {
+    margin-top: 0;
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav__link {
+    gap: 9px;
+    align-items: center;
+    padding: 6px 8px 6px 4px;
+    font: 600 10.9px / 1.2 var(--cx-sans);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cx-accent);
+    pointer-events: auto;
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav__link:hover {
+    color: var(--cx-accent) !important;
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav__link::before {
+    flex: none;
+    order: -1;
+    width: 13px;
+    height: 13px;
+    content: "";
+    background-color: var(--cx-text-dim);
+    -webkit-mask: var(--cx-icon-chevron) center / contain no-repeat;
+    mask: var(--cx-icon-chevron) center / contain no-repeat;
+    transition: transform 0.15s;
+  }
+
+  /* navigation.expand opens groups as "indeterminate"; a group is closed only
+     once it has been clicked shut. */
+  .md-nav--primary .md-nav__item--section > .md-nav__toggle:not(:checked, :indeterminate) ~ .md-nav__link::before {
+    transform: rotate(-90deg);
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav {
+    display: grid;
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav__toggle:not(:checked, :indeterminate) ~ .md-nav {
+    grid-template-rows: minmax(0, 0fr);
+    visibility: collapse;
+    opacity: 0;
+  }
+
+  /* Items of a group hang off a hairline; the current one marks it */
+  .md-nav--primary .md-nav__item--section > .md-nav > .md-nav__list {
+    margin: 2px 0 2px 10px;
+    border-left: 1px solid var(--cx-border);
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav > .md-nav__list > .md-nav__item > .md-nav__link {
+    margin-left: -1px;
+    padding-left: 18px;
+    border-left: 1px solid transparent;
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav > .md-nav__list > .md-nav__item > .md-nav__link--active {
+    border-left-color: var(--cx-accent);
+  }
+
+  /* A group inside a group (Python API): a plain row with a chevron */
+  .md-nav--primary .md-nav__item--nested:not(.md-nav__item--section) > .md-nav > .md-nav__list {
+    margin: 0 0 2px 18px;
+    border-left: 1px solid var(--cx-border);
+  }
+
+  .md-nav--primary .md-nav__item--nested:not(.md-nav__item--section) > .md-nav > .md-nav__list > .md-nav__item > .md-nav__link {
+    margin-left: -1px;
+    padding-left: 14px;
+    border-left: 1px solid transparent;
+  }
+
+  .md-nav--primary .md-nav__item--nested:not(.md-nav__item--section) > .md-nav > .md-nav__list > .md-nav__item > .md-nav__link--active {
+    border-left-color: var(--cx-accent);
+  }
+
+  /* Ungrouped top-level pages line up with the group labels */
+  .md-nav--primary > .md-nav__list > .md-nav__item:not(.md-nav__item--section) > .md-nav__link {
+    padding-left: 4px;
+  }
+
+  .md-nav--primary > .md-nav__list > .md-nav__item:not(.md-nav__item--section) {
+    margin-top: 2px;
+  }
+
+  .md-nav--primary > .md-nav__list > .md-nav__item--section + .md-nav__item:not(.md-nav__item--section) {
+    margin-top: 14px;
+  }
+}
+
+/* ------------------------------------------------------------------------ */
+/* Table of contents (right sidebar)                                         */
+/* ------------------------------------------------------------------------ */
+
+@media screen and (min-width: 60em) {
+  .md-sidebar--secondary .md-sidebar__inner {
+    padding: 30px 16px 32px;
+  }
+
+  .md-nav--secondary .md-nav__title {
+    position: static;
+    display: block;
+    margin: 0 0 12px;
+    padding: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cx-text);
+    background: none;
+    box-shadow: none;
+  }
+
+  .md-nav--secondary > .md-nav__list {
+    gap: 0;
+    border-left: 1px solid var(--cx-border);
+  }
+
+  .md-nav--secondary .md-nav__list {
+    gap: 0;
+  }
+
+  .md-nav--secondary .md-nav__link {
+    margin: 0 0 0 -1px;
+    padding: 3px 0 3px 14px;
+    font-size: 13px;
+    line-height: 1.4;
+    color: var(--cx-text-dim);
+    border-left: 1px solid transparent;
+  }
+
+  .md-nav--secondary .md-nav__link .md-typeset {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  .md-nav--secondary .md-nav .md-nav__link {
+    padding-left: 26px;
+  }
+
+  .md-nav--secondary .md-nav .md-nav .md-nav__link {
+    padding-left: 38px;
+  }
+
+  .md-nav--secondary .md-nav {
+    margin-top: 0;
+  }
+
+  .md-nav--secondary .md-nav__link[href]:hover,
+  .md-nav--secondary .md-nav__link[href]:focus {
+    color: var(--cx-text);
+  }
+
+  .md-nav--secondary .md-nav__link--active,
+  .md-nav--secondary .md-nav__link--active:hover {
+    color: var(--cx-accent);
+    font-weight: 400;
+    border-left-color: var(--cx-accent);
+  }
+}
+
+/* ------------------------------------------------------------------------ */
+/* Typography                                                                */
+/* ------------------------------------------------------------------------ */
+
+.md-typeset {
+  font-size: 16px;
+  line-height: 1.75;
+  letter-spacing: normal;
+  color: color-mix(in srgb, var(--cx-text) 86%, var(--cx-text-dim));
+}
+
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-typeset h5,
+.md-typeset h6 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--cx-text);
+}
+
+.md-typeset h1 {
+  margin: 0 0 24px;
+  font-size: 29px;
+  line-height: 1.2;
+}
+
+.md-typeset h2 {
+  margin: 44px 0 14px;
+  font-size: 24px;
+  line-height: 1.25;
+}
+
+.md-typeset h3 {
+  margin: 32px 0 10px;
+  font-size: 20px;
+  line-height: 1.3;
+}
+
+.md-typeset h2 + h3 {
+  margin-top: 16px;
+}
+
+.md-typeset h4 {
+  margin: 26px 0 8px;
+  font-size: 17px;
+  line-height: 1.35;
+}
+
+.md-typeset h5,
+.md-typeset h6 {
+  margin: 22px 0 8px;
+  font-size: 15px;
+  text-transform: none;
+}
+
+.md-typeset p,
+.md-typeset ul,
+.md-typeset ol,
+.md-typeset dl,
+.md-typeset blockquote {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+
+.md-typeset a {
+  color: var(--cx-accent);
+  text-underline-offset: 0.2em;
+}
+
+.md-typeset a:hover,
+.md-typeset a:focus {
+  color: color-mix(in srgb, var(--cx-accent) 78%, var(--cx-text));
+}
+
+.md-typeset strong {
+  color: var(--cx-text);
+  font-weight: 600;
+}
+
+.md-typeset hr {
+  margin: 32px 0;
+  border-bottom: 1px solid var(--cx-border);
+}
+
+.md-typeset blockquote {
+  color: var(--cx-text-dim);
+  border-left: 3px solid var(--cx-border);
+}
+
+/* Heading anchors: a link glyph on hover rather than a pilcrow */
+.md-typeset .headerlink {
+  width: 16px;
+  height: 16px;
+  margin-left: 8px;
+  font-size: 0;
+  vertical-align: middle;
+  color: var(--cx-text-faint);
+}
+
+.md-typeset .headerlink::before {
+  display: block;
+  width: 16px;
+  height: 16px;
+  content: "";
+  background-color: currentcolor;
+  -webkit-mask: var(--cx-icon-link) center / contain no-repeat;
+  mask: var(--cx-icon-link) center / contain no-repeat;
+}
+
+/* Inline code and keys */
+.md-typeset code {
+  padding: 0.05em 0.3em;
+  font-size: 0.85em;
+  color: var(--cx-text);
+  background-color: var(--cx-bg-sunken);
+  border: 1px solid var(--cx-border);
+  border-radius: 4px;
+}
+
+.md-typeset a code {
+  color: inherit;
+}
+
+.md-typeset kbd {
+  padding: 0.16em 0.42em;
+  font: 500 0.78em / 1 var(--cx-mono);
+  color: var(--cx-text);
+  white-space: nowrap;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Code blocks: a framed pane; shell blocks get a terminal title bar         */
+/* ------------------------------------------------------------------------ */
+
+.md-typeset .highlight {
+  position: relative;
+  margin: 16px 0;
+  overflow: hidden;
+  color: var(--cx-code-fg);
+  background: var(--cx-code-bg);
+  border: 1px solid var(--cx-border);
+  border-radius: 8px;
+  box-shadow: var(--cx-shadow-1);
+}
+
+.md-typeset .highlight pre {
+  margin: 0;
+  line-height: 1.65;
+}
+
+.md-typeset pre > code,
+.md-typeset .highlight pre > code {
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--cx-code-fg);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.md-typeset .highlight :is(.language-bash, .language-console, .language-sh, .language-shell, .language-zsh),
+.md-typeset :is(.language-bash, .language-console, .language-sh, .language-shell, .language-zsh).highlight {
+  padding-top: 34px;
+}
+
+.md-typeset :is(.language-bash, .language-console, .language-sh, .language-shell, .language-zsh).highlight::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 34px;
+  content: "";
+  border-bottom: 1px solid color-mix(in srgb, var(--cx-border) 55%, transparent);
+}
+
+.md-typeset :is(.language-bash, .language-console, .language-sh, .language-shell, .language-zsh).highlight::after {
+  position: absolute;
+  top: 12.5px;
+  left: 16px;
+  width: 34px;
+  height: 9px;
+  content: "";
+  background-color: var(--cx-code-dots);
+  -webkit-mask: var(--cx-terminal-dots) left center / contain no-repeat;
+  mask: var(--cx-terminal-dots) left center / contain no-repeat;
+}
+
+/* A bare <pre> outside a highlight wrapper */
+.md-typeset pre:not(.highlight pre) {
+  background: var(--cx-code-bg);
+  border: 1px solid var(--cx-border);
+  border-radius: 8px;
+}
+
+/* Copy button: shown on hover, in the title bar of a terminal frame */
+.md-typeset .md-code__nav {
+  top: 6px;
+  right: 6px;
+  padding: 0;
+  background: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.md-typeset .highlight:hover .md-code__nav,
+.md-typeset .md-code__nav:focus-within {
+  background: none;
+  opacity: 1;
+}
+
+.md-typeset :is(.language-bash, .language-console, .language-sh, .language-shell, .language-zsh).highlight .md-code__nav {
+  top: -31px;
+}
+
+.md-typeset .md-code__button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: var(--cx-text-faint);
+  background: var(--cx-code-bg);
+  border: 1px solid var(--cx-border);
+  border-radius: 4px;
+}
+
+.md-typeset .md-code__button::after {
+  width: 15px;
+  height: 15px;
+}
+
+.md-typeset .md-code__button:hover,
+.md-typeset .md-code__button.focus-visible {
+  color: var(--cx-text);
+  border-color: var(--cx-border-strong);
+}
+
+/* Filenames on code blocks (title="…") */
+.md-typeset .highlight span.filename {
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cx-text-dim);
+  background: var(--cx-code-bg);
+  border-bottom: 1px solid var(--cx-border);
+}
+
+@media screen and (max-width: 44.984375em) {
+  .md-content__inner > .highlight {
+    margin: 16px 0;
+  }
+
+  .md-content__inner > .highlight > pre > code {
+    border-radius: 0;
+  }
+}
+
+/* ------------------------------------------------------------------------ */
+/* Tables                                                                    */
+/* ------------------------------------------------------------------------ */
+
+.md-typeset__scrollwrap {
+  margin: 20px -3px;
+  padding: 1px 3px 3px;
+}
+
+.md-typeset__table {
+  display: block;
+  padding: 0;
+  margin: 0;
+}
+
+.md-typeset table:not([class]) {
+  display: table;
+  width: 100%;
+  font-size: 13.6px;
+  line-height: 1.6;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-1);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.md-typeset table:not([class]) th {
+  min-width: 0;
+  padding: 8px 11px;
+  font: 600 10.9px / 1.4 var(--cx-sans);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cx-text-dim);
+  background: var(--cx-bg-sunken);
+  border-bottom: 1px solid var(--cx-border);
+}
+
+.md-typeset table:not([class]) td {
+  padding: 7px 11px;
+  border-top: 0;
+  border-bottom: 1px solid var(--cx-border);
+}
+
+/* Names and options in a first column stay on one line */
+.md-typeset table:not([class]) td:first-child code {
+  white-space: nowrap;
+}
+
+.md-typeset table:not([class]) tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.md-typeset table:not([class]) tbody tr:hover {
+  background: color-mix(in srgb, var(--cx-bg-sunken) 70%, transparent);
+  box-shadow: none;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Asides (admonitions)                                                      */
+/* ------------------------------------------------------------------------ */
+
+.md-typeset .admonition[class],
+.md-typeset details[class] {
+  --cx-aside: var(--cx-accent);
+  margin: 24px 0;
+  padding: 0 16px;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--cx-text);
+  background: color-mix(in srgb, var(--cx-aside) 8%, var(--cx-bg-raised));
+  border: 1px solid var(--cx-border);
+  border-left: 3px solid var(--cx-aside);
+  border-radius: var(--cx-radius);
+  box-shadow: none;
+}
+
+.md-typeset :is(.admonition, details):is(.success, .check, .done) {
+  --cx-aside: var(--cx-ok);
+}
+
+.md-typeset :is(.admonition, details):is(.warning, .caution, .attention, .important) {
+  --cx-aside: var(--cx-warn);
+}
+
+.md-typeset :is(.admonition, details):is(.danger, .error, .failure, .fail, .missing, .bug) {
+  --cx-aside: var(--cx-danger);
+}
+
+.md-typeset :is(.admonition, details) > :is(.admonition-title, summary) {
+  margin: 12px 0 4px;
+  padding-left: 26px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--cx-aside);
+  background: none;
+}
+
+.md-typeset :is(.admonition, details) > :is(.admonition-title, summary)::before {
+  top: 0.18em;
+  width: 18px;
+  height: 18px;
+  background-color: var(--cx-aside);
+}
+
+.md-typeset :is(.admonition, details) > :is(.admonition-title, summary)::after {
+  color: var(--cx-aside);
+}
+
+html .md-typeset :is(.admonition, details) > :last-child {
+  margin-bottom: 12px;
+}
+
+.md-typeset :is(.admonition, details) code {
+  color: var(--cx-text);
+  background: color-mix(in srgb, var(--cx-bg-raised) 60%, transparent);
+}
+
+.md-typeset :is(.admonition, details) .highlight {
+  margin: 12px 0;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Tabs, cards, figures                                                      */
+/* ------------------------------------------------------------------------ */
+
+.md-typeset .tabbed-labels {
+  box-shadow: 0 -1px var(--cx-border) inset;
+}
+
+.md-typeset .tabbed-labels > label {
+  padding: 8px 16px 7px;
+  font-size: 14px;
+  color: var(--cx-text-dim);
+}
+
+.md-typeset .tabbed-set > input:checked + label,
+.md-typeset .tabbed-labels > label:hover {
+  color: var(--cx-text);
+}
+
+.js .md-typeset .tabbed-labels::before {
+  height: 2px;
+  background: var(--cx-accent);
+}
+
+.md-typeset .grid {
+  gap: 9px;
+}
+
+.md-typeset .grid.cards > ul > li,
+.md-typeset .grid.cards > ol > li,
+.md-typeset .grid > .card {
+  padding: 14px 16px;
+  font-size: 15px;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-1);
+  transition: border-color 0.12s, box-shadow 0.12s;
+}
+
+.md-typeset .grid.cards > ul > li:hover,
+.md-typeset .grid.cards > ul > li:focus-within,
+.md-typeset .grid.cards > ol > li:hover,
+.md-typeset .grid > .card:hover {
+  border-color: var(--cx-border-strong);
+  box-shadow: var(--cx-shadow-2);
+}
+
+.md-typeset .grid.cards .twemoji {
+  color: var(--cx-accent);
+}
+
+.md-typeset img {
+  border-radius: 4px;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Python API pages (mkdocstrings)                                           */
+/* ------------------------------------------------------------------------ */
+
+.md-typeset .doc-heading code {
+  padding: 0;
+  font-size: 0.92em;
+  background: none;
+  border: 0;
+}
+
+.md-typeset .doc-signature,
+.md-typeset .doc-signature + .highlight {
+  font-size: 13.5px;
+}
+
+.md-typeset .doc-contents {
+  padding-left: 0;
+}
+
+.md-typeset code.doc-symbol {
+  padding: 0.05em 0.4em;
+  font-weight: 600;
+  border: 1px solid currentcolor;
+  border-radius: 4px;
+  background: transparent;
+}
+
+/* ------------------------------------------------------------------------ */
+/* Odds and ends                                                             */
+/* ------------------------------------------------------------------------ */
+
+.md-top {
+  padding: 6px 14px 6px 10px;
+  font-size: 12.5px;
+  color: var(--cx-text-dim);
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: 999px;
+  box-shadow: var(--cx-shadow-2);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.md-top:hover,
+.md-top:focus {
+  color: var(--cx-accent);
+  background: var(--cx-bg-raised);
+  border-color: var(--cx-accent);
+}
+
+.md-top svg {
+  width: 16px;
+  height: 16px;
+}
+
+.md-tooltip2,
+.md-tooltip {
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-2);
+}
+
+/* ------------------------------------------------------------------------ */
+/* Narrow screens: the sidebar becomes a full-height drawer                  */
+/* ------------------------------------------------------------------------ */
+
+@media screen and (max-width: 76.234375em) {
+  [dir="ltr"] .md-sidebar--primary {
+    left: calc(-1 * var(--cx-sidebar-w));
+  }
+
+  .md-sidebar--primary {
+    top: 0;
+    width: var(--cx-sidebar-w);
+    max-width: 85vw;
+    height: 100%;
+    background-color: var(--cx-bg-raised);
+    border-right: 1px solid var(--cx-border);
+    border-radius: 0;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  [data-md-toggle="drawer"]:checked ~ .md-container .md-sidebar--primary {
+    transform: translateX(var(--cx-sidebar-w));
+  }
+
+  .md-nav--primary .md-nav__title[for="__drawer"] {
+    font-size: 16px;
+    font-weight: 650;
+    color: var(--cx-text);
+    border-bottom: 1px solid var(--cx-border);
+  }
+
+  .md-nav__source {
+    font-size: 13px;
+    border-color: var(--cx-border);
+  }
+
+  .md-nav--primary .md-nav__item--section > .md-nav__link,
+  .md-nav--primary > .md-nav__list > .md-nav__item--nested > .md-nav__link {
+    font: 600 10.9px / 1.2 var(--cx-sans);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--cx-accent);
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+
+  .md-overlay {
+    background-color: color-mix(in srgb, var(--cx-bg-sunken) 60%, transparent);
+  }
+}
+
+@media screen and (max-width: 59.984375em) {
+  .md-sidebar--secondary .md-sidebar__inner {
+    background: var(--cx-bg-raised);
+    border: 1px solid var(--cx-border);
+    border-radius: var(--cx-radius);
+  }
+
+  .md-sidebar--secondary .md-sidebar-button {
+    color: var(--cx-text-dim);
+    background: var(--cx-bg-raised);
+    border: 1px solid var(--cx-border-strong);
+  }
+}
+
+/* ------------------------------------------------------------------------ */
+/* chromokit components inside zensical's typeset column                     */
+/* ------------------------------------------------------------------------ */
+
+/* `.md-typeset p`, `h1` and `a` carry an element in their selector, so they
+   outrank a bare class: the components restate what zensical would change. */
+.md-typeset .cx-kicker {
+  margin: 48px 0 10px;
+}
+
+.md-typeset .cx-tagline {
+  margin: 18px auto 0;
+  font-size: 19px;
+}
+
+.md-typeset .cx-lede {
+  margin: 10px auto 0;
+  font-size: 15.5px;
+}
+
+.md-typeset .cx-masthead {
+  margin: 0;
+  font-size: clamp(32px, 8vw, 58px);
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.md-typeset .cx-masthead .headerlink {
+  display: none;
+}
+
+.md-typeset .cx-actions > p {
+  margin: 0;
+}
+
+.md-typeset .cx-actions {
+  margin-top: 24px;
+}
+
+.md-typeset .cx-badges {
+  margin-top: 22px;
+}
+
+.md-typeset .cx-badges img {
+  border-radius: 0;
+}
+
+.md-typeset .cx-tiles > p {
+  margin: 0;
+}
+
+.md-typeset .cx-tile .twemoji svg,
+.md-typeset .cx-glyph .twemoji,
+.md-typeset .cx-glyph svg {
+  width: 18px;
+  height: 18px;
+  max-height: none;
+}
+
+.md-typeset .cx-button .twemoji svg {
+  width: 15px;
+  height: 15px;
+}
+
+.md-typeset .cx-build {
+  margin: 28px 0 0;
+}
+
+.md-typeset .cx-badge,
+.md-typeset .cx-chip,
+.md-typeset .cx-callout {
+  margin-top: 0;
+}
+
+/* The home page: no column, the landing's own width, the build line centred. */
+.md-content:has(.cx-landing) {
+  flex: 1 1 auto;
+}
+
+.md-content__inner:has(.cx-landing) {
+  max-width: none;
+  margin: 0;
+  padding: 0 16px;
+}
+
+.md-content__inner:has(.cx-landing) .cx-build {
+  max-width: 832px;
+  margin: 0 auto 32px;
+  text-align: center;
+}
+
+.md-content__inner:has(.cx-landing) .cx-page-footer {
+  margin-top: 0;
+}
+
+.md-header.cx-header {
+  display: block;
+  padding: 0;
+}

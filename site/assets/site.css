@@ -1,0 +1,53 @@
+/* chromokit's own site: a few layout helpers for the gallery. */
+.gallery-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 1rem 0;
+}
+
+.gallery-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.gallery-pair > div {
+  padding: 1rem;
+  color: var(--cx-text);
+  background: var(--cx-bg);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+}
+
+.swatch {
+  display: inline-block;
+  width: 1.1rem;
+  height: 1.1rem;
+  vertical-align: -0.2rem;
+  border: 1px solid var(--cx-border);
+  border-radius: 4px;
+}
+
+.marks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin: 1rem 0;
+}
+
+.marks figure {
+  margin: 0;
+  font-size: var(--cx-step--1);
+  text-align: center;
+  color: var(--cx-text-dim);
+}
+
+.marks img {
+  display: block;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 0.4rem;
+}

@@ -1,0 +1,12 @@
+{
+  "title": "Plain HTML",
+  "description": "Hand-written pages, no build step: a landing page and a documentation page with sidebar and contents.",
+  "kit": {
+    "assets/chromokit/chromokit.css": "dist/css/chromokit-page.css",
+    "assets/chromokit/theme.js": "dist/js/theme.js",
+    "assets/chromokit/chromokit.js": "dist/js/chromokit.js"
+  },
+  "mark": ["assets/mark.svg"],
+  "accent": "assets/site.css",
+  "next": ["open index.html   # or: python3 -m http.server"]
+}

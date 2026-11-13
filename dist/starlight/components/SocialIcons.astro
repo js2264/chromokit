@@ -1,0 +1,11 @@
+---
+/**
+ * chromokit: the right of the header — an optional call to action, then
+ * Starlight's social links as bordered buttons.
+ */
+import Default from '@astrojs/starlight/components/SocialIcons.astro'
+import config from 'virtual:chromokit/config'
+---
+
+{config.cta && config.cta.href && <a class="cx-control cx-header__wide" href={config.cta.href}>{config.cta.text ?? 'Open'}</a>}
+<Default />

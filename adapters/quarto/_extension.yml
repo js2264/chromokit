@@ -1,0 +1,19 @@
+title: chromokit
+author: Jacques Serizay
+version: {{version}}
+quarto-required: ">=1.4.0"
+contributes:
+  formats:
+    html:
+      theme:
+        light: [chromokit-light.scss]
+        dark: [chromokit-dark.scss]
+      toc: true
+      toc-title: On this page
+      code-copy: true
+      anchor-sections: true
+      smooth-scroll: true
+      include-after-body: [chromokit.html]
+    revealjs:
+      theme: [chromokit-reveal.scss]
+      slide-number: true

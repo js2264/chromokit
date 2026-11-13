@@ -1,0 +1,7 @@
+url: {{url}}
+
+{{file:dist/pkgdown/_pkgdown.yml}}
+navbar:
+  structure:
+    left: [intro, reference, articles, news]
+    right: [search, github, lightswitch]

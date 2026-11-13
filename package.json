@@ -1,0 +1,71 @@
+{
+  "name": "chromokit",
+  "version": "0.1.0",
+  "description": "A shared UI kit \u2014 design tokens, components, and starter templates \u2014 for plain HTML, Hugo, Zensical, Astro Starlight, pkgdown and Quarto sites, in the look of chromosomix.",
+  "type": "module",
+  "license": "MIT",
+  "author": "Jacques Serizay",
+  "homepage": "https://github.com/js2264/chromokit#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/js2264/chromokit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/js2264/chromokit/issues"
+  },
+  "keywords": [
+    "design-tokens",
+    "css",
+    "ui-kit",
+    "theme",
+    "zensical",
+    "starlight",
+    "pkgdown",
+    "quarto",
+    "hugo",
+    "documentation"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "chromokit": "bin/chromokit.mjs"
+  },
+  "exports": {
+    ".": "./dist/css/chromokit.css",
+    "./tokens.css": "./dist/css/tokens.css",
+    "./components.css": "./dist/css/components.css",
+    "./page.css": "./dist/css/chromokit-page.css",
+    "./tokens.json": "./dist/tokens/tokens.json",
+    "./tokens": "./dist/tokens/tokens.mjs",
+    "./theme.js": "./dist/js/theme.js",
+    "./keys.js": "./dist/js/keys.js",
+    "./starlight": "./dist/starlight/index.mjs",
+    "./starlight/*": "./dist/starlight/*",
+    "./*": "./dist/*"
+  },
+  "files": [
+    "bin",
+    "dist",
+    "lib",
+    "templates",
+    "_extensions",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test test/*.test.mjs",
+    "check": "node scripts/build.mjs --check",
+    "site": "node scripts/site.mjs",
+    "screens": "node scripts/screens.mjs",
+    "import": "node scripts/import-from-chromosomix.mjs",
+    "drift": "node scripts/drift.mjs",
+    "version:set": "node scripts/version.mjs"
+  },
+  "devDependencies": {
+    "lucide-static": "^1.28.0",
+    "simple-icons": "^16.27.1"
+  }
+}

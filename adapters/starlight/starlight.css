@@ -1,0 +1,431 @@
+/*
+ * chromokit for Astro Starlight, over the Rapide theme: doc.chromosomix.app's
+ * look, with chromosomix's own particulars (version menu, task pages, live
+ * views) left out.
+ *
+ * Every value is a `--cx-*` token. Rapide puts its rules in the `rapide`
+ * cascade layer and nothing here is layered, so every rule below wins over
+ * Rapide's whatever its specificity.
+ */
+
+/* ---- Starlight's palette, from the app's ------------------------------- */
+:root,
+::backdrop {
+  --sl-font: var(--cx-sans);
+  --sl-font-mono: var(--cx-mono);
+
+  --sl-color-black: var(--cx-bg);
+  --sl-color-gray-7: var(--cx-bg-sunken);
+  --sl-color-gray-6: var(--cx-bg-raised);
+  --sl-color-gray-5: var(--cx-border);
+  --sl-color-gray-4: var(--cx-text-faint);
+  --sl-color-gray-3: var(--cx-text-dim);
+  --sl-color-gray-2: color-mix(in srgb, var(--cx-text) 82%, var(--cx-text-dim));
+  --sl-color-gray-1: var(--cx-text);
+  --sl-color-white: color-mix(in srgb, var(--cx-text) 75%, white);
+
+  --sl-color-accent-low: var(--cx-accent-soft);
+  --sl-color-accent: color-mix(in srgb, var(--cx-accent) 78%, var(--cx-bg));
+  --sl-color-accent-high: var(--cx-accent);
+
+  /* Colour for meaning only: blue is the accent, green agreement, amber a
+     warning, red a refusal; a tip is the accent rather than Rapide's purple. */
+  --sl-color-blue-low: var(--cx-accent-soft);
+  --sl-color-blue: var(--cx-accent);
+  --sl-color-blue-high: var(--cx-accent);
+  --sl-color-purple-low: var(--cx-accent-soft);
+  --sl-color-purple: var(--cx-accent);
+  --sl-color-purple-high: var(--cx-accent);
+  --sl-color-green-low: color-mix(in srgb, var(--cx-ok) 14%, var(--cx-bg));
+  --sl-color-green: var(--cx-ok);
+  --sl-color-green-high: var(--cx-ok);
+  --sl-color-orange-low: var(--cx-warn-soft);
+  --sl-color-orange: var(--cx-warn);
+  --sl-color-orange-high: var(--cx-warn);
+  --sl-color-red-low: var(--cx-danger-soft);
+  --sl-color-red: var(--cx-danger);
+  --sl-color-red-high: var(--cx-danger);
+
+  --sl-color-bg-nav: var(--cx-bg-raised);
+  --sl-color-bg-sidebar: var(--cx-bg-raised);
+  --sl-color-bg-inline-code: var(--cx-bg-sunken);
+  --sl-color-hairline: var(--cx-border);
+  --sl-color-hairline-light: var(--cx-border);
+  --sl-color-hairline-shade: var(--cx-bg-sunken);
+
+  --sl-rapide-ui-bg-color: var(--cx-bg);
+  --sl-rapide-ui-header-bg-color: color-mix(in srgb, var(--cx-bg-raised) 94%, transparent);
+  --sl-rapide-ui-border-color: var(--cx-border);
+  --sl-rapide-ec-marker-bg-color: var(--cx-accent-soft);
+  --sl-rapide-ec-marker-border-color: var(--cx-accent);
+}
+
+:root[data-theme='light'] {
+  --sl-color-white: color-mix(in srgb, var(--cx-text) 80%, black);
+  --sl-color-gray-6: var(--cx-bg-muted);
+  --sl-color-accent: var(--cx-accent);
+  --sl-color-accent-high: color-mix(in srgb, var(--cx-accent) 72%, black);
+  --sl-color-green-low: color-mix(in srgb, var(--cx-ok) 10%, var(--cx-bg));
+}
+
+/* ---- the ground: the landing page's grain ------------------------------ */
+.main-frame,
+body:not(:has(.sidebar-pane)) {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--cx-border) 50%, transparent) 0.8px, transparent 1px);
+  background-size: 10px 10px;
+}
+.sidebar-pane {
+  background-color: var(--sl-color-bg-sidebar);
+}
+.right-sidebar {
+  background: transparent;
+}
+
+/* ---- header: the app's toolbar ----------------------------------------- */
+/* The app's header, measure for measure (`.app-head` in the app's stylesheet):
+   53 pixels, 0.6rem by 1rem, on the raised surface with a hairline under it,
+   solid rather than Rapide's frosted glass. Starlight sizes the page around
+   the header from the same three numbers. */
+:root {
+  --sl-nav-height: 3.3125rem;
+  --sl-nav-pad-y: 0.6rem;
+  --sl-nav-pad-x: 1rem;
+}
+header.header {
+  padding-inline-end: var(--sl-nav-pad-x);
+  background-color: var(--cx-bg-raised);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-bottom: 1px solid var(--cx-border);
+}
+.cx-title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+}
+/* The mark at 26 pixels and the name beside it, as the app draws its brand. */
+.cx-title .site-title {
+  font-size: 1rem;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+  color: var(--cx-text);
+  gap: 0.625rem;
+}
+.cx-title .site-title:hover {
+  color: var(--cx-accent);
+}
+.cx-title .site-title img {
+  height: 1.625rem;
+  width: auto;
+  border-radius: 0.22em;
+}
+.cx-title .cx-header__kicker {
+  font: 600 0.68rem / 1.2 var(--cx-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--cx-accent);
+}
+/* The buttons on the right are the app's `.btn`: 0.78rem, 0.3rem by 0.65rem,
+   the strong hairline on the raised surface, and its one gesture on hover —
+   the border and the word take the accent and the button rises a pixel. An
+   icon at 16 pixels, so a button with a word and a button with a mark are one
+   height, 27.6 pixels, as in the app's header. */
+.cx-icon-button,
+header.header .social-icons a,
+starlight-rapide-theme-select button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0.3rem 0.65rem;
+  font: 400 0.78rem / 1rem var(--cx-sans);
+  white-space: nowrap;
+  color: var(--cx-text);
+  text-decoration: none;
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+  background: var(--cx-bg-raised);
+  box-shadow: none;
+  cursor: pointer;
+  transition: border-color 120ms, color 120ms, background 120ms, box-shadow 120ms, transform 120ms;
+}
+.cx-icon-button svg,
+header.header .social-icons a svg,
+starlight-rapide-theme-select button svg {
+  width: 16px;
+  height: 16px;
+}
+.cx-icon-button:hover,
+header.header .social-icons a:hover,
+starlight-rapide-theme-select button:hover {
+  border-color: var(--cx-accent);
+  color: var(--cx-accent);
+  box-shadow: var(--cx-shadow-2);
+  transform: translateY(-1px);
+}
+.cx-icon-button:active,
+header.header .social-icons a:active,
+starlight-rapide-theme-select button:active {
+  transform: translateY(0);
+  box-shadow: var(--cx-shadow-1);
+}
+starlight-rapide-theme-select {
+  align-self: center;
+}
+/* The app's buttons stand 0.4rem apart with no rule between them. */
+header.header .right-group,
+header.header .social-icons {
+  gap: 0.4rem;
+}
+header.header .social-icons::after {
+  display: none;
+}
+@media (max-width: 50rem) {
+  .cx-header__wide,
+  .cx-header__version,
+  .cx-header__kicker {
+    display: none;
+  }
+}
+
+/* The search box is the app's "Search commands…": the sunken well, its words
+   on the left in the dim grey, and one key on the right, `Ctrl+K`, as the app
+   writes `Ctrl+P`. No magnifying glass: the app's has none. */
+site-search button[data-open-modal] {
+  box-sizing: border-box;
+  height: auto;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.3rem 0.5rem 0.3rem 0.7rem;
+  background: var(--cx-bg-sunken);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+  color: var(--cx-text-dim);
+  font: 400 0.78rem / 1.45 var(--cx-sans);
+}
+site-search button[data-open-modal] > svg {
+  display: none;
+}
+site-search button[data-open-modal]:hover {
+  border-color: var(--cx-accent);
+  color: var(--cx-text);
+}
+site-search button[data-open-modal] > kbd {
+  gap: 0;
+  font: 0.72rem / 1.45 var(--cx-mono);
+  padding: 0.05rem 0.35rem;
+  border: 1px solid var(--cx-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--cx-bg-raised);
+  color: var(--cx-text-dim);
+}
+site-search button[data-open-modal] > kbd kbd {
+  font: inherit;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+}
+site-search button[data-open-modal] > kbd kbd + kbd::before {
+  content: '+';
+}
+
+/* ---- sidebar: groups headed like "NEW HERE?" on the landing page -------- */
+.sidebar-pane .top-level > li > details > summary .large {
+  font: 600 0.68rem / 1.2 var(--cx-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--cx-accent);
+}
+.sidebar-pane a {
+  font-size: 0.86rem;
+  color: var(--cx-text-dim);
+}
+.sidebar-pane a:hover {
+  color: var(--cx-text);
+}
+.sidebar-pane a[aria-current='page'] {
+  color: var(--cx-text);
+  font-weight: 600;
+}
+.sidebar-pane ul ul li:has(> a[aria-current='page']) {
+  border-inline-start-color: var(--cx-accent);
+}
+
+/* ---- content ----------------------------------------------------------- */
+.sl-markdown-content {
+  color: var(--sl-color-gray-2);
+}
+.sl-markdown-content a:not(.cx-tile, .cx-button, .cx-badge, .cx-card, .cx-control, .sl-link-button) {
+  color: var(--cx-accent);
+  text-underline-offset: 0.2em;
+}
+.sl-markdown-content :is(h1, h2, h3, h4) {
+  color: var(--cx-text);
+  letter-spacing: -0.01em;
+}
+.content-panel h1 {
+  font-weight: 650;
+  letter-spacing: -0.02em;
+}
+.sl-markdown-content :not(pre) > code {
+  font-variant-ligatures: none;
+  border: 1px solid var(--cx-border);
+  border-radius: 4px;
+  padding: 0.05em 0.3em;
+  font-size: 0.85em;
+}
+.sl-markdown-content table {
+  display: table;
+  width: 100%;
+  font-size: 0.85rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  overflow: hidden;
+  background: var(--cx-bg-raised);
+  box-shadow: var(--cx-shadow-1);
+}
+.sl-markdown-content :is(th, td) {
+  border-bottom: 1px solid var(--cx-border);
+  padding: 0.45rem 0.7rem;
+  vertical-align: top;
+}
+.sl-markdown-content tr:last-child > td {
+  border-bottom: 0;
+}
+.sl-markdown-content thead th {
+  background: var(--cx-bg-sunken);
+  color: var(--cx-text-dim);
+  font: 600 0.68rem / 1.2 var(--cx-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: start;
+}
+.sl-markdown-content td code {
+  border: 0;
+  background: transparent;
+  padding: 0;
+}
+/* A table wider than the column scrolls inside its own box, never the page
+   (`scrollingTables` puts every Markdown table in one). */
+.cx-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: var(--cx-radius);
+}
+/* Rapide makes the page a grid when it has a banner, as every copy but the
+   root's does; a grid's column grows to its widest table or line of code
+   unless it may shrink, and the page then scrolls sideways on a phone. */
+[data-has-sidebar] main:has(.sl-banner) {
+  grid-template-columns: minmax(0, 1fr);
+}
+main > .content-panel {
+  min-width: 0;
+}
+.cx-table-wrap table {
+  margin: 0;
+}
+.starlight-aside {
+  border-radius: var(--cx-radius);
+  border: 1px solid var(--cx-border);
+  border-inline-start-width: 3px;
+  background: color-mix(in srgb, var(--sl-color-asides-border, var(--cx-accent)) 8%, var(--cx-bg-raised));
+}
+.starlight-aside .starlight-aside__content {
+  color: var(--sl-color-gray-2);
+}
+.starlight-aside .starlight-aside__content code {
+  color: var(--cx-text);
+}
+.expressive-code .frame {
+  box-shadow: var(--cx-shadow-1);
+}
+.sl-link-button.primary {
+  background: var(--cx-accent);
+  color: var(--cx-on-accent);
+  border-color: var(--cx-accent);
+  border-radius: var(--cx-radius);
+}
+.sl-link-button.secondary,
+.sl-link-button.minimal {
+  border-radius: var(--cx-radius);
+  border: 1px solid var(--cx-border);
+  background: var(--cx-bg-raised);
+  color: var(--cx-text);
+}
+.card,
+.sl-link-card {
+  border-radius: var(--cx-radius);
+  border-color: var(--cx-border);
+  background: var(--cx-bg-raised);
+  box-shadow: var(--cx-shadow-1);
+}
+.cx-build {
+  margin-top: 1.5rem;
+  font-size: 0.78rem;
+  color: var(--cx-text-faint);
+}
+.cx-build a {
+  color: inherit;
+}
+
+
+/* ---- chromokit's components inside Starlight's content ---------------- */
+.sl-markdown-content :is(.cx-tiles, .cx-actions, .cx-badges, .cx-tile, .cx-kicker, .cx-masthead, .cx-tagline, .cx-lede, .cx-facts, .cx-callout) {
+  margin-top: 0;
+}
+
+.sl-markdown-content .cx-landing .cx-kicker {
+  margin: 2.8rem 0 0.6rem;
+}
+
+.sl-markdown-content .cx-tagline {
+  margin-top: 1.1rem;
+}
+
+.sl-markdown-content .cx-actions {
+  margin-top: 1.6rem;
+}
+
+.sl-markdown-content .cx-badges {
+  margin-top: 1.4rem;
+}
+
+.sl-markdown-content .cx-callout {
+  margin-block: 1.5rem;
+}
+
+/* The home page's masthead is its title: the page's own h1 stays for screen
+   readers and search, out of sight. */
+main:has(.cx-landing) .content-panel:has(> .sl-container > h1#_top) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* A key, drawn as a key. */
+.sl-markdown-content kbd {
+  font: 500 0.78em / 1 var(--cx-mono);
+  padding: 0.16em 0.42em;
+  border: 1px solid var(--cx-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--cx-bg-raised);
+  color: var(--cx-text);
+  white-space: nowrap;
+}
+
+.sl-markdown-content img.cx-screen {
+  display: block;
+  height: auto;
+}

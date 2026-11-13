@@ -1,0 +1,151 @@
+<!-- title: Gallery · chromokit -->
+<!-- toc: controls Controls; labels Labels and badges; cards Cards and tiles; content Content; chrome Furniture; scopes Light and dark scopes; marks Marks -->
+<div class="cx-layout">
+  <aside class="cx-sidebar">{{nav}}</aside>
+  <main class="cx-main cx-ground">
+    <article class="cx-content cx-prose">
+      <h1>Gallery</h1>
+      <p>Every component in <code>chromokit.css</code>, with the markup it takes. Switch the theme in the header: everything here follows it.</p>
+
+      <h2 id="controls">Controls</h2>
+      <p>The compact control is the app's button: the border and the word take the accent on hover, and it rises a pixel.</p>
+      <div class="gallery-row">
+        <button class="cx-control" type="button">Open</button>
+        <button class="cx-control" type="button">{{icon:download}} Export</button>
+        <button class="cx-control cx-control--icon" type="button" aria-label="Copy">{{icon:copy}}</button>
+        <button class="cx-control" type="button" aria-pressed="true">{{icon:layers}} Tracks</button>
+        <button class="cx-control cx-control--quiet" type="button">Quiet</button>
+        <button class="cx-control" type="button" disabled>Disabled</button>
+      </div>
+      <p>The call to action is a landing page's button.</p>
+      <div class="gallery-row">
+        <a class="cx-button" href="#controls">What it is</a>
+        <a class="cx-button cx-button--filled" href="#controls">Open the browser {{icon:arrow-right}}</a>
+      </div>
+      <div class="gallery-row">
+        <input class="cx-input" placeholder="https://bucket.example.org/map.mcool" style="width: 18rem">
+        <input class="cx-input cx-input--mono" value="chrXIV:100,001-500,000" style="width: 14rem">
+        <select class="cx-select"><option>balanced</option><option>raw</option></select>
+        <input class="cx-input" aria-invalid="true" value="not a locus" style="width: 9rem">
+      </div>
+      <div class="gallery-row">
+        <label class="cx-search" style="max-width: 22rem"><input type="search" placeholder="Search commands…" aria-label="Search"><kbd class="cx-kbd">Ctrl+P</kbd></label>
+        <kbd class="cx-kbd">Ctrl</kbd><kbd class="cx-kbd">K</kbd>
+        <button type="button" class="cx-control cx-control--icon cx-theme-toggle" data-cx-theme-toggle aria-label="Theme">
+          <span class="cx-theme-icon cx-theme-icon--system">{{icon:monitor}}</span>
+          <span class="cx-theme-icon cx-theme-icon--light">{{icon:sun}}</span>
+          <span class="cx-theme-icon cx-theme-icon--dark">{{icon:moon}}</span>
+        </button>
+      </div>
+      <div class="gallery-row">
+        <div class="cx-segmented" role="group" aria-label="Map">
+          <button type="button" aria-pressed="true">map</button>
+          <button type="button" aria-pressed="false">lower</button>
+          <button type="button" aria-pressed="false">ratio</button>
+        </div>
+      </div>
+      <div class="cx-tabs" role="tablist">
+        <button class="cx-tab" role="tab" aria-selected="true" aria-controls="tab-uv" id="t-uv">uv</button>
+        <button class="cx-tab" role="tab" aria-selected="false" aria-controls="tab-pip" id="t-pip" tabindex="-1">pip</button>
+      </div>
+      <div class="cx-tabpanel" id="tab-uv" role="tabpanel"><div class="cx-code cx-code--terminal"><pre><code>uv add metacooler</code></pre></div></div>
+      <div class="cx-tabpanel" id="tab-pip" role="tabpanel" hidden><div class="cx-code cx-code--terminal"><pre><code>pip install metacooler</code></pre></div></div>
+
+      <h2 id="labels">Labels and badges</h2>
+      <div class="gallery-row">
+        <span class="cx-kicker">New here?</span>
+        <span class="cx-chip">v0.21.0</span>
+        <span class="cx-chip">122.6 MB</span>
+        <span class="cx-count">4</span>
+      </div>
+      <div class="gallery-row">
+        <span class="cx-badge cx-badge--ok">Identical to its reference</span>
+        <span class="cx-badge cx-badge--accent">New</span>
+        <span class="cx-badge cx-badge--warn">Approximate</span>
+        <span class="cx-badge cx-badge--danger">Refused</span>
+        <span class="cx-badge">Not run</span>
+        <span class="cx-badge cx-badge--plain cx-badge--accent">plain</span>
+      </div>
+
+      <h2 id="cards">Cards and tiles</h2>
+      <div class="cx-cards">
+        <div class="cx-card"><span class="cx-card__title">A card</span><span class="cx-card__text">The raised surface, the hairline, the 6px corner and the resting shadow.</span></div>
+        <a class="cx-card" href="#cards"><span class="cx-card__title">A link card</span><span class="cx-card__text">Lifts to the second elevation on hover.</span></a>
+      </div>
+      <p class="cx-kicker" style="margin-top: 1.5rem">Get started</p>
+      <div class="cx-tiles" style="margin-top: 0.6rem">
+        <a class="cx-tile" href="#cards"><span class="cx-glyph">{{icon:rocket}}</span><strong>Your first map</strong><span class="cx-tile-text">Open a public Hi-C map and find your way.</span></a>
+        <a class="cx-tile" href="#cards"><span class="cx-glyph">{{icon:file-text}}</span><strong>Opening files</strong><span class="cx-tile-text">From your disk, a URL or a bucket.</span></a>
+        <a class="cx-tile cx-tile--dashed" href="#cards"><span class="cx-glyph">{{icon:package}}</span><strong>Add a store</strong><span class="cx-tile-text">Paste a store file's URL.</span></a>
+      </div>
+      <div class="gallery-pair">
+        <details class="cx-panel" open style="background: var(--cx-bg-raised)">
+          <summary>{{icon:file-text}} File <span class="cx-count">1</span></summary>
+          <dl class="cx-kv">
+            <dt>layout</dt><dd>cool</dd>
+            <dt>bin size</dt><dd>1.6 kb</dd>
+            <dt>format</dt><dd>HDF5::Cooler v3</dd>
+            <dt>non-zero pixels</dt><dd>4,011,331</dd>
+          </dl>
+        </details>
+        <div class="cx-dropzone" style="background: var(--cx-bg-sunken)"><span class="cx-dropzone__title">Drop genomic files here</span><span class="cx-dropzone__hint">or click to choose</span></div>
+      </div>
+      <dl class="cx-facts">
+        <dt>In the app</dt><dd>Analysis panel, under <strong>2D tasks</strong>: <em>Reproducibility</em></dd>
+        <dt>Command</dt><dd><code>chromosomix hicrep</code></dd>
+        <dt>Reads</dt><dd>A contact map, and the other maps it is compared with</dd>
+      </dl>
+
+      <h2 id="content">Content</h2>
+      <aside class="cx-callout"><p class="cx-callout__title">{{icon:info}} Note</p><p>Tinted, with a coloured bar and the title in colour.</p></aside>
+      <aside class="cx-callout cx-callout--ok"><p class="cx-callout__title">{{icon:circle-check}} Agrees with cooltools</p><p>Colour for meaning only: green is agreement.</p></aside>
+      <aside class="cx-callout cx-callout--warn"><p class="cx-callout__title">{{icon:triangle-alert}} Approximate</p><p>Amber is a warning.</p></aside>
+      <aside class="cx-callout cx-callout--danger"><p class="cx-callout__title">{{icon:circle-x}} Refused</p><p>Red is a refusal.</p></aside>
+      <div class="cx-table-wrap">
+        <table class="cx-table cx-table--numeric">
+          <thead><tr><th>Genome</th><th>Contigs</th><th>Bins</th><th>Completeness</th></tr></thead>
+          <tbody>
+            <tr><td><code>MAG_001</code></td><td>212</td><td>1,804</td><td>98.2</td></tr>
+            <tr><td><code>MAG_002</code></td><td>87</td><td>903</td><td>91.5</td></tr>
+            <tr><td><code>MAG_003</code></td><td>1,410</td><td>12,077</td><td>64.0</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="cx-code"><span class="cx-code__title">api.py</span><pre><code><span class="k">from</span> metacooler <span class="k">import</span> MetaCooler
+
+mc = MetaCooler(<span class="s">"sample.metacool"</span>)
+<span class="c"># every genome's contigs, as one frame</span>
+mc.<span class="f">genomes</span>().head(<span class="n">10</span>)</code></pre></div>
+      <div class="cx-code cx-code--terminal"><pre><code>metacooler create pairs --pairs contacts.pairs.gz --bins fragments.bed out.metacool</code></pre></div>
+
+      <h2 id="chrome">Furniture</h2>
+      <p>The previous and next cards at the end of a page, and the build line — ← and → follow them.</p>
+      <nav class="cx-pagination" aria-label="Example">
+        <a class="cx-pagination__link cx-pagination__link--prev" href="#chrome">{{icon:arrow-left}}<span class="cx-pagination__text"><span class="cx-pagination__direction">Previous</span><span class="cx-pagination__title">Quickstart</span></span></a>
+        <a class="cx-pagination__link cx-pagination__link--next" href="#chrome"><span class="cx-pagination__text"><span class="cx-pagination__direction">Next</span><span class="cx-pagination__title">Concepts</span></span>{{icon:arrow-right}}</a>
+      </nav>
+      <p class="cx-build">Documentation of metacooler v0.1.0 · <a href="#chrome">source</a> · built with Zensical</p>
+      <div class="cx-statusbar" style="margin-top: 1rem; border: 1px solid var(--cx-border); border-radius: var(--cx-radius)">
+        <span class="cx-status-item"><span class="cx-status-item__label">Read</span><span class="cx-status-item__value">1.5 MB</span></span>
+        <span class="cx-status-item"><span class="cx-status-item__label">Memory</span><span class="cx-status-item__value">10.0 MB</span></span>
+        <span class="cx-status-item"><span class="cx-status-item__label">CPU</span><span class="cx-status-item__value">9%</span></span>
+      </div>
+      <div class="gallery-row">
+        <div class="cx-toast"><div class="cx-toast__text"><span>Reading <code>yeast.mcool</code>…</span><div class="cx-progress"><div class="cx-progress__fill" style="width: 62%"></div></div></div></div>
+        <div class="cx-toast"><div class="cx-toast__text"><span>Waiting for the bucket</span><div class="cx-progress cx-progress--indeterminate"><div class="cx-progress__fill"></div></div></div></div>
+      </div>
+
+      <h2 id="scopes">Light and dark scopes</h2>
+      <p><code>.cx-paper</code> stays light whatever the page does — for a figure that will be exported — and <code>.cx-dark</code> is dark on any page.</p>
+      <div class="gallery-pair">
+        <div class="cx-paper"><span class="cx-kicker">.cx-paper</span><p style="margin: 0.6rem 0">Always light.</p><span class="cx-badge cx-badge--ok">ok</span> <button class="cx-control" type="button">Control</button></div>
+        <div class="cx-dark"><span class="cx-kicker">.cx-dark</span><p style="margin: 0.6rem 0">Always dark.</p><span class="cx-badge cx-badge--ok">ok</span> <button class="cx-control" type="button">Control</button></div>
+      </div>
+
+      <h2 id="marks">Marks</h2>
+      <p>A project's logo, drawn from its name as a small contact map: <code>npx github:js2264/chromokit mark --name &lt;name&gt; --style genomes|ember|accent</code>.</p>
+      <div class="marks">{{marks}}</div>
+    </article>
+  </main>
+  <aside class="cx-toc">{{toc}}</aside>
+</div>

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get started · {{name}}</title>
+  <link rel="icon" href="assets/mark.svg" type="image/svg+xml">
+  <script src="assets/chromokit/theme.js"></script>
+  <link rel="stylesheet" href="assets/chromokit/chromokit.css">
+  <link rel="stylesheet" href="assets/site.css">
+  <script defer src="assets/chromokit/chromokit.js"></script>
+</head>
+<body class="cx-page">
+  <input type="checkbox" id="cx-drawer" class="cx-drawer-toggle" aria-hidden="true">
+  <header class="cx-header">
+    <label class="cx-control cx-control--icon cx-header__menu" for="cx-drawer" aria-label="Menu">{{icon:menu}}</label>
+    <div class="cx-header__brand">
+      <a class="cx-header__title" href="index.html"><img src="assets/mark.svg" alt="" width="26" height="26"><span>{{name}}</span></a>
+      <span class="cx-header__kicker" aria-hidden="true">docs</span>
+      <span class="cx-header__version">v0.1.0</span>
+    </div>
+    <div class="cx-header__search">
+      <label class="cx-search" data-cx-search>
+        <input type="search" placeholder="Search the docs…" aria-label="Search">
+        <kbd class="cx-kbd">Ctrl+K</kbd>
+      </label>
+    </div>
+    <div class="cx-header__actions">
+      <a class="cx-control cx-control--icon" href="https://github.com/{{repo}}" aria-label="Source">{{icon:github}}</a>
+      <button type="button" class="cx-control cx-control--icon cx-theme-toggle" data-cx-theme-toggle aria-label="Theme">
+        <span class="cx-theme-icon cx-theme-icon--system">{{icon:monitor}}</span>
+        <span class="cx-theme-icon cx-theme-icon--light">{{icon:sun}}</span>
+        <span class="cx-theme-icon cx-theme-icon--dark">{{icon:moon}}</span>
+      </button>
+    </div>
+  </header>
+  <label class="cx-drawer-scrim" for="cx-drawer" aria-hidden="true"></label>
+
+  <div class="cx-layout">
+    <aside class="cx-sidebar">
+      <nav class="cx-nav" aria-label="Pages">
+        <ul>
+          <li class="cx-nav__group"><ul style="margin:0;border:0"><li><a href="index.html">Home</a></li></ul></li>
+          <li class="cx-nav__group">
+            <details open>
+              <summary>Getting started</summary>
+              <ul>
+                <li><a href="docs.html" aria-current="page">Get started</a></li>
+                <li><a href="#reference">Reference</a></li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+
+    <main class="cx-main cx-ground">
+      <article class="cx-content cx-prose">
+        <h1>Get started</h1>
+        <p>From installation to a first result. This page is plain HTML: edit it, copy it, and keep the kit's files in <code>assets/chromokit/</code> as they are.</p>
+
+        <h2 id="install">Installation</h2>
+        <div class="cx-code cx-code--terminal"><pre><code>pip install {{name}}</code></pre></div>
+
+        <aside class="cx-callout">
+          <p class="cx-callout__title">{{icon:info}} Before you start</p>
+          <p>A callout: tinted, with a coloured bar. <code>cx-callout--ok</code>, <code>--warn</code> and <code>--danger</code> change its colour.</p>
+        </aside>
+
+        <h2 id="example">A first example</h2>
+        <div class="cx-code"><span class="cx-code__title">example.py</span><pre><code><span class="k">import</span> {{name}}
+
+result = {{name}}.<span class="f">run</span>(<span class="s">"input.txt"</span>, threads=<span class="n">4</span>)
+<span class="f">print</span>(result.summary())</code></pre></div>
+
+        <h2 id="reference">Reference</h2>
+        <table>
+          <thead><tr><th>Option</th><th>Default</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>--threads</code></td><td><code>1</code></td><td>How many threads to use</td></tr>
+            <tr><td><code>--out</code></td><td><code>out/</code></td><td>Where results go</td></tr>
+          </tbody>
+        </table>
+        <p>Keys are drawn as keys: <kbd>Ctrl</kbd>+<kbd>K</kbd> searches; <kbd>←</kbd> and <kbd>→</kbd> turn the page.</p>
+
+        <footer class="cx-page-footer">
+          <nav class="cx-pagination" aria-label="Pages">
+            <a class="cx-pagination__link cx-pagination__link--prev" href="index.html" rel="prev">{{icon:arrow-left}}<span class="cx-pagination__text"><span class="cx-pagination__direction">Previous</span><span class="cx-pagination__title">Home</span></span></a>
+          </nav>
+          <p class="cx-build">Documentation of {{name}} · <a href="https://github.com/{{repo}}">source</a> · built with <a href="https://github.com/js2264/chromokit">chromokit</a></p>
+        </footer>
+      </article>
+    </main>
+
+    <aside class="cx-toc">
+      <p class="cx-toc__title">On this page</p>
+      <ul>
+        <li><a href="#install">Installation</a></li>
+        <li><a href="#example">A first example</a></li>
+        <li><a href="#reference">Reference</a></li>
+      </ul>
+    </aside>
+  </div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+name: Release
+
+# On a tag v<version>: check that the tag, package.json, the R package and the
+# Quarto extension agree, build and test, then a GitHub release with the kit
+# and every starter as zips — and, when the repository has an NPM_TOKEN
+# secret, the package on npm.
+#
+# After it, these all point at the tag:
+#   npx github:js2264/chromokit#v<version> init <target>
+#   quarto add js2264/chromokit@v<version>
+#   pak::pak("js2264/chromokit/r@v<version>")
+#   https://cdn.jsdelivr.net/gh/js2264/chromokit@v<version>/dist/css/chromokit.css
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: The tag is the version everywhere
+        id: version
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p 'require("./package.json").version')"
+          r="$(sed -n 's/^Version: //p' r/DESCRIPTION)"
+          ext="$(sed -n 's/^version: //p' _extensions/chromokit/_extension.yml)"
+          echo "tag $tag · package.json $pkg · DESCRIPTION $r · _extension.yml $ext"
+          [ "$tag" = "$pkg" ] && [ "$tag" = "$r" ] && [ "$tag" = "$ext" ] || { echo "::error::versions disagree"; exit 1; }
+          grep -q "^## \[$tag\]" CHANGELOG.md || { echo "::error::CHANGELOG.md has no section for $tag"; exit 1; }
+          echo "version=$tag" >> "$GITHUB_OUTPUT"
+
+      - run: npm run check
+      - run: npm test
+
+      - name: "Zips: the kit, the Quarto extension, each starter"
+        run: |
+          v="${{ steps.version.outputs.version }}"
+          out="$RUNNER_TEMP/assets"
+          mkdir -p "$out"
+          zip -qr "$out/chromokit-$v-dist.zip" dist LICENSE
+          zip -qr "$out/chromokit-$v-quarto-extension.zip" _extensions
+          for target in $(node bin/chromokit.mjs targets | awk '{print $1}'); do
+            dir="$RUNNER_TEMP/starters/$target"
+            node bin/chromokit.mjs init "$target" "$dir" --name my-project --repo OWNER/my-project
+            (cd "$dir" && zip -qr "$out/chromokit-$v-starter-$target.zip" .)
+          done
+          ls -l "$out"
+
+      - name: Release notes from CHANGELOG.md
+        run: |
+          v="${{ steps.version.outputs.version }}"
+          awk -v v="$v" '$0 ~ "^## \\[" v "\\]" {on=1; next} /^## \[/ {on=0} on' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          cat >> "$RUNNER_TEMP/notes.md" <<NOTES
+
+          ---
+          \`\`\`bash
+          npx github:js2264/chromokit#v$v init <target>
+          quarto add js2264/chromokit@v$v
+          \`\`\`
+          NOTES
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" "$RUNNER_TEMP"/assets/*.zip \
+            --title "chromokit ${{ steps.version.outputs.version }}" \
+            --notes-file "$RUNNER_TEMP/notes.md"
+
+  npm:
+    name: Publish to npm
+    needs: release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+
+      - name: "Skipped — no NPM_TOKEN secret"
+        if: env.NPM_TOKEN == ''
+        run: echo "::notice::No NPM_TOKEN secret, so nothing was published to npm. Add one (an npm automation token) under Settings → Secrets → Actions to publish on the next tag."
+
+      - name: Publish
+        if: env.NPM_TOKEN != ''
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --provenance --access public

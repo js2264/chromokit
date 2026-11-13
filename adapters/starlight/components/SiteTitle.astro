@@ -1,0 +1,14 @@
+---
+/**
+ * chromokit: the mark and the name, as chromosomix's header draws its brand,
+ * then the kicker ("docs") and the version as a chip.
+ */
+import Default from '@astrojs/starlight/components/SiteTitle.astro'
+import config from 'virtual:chromokit/config'
+---
+
+<div class="cx-title">
+  <Default />
+  {config.kicker && <span class="cx-header__kicker" aria-hidden="true">{config.kicker}</span>}
+  {config.version && <span class="cx-header__version" title="Version">v{String(config.version).replace(/^v/, '')}</span>}
+</div>

@@ -1,0 +1,71 @@
+[project]
+site_name = "{{name}}"
+site_url = "{{url}}"
+site_description = "{{description}}"
+site_author = "{{author}}"
+copyright = "&copy; {{year}} {{author}}"
+repo_url = "https://github.com/{{repo}}"
+repo_name = "{{repo}}"
+docs_dir = "docs"
+site_dir = "site"
+# chromokit's stylesheet first, then yours, which wins.
+extra_css = ["stylesheets/chromokit.css", "stylesheets/site.css"]
+extra_javascript = ["javascripts/chromokit.js"]
+
+nav = [
+  { "Home" = "index.md" },
+  { "Getting started" = [
+    { "Installation" = "installation.md" },
+    { "Quickstart" = "quickstart.md" }
+  ]}
+]
+
+# chromokit: the header and the in-column footer come from overrides/; the
+# palette and the rest of the look from docs/stylesheets/chromokit.css.
+[project.theme]
+custom_dir = "overrides"
+logo = "assets/mark.svg"
+favicon = "assets/mark.svg"
+# System fonts, as on chromosomix: no web-font request.
+font = false
+features = [
+  "navigation.instant",
+  "navigation.expand",
+  "navigation.sections",
+  "navigation.top",
+  "search.suggest",
+  "search.highlight",
+  "content.code.copy",
+  "content.code.annotate",
+  "content.tabs.link"
+]
+
+# Light and dark follow the system until the header toggle picks one. The
+# colours come from chromokit, so `primary` and `accent` are "custom".
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "custom"
+accent = "custom"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "custom"
+accent = "custom"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+[project.extra]
+# Beside the name in the header; keep it in step with the package's version.
+release = "0.1.0"
+# The small word after the name ("" for none).
+kicker = "docs"
+# An optional button in the header:
+# cta = { text = "Open the app", href = "https://example.org" }
+
+# Zensical's default Markdown extensions (admonitions, tabs, attribute lists,
+# icons, keys, highlighting with language classes) are what the kit styles:
+# declaring [project.markdown_extensions] replaces them, so add to them with care.

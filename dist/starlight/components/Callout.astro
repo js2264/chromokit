@@ -1,0 +1,14 @@
+---
+/** chromokit: a callout — tinted, a coloured bar, an optional title. */
+interface Props {
+  title?: string
+  variant?: 'note' | 'ok' | 'warn' | 'danger' | 'quiet'
+}
+const { title, variant = 'note' } = Astro.props
+const modifier = variant === 'note' ? '' : ` cx-callout--${variant}`
+---
+
+<aside class={`cx-callout${modifier}`}>
+  {title && <p class="cx-callout__title">{title}</p>}
+  <slot />
+</aside>

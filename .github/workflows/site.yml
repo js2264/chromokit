@@ -1,0 +1,200 @@
+name: Site
+
+# chromokit's own site — the gallery, the tokens, the getting-started page —
+# and, under examples/, every starter as `chromokit init` writes it, built by
+# its own tool. Screenshots of all of it, light and dark, are an artifact of
+# every run (and published at /screens/). Pushes to main deploy to Pages.
+#
+# Building the starters with their real tools is the point: it is how a new
+# Zensical, Starlight, pkgdown, Quarto or Hugo release that changes its markup
+# shows up here before it shows up on a project's site. Hence the weekly run.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # Where each example is served from, under the project's Pages site.
+  PAGES: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+
+jobs:
+  example:
+    name: Example (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [html, hugo, zensical, starlight, quarto]
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - uses: actions/setup-python@v7
+        if: matrix.target == 'zensical' || matrix.target == 'hugo'
+        with:
+          python-version: "3.12"
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+        if: matrix.target == 'quarto'
+
+      - name: Initialise the starter
+        run: |
+          node bin/chromokit.mjs init ${{ matrix.target }} "$RUNNER_TEMP/site" \
+            --name hicool --description "Hi-C maps, cooler-style, in one command." \
+            --repo js2264/hicool --url "$PAGES/examples/${{ matrix.target }}/"
+
+      - name: Build it
+        working-directory: ${{ runner.temp }}/site
+        run: |
+          case "${{ matrix.target }}" in
+            html)      mkdir -p out && cp -r index.html docs.html assets out/ ;;
+            hugo)      pip install hugo && hugo --minify --destination out ;;
+            zensical)  pip install zensical && zensical build --clean && mv site out ;;
+            starlight) npm install --no-audit --no-fund && npx astro build && mv dist out ;;
+            quarto)    quarto render && mv _site out ;;
+          esac
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: example-${{ matrix.target }}
+          path: ${{ runner.temp }}/site/out
+          retention-days: 7
+
+  example-r:
+    name: Example (pkgdown, by copy and by template package)
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          working-directory: r
+          extra-packages: any::pkgdown, any::rmarkdown, any::knitr, local::.
+          needs: website
+
+      - name: "By copy — chromokit init pkgdown, in the example package"
+        run: |
+          cp -r test/fixtures/rpkg "$RUNNER_TEMP/rpkg"
+          node bin/chromokit.mjs init pkgdown "$RUNNER_TEMP/rpkg" --repo example/examplepkg --url "$PAGES/examples/pkgdown/"
+          Rscript -e 'pkgdown::build_site("'"$RUNNER_TEMP/rpkg"'", preview = FALSE, install = TRUE, new_process = FALSE)'
+
+      - name: "By template package — chromokit's own R package"
+        run: Rscript -e 'pkgdown::build_site("r", preview = FALSE, install = FALSE, new_process = FALSE)'
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: example-pkgdown
+          path: ${{ runner.temp }}/rpkg/docs
+          retention-days: 7
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: example-r
+          path: r/docs
+          retention-days: 7
+
+  site:
+    name: Site and screenshots
+    needs: [example, example-r]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: node scripts/site.mjs
+
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: example-*
+          path: ${{ runner.temp }}/examples
+
+      - name: Put each example under examples/<target>/
+        run: |
+          for dir in "$RUNNER_TEMP"/examples/example-*; do
+            target="${dir##*/example-}"
+            mkdir -p "site/_build/examples/$target"
+            cp -r "$dir"/. "site/_build/examples/$target/"
+          done
+          ls site/_build/examples
+
+      - name: Screenshots, light and dark
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+          node scripts/screens.mjs site/_build site/_build/screens
+
+      - name: Index the screenshots
+        if: ${{ !cancelled() }}
+        run: |
+          {
+            echo '<!doctype html><meta charset="utf-8"><title>chromokit screenshots</title>'
+            echo '<body style="font:14px system-ui;background:#888;margin:16px">'
+            for f in site/_build/screens/*.png; do
+              n="${f##*/}"
+              echo "<figure style=\"display:inline-block;margin:8px;width:420px\"><a href=\"$n\"><img src=\"$n\" width=\"420\"></a><figcaption>$n</figcaption></figure>"
+            done
+          } > site/_build/screens/index.html
+
+      - uses: actions/upload-artifact@v7
+        if: ${{ !cancelled() }}
+        with:
+          name: screens
+          path: site/_build/screens
+          retention-days: 14
+
+      - uses: actions/upload-pages-artifact@v5
+        if: github.event_name != 'pull_request'
+        with:
+          path: site/_build
+
+  deploy:
+    name: Deploy to Pages
+    # Every example and the site built: a partial site is never published.
+    needs: [example, example-r, site]
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: pages
+      cancel-in-progress: false
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

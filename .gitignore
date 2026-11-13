@@ -1,0 +1,15 @@
+node_modules/
+/site/_build/
+/.tmp/
+/screens/
+*.log
+.DS_Store
+# R
+r/.Rproj.user/
+r/docs/
+r/*.Rcheck/
+r/*.tar.gz
+.Rhistory
+# Python
+__pycache__/
+.venv/

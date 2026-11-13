@@ -1,0 +1,33 @@
+{
+  "$comment": "chromokit's own tokens: the measures of a documentation page and the marks, which chromosomix's app stylesheet has no reason to declare. Hand-maintained; sizes in px are converted to rem at a 16px root.",
+  "layout": {
+    "header-h": "53px",
+    "sidebar-w": "300px",
+    "toc-w": "300px",
+    "content-w": "720px",
+    "pad-x": "36px",
+    "grain": "10px"
+  },
+  "prose": {
+    "size": "16px",
+    "line": "1.75",
+    "h1": "29px",
+    "h2": "24px",
+    "h3": "20px",
+    "h4": "17px",
+    "h5": "15px",
+    "small": "13.6px",
+    "label": "10.9px"
+  },
+  "mark": {
+    "plate": "#17181a",
+    "plate-edge": "#ffffff24",
+    "ember": "#ce5c30",
+    "low": "#ffffff"
+  },
+  "categorical": {
+    "$comment": "Series colours for plots, in order. The accent first, then the semantic hues, then two quiet ones: colour means something, and a plot with more than six series wants a legend more than a seventh colour.",
+    "light": ["#1f5fa9", "#c4501e", "#1d6b3f", "#8a5200", "#7a3e9d", "#54565a"],
+    "dark": ["#6ba4e8", "#e58a5f", "#6cc48f", "#e3a857", "#b98ad6", "#b3b5b9"]
+  }
+}

@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}}</title>
+  <meta name="description" content="chromokit: design tokens, components and starter sites in the look of chromosomix — for plain HTML, Hugo, Zensical, Starlight, pkgdown and Quarto.">
+  <link rel="icon" href="{{root}}assets/chromokit-mark.svg" type="image/svg+xml">
+  <script src="{{root}}assets/chromokit/theme.js"></script>
+  <link rel="stylesheet" href="{{root}}assets/chromokit/chromokit.css">
+  <link rel="stylesheet" href="{{root}}assets/site.css">
+  <script defer src="{{root}}assets/chromokit/chromokit.js"></script>
+</head>
+<body class="cx-page">
+  <input type="checkbox" id="cx-drawer" class="cx-drawer-toggle" aria-hidden="true">
+  <header class="cx-header">
+    <label class="cx-control cx-control--icon cx-header__menu" for="cx-drawer" aria-label="Menu">{{icon:menu}}</label>
+    <div class="cx-header__brand">
+      <a class="cx-header__title" href="{{root}}index.html"><img src="{{root}}assets/chromokit-mark.svg" alt="" width="26" height="26"><span>chromokit</span></a>
+      <span class="cx-header__kicker" aria-hidden="true">ui kit</span>
+      <span class="cx-header__version">v{{version}}</span>
+    </div>
+    <div class="cx-header__actions">
+      <a class="cx-control cx-header__wide" href="{{root}}start.html">Get started</a>
+      <a class="cx-control cx-control--icon" href="https://github.com/js2264/chromokit" aria-label="chromokit on GitHub">{{icon:github}}</a>
+      <button type="button" class="cx-control cx-control--icon cx-theme-toggle" data-cx-theme-toggle aria-label="Theme">
+        <span class="cx-theme-icon cx-theme-icon--system">{{icon:monitor}}</span>
+        <span class="cx-theme-icon cx-theme-icon--light">{{icon:sun}}</span>
+        <span class="cx-theme-icon cx-theme-icon--dark">{{icon:moon}}</span>
+      </button>
+    </div>
+  </header>
+  <label class="cx-drawer-scrim" for="cx-drawer" aria-hidden="true"></label>
+  {{body}}
+</body>
+</html>

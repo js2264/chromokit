@@ -1,0 +1,15 @@
+Package: examplepkg
+Title: An Example Package for chromokit's pkgdown Starter
+Version: 0.1.0
+Authors@R: person("Ada", "Example", email = "ada@example.org", role = c("aut", "cre"))
+Description: A package with one function, one vignette and a news file, so
+    that a pkgdown site built from it shows every kind of page chromokit
+    styles: the home page, the reference index, a topic, an article, the news.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
+URL: https://example.org/examplepkg, https://github.com/example/examplepkg
+BugReports: https://github.com/example/examplepkg/issues

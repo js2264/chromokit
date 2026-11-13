@@ -1,0 +1,80 @@
+/*
+ * Surfaces and helpers.
+ *
+ * Nothing in the core styles a bare element: every rule is on a `cx-` class,
+ * so the core can be dropped into any framework (Zensical, Starlight, pkgdown,
+ * Quarto) without touching what the framework draws. Element defaults for a
+ * page with no framework at all are in `page.css`.
+ */
+
+/* The ground: a sub-pixel dot every 10px, behind content and never behind
+   furniture. The furniture (header, sidebars, status bar) is solid. */
+.cx-ground {
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--cx-border) 50%, transparent) 0.8px, transparent 1px);
+  background-size: var(--cx-grain) var(--cx-grain);
+}
+
+/* The same grain inside a sunken well, for a picture sitting on the ground. */
+.cx-well {
+  background-color: var(--cx-bg-sunken);
+  background-image: radial-gradient(circle, color-mix(in srgb, var(--cx-border-strong) 45%, transparent) 0.8px, transparent 1px);
+  background-size: var(--cx-grain) var(--cx-grain);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+}
+
+.cx-surface {
+  color: var(--cx-text);
+  background-color: var(--cx-bg);
+}
+
+.cx-raised {
+  background-color: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-1);
+}
+
+.cx-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.cx-mono {
+  font-family: var(--cx-mono);
+  font-variant-numeric: slashed-zero tabular-nums;
+}
+
+.cx-dim {
+  color: var(--cx-text-dim);
+}
+
+.cx-faint {
+  color: var(--cx-text-faint);
+}
+
+/* An icon drawn inline: Lucide's geometry, one stroke, the colour of the text. */
+.cx-icon {
+  display: inline-block;
+  flex: none;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  fill: none;
+  stroke: currentcolor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cx-icon--filled {
+  fill: currentcolor;
+  stroke: none;
+}

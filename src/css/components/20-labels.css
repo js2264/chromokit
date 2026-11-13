@@ -1,0 +1,93 @@
+/*
+ * Small words: the kicker over a group, the chip that names a version, the
+ * badge that states an outcome.
+ */
+
+/* Small accented capitals: "NEW HERE?", "GET STARTED", a sidebar group. */
+.cx-kicker {
+  display: block;
+  margin: 0;
+  font: 600 var(--cx-label) / 1.2 var(--cx-sans);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cx-accent);
+}
+
+/* A version, a size, a count: the mono face in a hairline box. */
+.cx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.18rem 0.42rem;
+  font: 400 var(--cx-step--2) / 1rem var(--cx-mono);
+  font-variant-numeric: slashed-zero tabular-nums;
+  color: var(--cx-text-dim);
+  white-space: nowrap;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+}
+
+/* A count beside a heading, as on the app's side panels. */
+.cx-count {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.2rem;
+  height: 1.2rem;
+  padding: 0 0.25rem;
+  box-sizing: border-box;
+  font: 400 var(--cx-step--2) / 1 var(--cx-mono);
+  color: var(--cx-text-dim);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: 4px;
+}
+
+/* An outcome: a dot and a few words in a pill. Colour for meaning only. */
+.cx-badge,
+a.cx-badge {
+  --cx-badge: var(--cx-text-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.6rem;
+  font: 500 var(--cx-step--1) / 1 var(--cx-sans);
+  color: var(--cx-badge);
+  text-decoration: none;
+  white-space: nowrap;
+  background: color-mix(in srgb, var(--cx-badge) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cx-badge) 55%, transparent);
+  border-radius: 999px;
+}
+
+.cx-badge::before {
+  flex: none;
+  width: 0.5rem;
+  height: 0.5rem;
+  content: '';
+  background: currentcolor;
+  border-radius: 50%;
+}
+
+.cx-badge--plain::before {
+  display: none;
+}
+
+.cx-badge--accent {
+  --cx-badge: var(--cx-accent);
+}
+
+.cx-badge--ok {
+  --cx-badge: var(--cx-ok);
+}
+
+.cx-badge--warn {
+  --cx-badge: var(--cx-warn);
+}
+
+.cx-badge--danger {
+  --cx-badge: var(--cx-danger);
+}
+
+a.cx-badge:hover {
+  filter: brightness(1.1);
+}

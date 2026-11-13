@@ -1,0 +1,68 @@
+<!-- title: Get started · chromokit -->
+<!-- toc: init Start a site; html Plain HTML; hugo Hugo; zensical Zensical; starlight Starlight; pkgdown pkgdown; quarto Quarto; keep Keeping up to date; other Other ways in; plots Plots -->
+<div class="cx-layout">
+  <aside class="cx-sidebar">{{nav}}</aside>
+  <main class="cx-main cx-ground">
+    <article class="cx-content cx-prose">
+      <h1>Get started</h1>
+      <p>chromokit is copied into a project, not installed in it: one command writes a starter site and the kit's files, and records which files are the kit's so they can be updated later. Nothing needs to be published anywhere first — the command runs straight from GitHub.</p>
+
+      <h2 id="init">Start a site</h2>
+      <div class="cx-code cx-code--terminal"><pre><code>npx github:js2264/chromokit init &lt;target&gt; [dir] --name hicool --description "Hi-C maps in one command." --repo js2264/hicool</code></pre></div>
+      <p>It writes two kinds of file:</p>
+      <ul>
+        <li><strong>Starter files</strong> — the config, a home page, a stylesheet of your own — with the project's name filled in. They are yours from then on: chromokit never touches them again.</li>
+        <li><strong>Kit files</strong> — stylesheets, templates, scripts — listed with their hashes in <code>chromokit.json</code>. Keep them as they are: <code>chromokit sync</code> replaces them with a newer version, and <code>chromokit check</code> fails if one was edited. A local change belongs in your own stylesheet, which loads after the kit's.</li>
+      </ul>
+      <p>It also draws the project a logo mark from its name, and with <code>--accent "#7a3e9d,#b98ad6"</code> gives it its own accent colour (light, then dark) over chromokit's blue. <code>--dry-run</code> shows what would be written.</p>
+
+      <h2 id="html">Plain HTML</h2>
+      <div class="cx-code cx-code--terminal"><pre><code>npx github:js2264/chromokit init html</code></pre></div>
+      <p>A landing page and a documentation page with a sidebar and "On this page", and the kit in <code>assets/chromokit/</code>: <code>chromokit.css</code> (tokens, components and the page layout), <code>theme.js</code> (in <code>&lt;head&gt;</code>, so a dark-mode reader never sees a white flash) and <code>chromokit.js</code> (copy buttons, arrow keys, the contents highlight).</p>
+
+      <h2 id="hugo">Hugo</h2>
+      <div class="cx-code cx-code--terminal"><pre><code>npx github:js2264/chromokit init hugo
+hugo server</code></pre></div>
+      <p>A theme in <code>themes/chromokit/</code> — layouts, a code-block hook, Chroma's colours from the tokens — with shortcodes for the landing page: <code>tiles</code>, <code>tile</code>, <code>actions</code>, <code>callout</code>, <code>badge</code>, <code>kicker</code>. Your own <code>layouts/</code> override any of the theme's.</p>
+
+      <h2 id="zensical">Zensical</h2>
+      <div class="cx-code cx-code--terminal"><pre><code>npx github:js2264/chromokit init zensical
+uv run zensical serve</code></pre></div>
+      <p>For a Python package's documentation, as metacooler's: a <code>zensical.toml</code>, the header and in-column footer in <code>overrides/</code>, the stylesheet and the arrow keys in <code>docs/</code>. The release beside the name is <code>extra.release</code>; an optional header button is <code>extra.cta</code>. It works the same with Material for MkDocs.</p>
+
+      <h2 id="starlight">Astro Starlight</h2>
+      <div class="cx-code cx-code--terminal"><pre><code>npx github:js2264/chromokit init starlight
+npm install &amp;&amp; npm run dev</code></pre></div>
+      <p>doc.chromosomix.app's look, over the Rapide theme: a Starlight plugin in <code>src/chromokit/</code> that adds the stylesheet and swaps in the header and footer, and <code>Masthead</code>, <code>Tiles</code>, <code>Tile</code> and <code>Callout</code> components for MDX pages. From npm, the plugin is <code>import chromokit from 'chromokit/starlight'</code>.</p>
+
+      <h2 id="pkgdown">pkgdown</h2>
+      <p>Two ways. As a <strong>template package</strong>, which pkgdown is built for — in <code>_pkgdown.yml</code>:</p>
+      <div class="cx-code"><span class="cx-code__title">_pkgdown.yml</span><pre><code>template:
+  package: chromokit</code></pre></div>
+      <p>and <code>Config/Needs/website: js2264/chromokit/r</code> in <code>DESCRIPTION</code>, so the site's CI installs it (<code>pak::pak("js2264/chromokit/r")</code> locally). Or <strong>by copy</strong>, with no dependency:</p>
+      <div class="cx-code cx-code--terminal"><pre><code>npx github:js2264/chromokit init pkgdown
+Rscript -e 'pkgdown::build_site()'</code></pre></div>
+      <p>which writes <code>pkgdown/extra.scss</code> (the kit, compiled by pkgdown into Bootstrap), the settings in <code>_pkgdown.yml</code>, your own <code>pkgdown/extra.css</code>, the logo and the favicon.</p>
+
+      <h2 id="quarto">Quarto</h2>
+      <div class="cx-code cx-code--terminal"><pre><code>quarto add js2264/chromokit</code></pre></div>
+      <p>adds the extension to any Quarto project; then <code>format: chromokit-html</code> for documents, websites and books, or <code>format: chromokit-revealjs</code> for slides. For a whole starter website: <code>npx github:js2264/chromokit init quarto</code>. <code>dist/brand/_brand.yml</code> carries the palette as <a href="https://posit-dev.github.io/brand-yml/">brand.yml</a>, for Quarto, Shiny and bslib.</p>
+
+      <h2 id="keep">Keeping up to date</h2>
+      <div class="cx-code cx-code--terminal"><pre><code>npx github:js2264/chromokit@v0.2.0 sync    # the kit's files, at that version
+npx github:js2264/chromokit check          # in CI: fails if a kit file was edited</code></pre></div>
+      <p><code>sync</code> refuses to overwrite a kit file you edited (<code>--force</code> does); a file the kit no longer ships is removed.</p>
+
+      <h2 id="other">Other ways in</h2>
+      <ul>
+        <li><strong>A link</strong>, for any page: <code>https://cdn.jsdelivr.net/gh/js2264/chromokit@v{{version}}/dist/css/chromokit.css</code> (tokens and components) or <code>…/chromokit-page.css</code> (with the page layout).</li>
+        <li><strong>npm</strong>: <code>npm install chromokit</code>, then <code>import 'chromokit/tokens.css'</code> in an app, or the tokens as data from <code>chromokit/tokens</code>.</li>
+        <li><strong>Only the tokens</strong>: <code>dist/css/tokens.css</code> (custom properties), <code>dist/scss/_tokens.scss</code> (Sass), <code>dist/tokens/tokens.json</code>.</li>
+      </ul>
+
+      <h2 id="plots">Plots</h2>
+      <p>Figures in the same colours: <code>dist/plots/chromokit-light.mplstyle</code> for matplotlib (<code>plt.style.use(url)</code> takes the jsDelivr link), ECharts and Plotly themes as JSON, and in R <code>theme_chromokit()</code> with <code>scale_colour_chromokit()</code> from the R package.</p>
+    </article>
+  </main>
+  <aside class="cx-toc">{{toc}}</aside>
+</div>

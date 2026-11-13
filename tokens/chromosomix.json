@@ -1,0 +1,73 @@
+{
+  "$comment": "Snapshot of chromosomix's design tokens. Written by scripts/import-from-chromosomix.mjs; do not edit by hand.",
+  "source": {
+    "repository": "https://github.com/js2264/chromosomix",
+    "path": "src/ui/styles.css",
+    "commit": "70e566a8ac04cdcbefd01a3b350ca4c2155fc08a"
+  },
+  "color": {
+    "light": {
+      "bg": "#ffffff",
+      "bg-sunken": "#f5f6f8",
+      "bg-raised": "#ffffff",
+      "bg-muted": "#e9eaec",
+      "border": "#d2d3d6",
+      "border-strong": "#8d8f93",
+      "text": "#17181a",
+      "text-dim": "#54565a",
+      "text-faint": "#68696d",
+      "accent": "#1f5fa9",
+      "accent-soft": "#dce8f7",
+      "on-accent": "#ffffff",
+      "danger": "#a32020",
+      "danger-soft": "#fbe2e2",
+      "ok": "#1d6b3f",
+      "warn": "#8a5200",
+      "warn-soft": "#fbeeda",
+      "tab-rest": "#eaebed"
+    },
+    "dark": {
+      "bg": "#191a1c",
+      "bg-sunken": "#131416",
+      "bg-raised": "#232529",
+      "bg-muted": "#161719",
+      "border": "#3e4044",
+      "border-strong": "#727478",
+      "text": "#eeeff1",
+      "text-dim": "#b3b5b9",
+      "text-faint": "#8a8c90",
+      "accent": "#6ba4e8",
+      "accent-soft": "#203657",
+      "on-accent": "#131416",
+      "danger": "#ef8a8a",
+      "danger-soft": "#3b2020",
+      "ok": "#6cc48f",
+      "warn": "#e3a857",
+      "warn-soft": "#3b2d15",
+      "tab-rest": "#2a2b2e"
+    }
+  },
+  "shadow": {
+    "light": {
+      "shadow-1": "0 1px 2px rgb(24 24 26 / 7%), 0 1px 1px rgb(24 24 26 / 4%)",
+      "shadow-2": "0 6px 18px -10px rgb(24 24 26 / 30%), 0 2px 5px -3px rgb(24 24 26 / 16%)",
+      "shadow-up": "0 -6px 18px -10px rgb(24 24 26 / 30%), 0 -2px 5px -3px rgb(24 24 26 / 16%)"
+    },
+    "dark": {
+      "shadow-1": "0 1px 2px rgb(0 0 0 / 40%), 0 1px 1px rgb(0 0 0 / 28%)",
+      "shadow-2": "0 8px 22px -10px rgb(0 0 0 / 66%), 0 2px 6px -3px rgb(0 0 0 / 44%)",
+      "shadow-up": "0 -8px 22px -10px rgb(0 0 0 / 66%), 0 -2px 6px -3px rgb(0 0 0 / 44%)"
+    }
+  },
+  "base": {
+    "sans": "system-ui, -apple-system, \"Segoe UI\", Inter, Roboto, sans-serif",
+    "mono": "ui-monospace, \"SF Mono\", \"JetBrains Mono\", Menlo, Consolas, monospace",
+    "radius": "6px",
+    "step--2": "0.72rem",
+    "step--1": "0.78rem",
+    "step-0": "0.875rem",
+    "step-1": "1rem",
+    "step-2": "1.25rem",
+    "step-3": "1.6rem"
+  }
+}

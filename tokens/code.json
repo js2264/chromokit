@@ -1,0 +1,33 @@
+{
+  "$comment": "Syntax colours: Vitesse light and dark, contrast-adjusted as expressive-code renders them on doc.chromosomix.app (taken from metacooler's docs theme). Hand-maintained.",
+  "light": {
+    "bg": "#ffffff",
+    "fg": "#393a34",
+    "dots": "#4e4f4738",
+    "comment": "#6f7a6f",
+    "keyword": "#1e754f",
+    "string": "#9c5a4c",
+    "function": "#4b7231",
+    "constant": "#995728",
+    "number": "#2b6f7e",
+    "variable": "#8f6136",
+    "operator": "#9a4d4d",
+    "punctuation": "#6e6e6e",
+    "special": "#995728"
+  },
+  "dark": {
+    "bg": "#121212",
+    "fg": "#dbd7caee",
+    "dots": "#bfbaaa2e",
+    "comment": "#869686",
+    "keyword": "#5ea38a",
+    "string": "#c98a7d",
+    "function": "#80a665",
+    "constant": "#c99076",
+    "number": "#4c9a91",
+    "variable": "#bd976a",
+    "operator": "#cb7676",
+    "punctuation": "#8a8a8a",
+    "special": "#c99076"
+  }
+}

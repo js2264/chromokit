@@ -1,0 +1,261 @@
+/*
+ * Content blocks: callouts, tables, framed code.
+ */
+
+/* ---- callouts: tinted, a coloured bar on the left, the title in colour --- */
+.cx-callout {
+  --cx-callout: var(--cx-accent);
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  font-size: calc(0.94 * var(--cx-rem));
+  line-height: 1.7;
+  color: var(--cx-text);
+  background: color-mix(in srgb, var(--cx-callout) 8%, var(--cx-bg-raised));
+  border: 1px solid var(--cx-border);
+  border-left: 3px solid var(--cx-callout);
+  border-radius: var(--cx-radius);
+}
+
+.cx-callout > :first-child {
+  margin-top: 0;
+}
+
+.cx-callout > :last-child {
+  margin-bottom: 0;
+}
+
+.cx-callout__title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.25rem;
+  font-weight: 600;
+  color: var(--cx-callout);
+}
+
+.cx-callout__title svg,
+.cx-callout__title .cx-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.cx-callout--ok {
+  --cx-callout: var(--cx-ok);
+}
+
+.cx-callout--warn {
+  --cx-callout: var(--cx-warn);
+}
+
+.cx-callout--danger {
+  --cx-callout: var(--cx-danger);
+}
+
+.cx-callout--quiet {
+  --cx-callout: var(--cx-text-dim);
+}
+
+/* ---- tables: raised, rounded, small capitals on a sunken head ----------- */
+.cx-table-wrap {
+  max-width: 100%;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  border-radius: var(--cx-radius);
+}
+
+.cx-table-wrap .cx-table {
+  margin: 0;
+}
+
+.cx-table {
+  width: 100%;
+  margin: 1.25rem 0;
+  font-size: calc(0.85 * var(--cx-rem));
+  line-height: 1.6;
+  color: var(--cx-text);
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-1);
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.cx-table th {
+  padding: 8px 11px;
+  font: 600 var(--cx-label) / 1.4 var(--cx-sans);
+  letter-spacing: 0.1em;
+  text-align: start;
+  text-transform: uppercase;
+  color: var(--cx-text-dim);
+  background: var(--cx-bg-sunken);
+  border-bottom: 1px solid var(--cx-border);
+}
+
+.cx-table thead th:first-child {
+  border-top-left-radius: var(--cx-radius);
+}
+
+.cx-table thead th:last-child {
+  border-top-right-radius: var(--cx-radius);
+}
+
+.cx-table td {
+  padding: 7px 11px;
+  vertical-align: top;
+  border-bottom: 1px solid var(--cx-border);
+}
+
+.cx-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.cx-table tbody tr:hover {
+  background: color-mix(in srgb, var(--cx-bg-sunken) 70%, transparent);
+}
+
+.cx-table td:first-child code {
+  white-space: nowrap;
+}
+
+.cx-table--numeric td:not(:first-child) {
+  font-family: var(--cx-mono);
+  font-variant-numeric: slashed-zero tabular-nums;
+  text-align: end;
+}
+
+/* ---- framed code; a shell block gets a terminal bar -------------------- */
+.cx-code {
+  position: relative;
+  margin: 1rem 0;
+  overflow: hidden;
+  color: var(--cx-code-fg);
+  background: var(--cx-code-bg);
+  border: 1px solid var(--cx-border);
+  border-radius: 8px;
+  box-shadow: var(--cx-shadow-1);
+}
+
+.cx-code pre {
+  margin: 0;
+  padding: 12px 16px;
+  overflow-x: auto;
+  font: 400 var(--cx-step-0) / 1.65 var(--cx-mono);
+  font-variant-ligatures: none;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+}
+
+.cx-code pre code {
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+}
+
+.cx-code__title {
+  display: block;
+  padding: 6px 16px;
+  font: 500 calc(0.81 * var(--cx-rem)) / 1.5 var(--cx-sans);
+  color: var(--cx-text-dim);
+  border-bottom: 1px solid var(--cx-border);
+}
+
+.cx-code--terminal {
+  padding-top: 34px;
+}
+
+.cx-code--terminal::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 34px;
+  content: '';
+  border-bottom: 1px solid color-mix(in srgb, var(--cx-border) 55%, transparent);
+}
+
+.cx-code--terminal::after {
+  position: absolute;
+  top: 12.5px;
+  left: 16px;
+  width: 34px;
+  height: 9px;
+  content: '';
+  background-color: var(--cx-code-dots);
+  -webkit-mask: var(--cx-terminal-dots) left center / contain no-repeat;
+  mask: var(--cx-terminal-dots) left center / contain no-repeat;
+}
+
+/* The copy button: shown on hover, in the title bar of a terminal. */
+.cx-code__copy {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--cx-text-faint);
+  cursor: pointer;
+  background: var(--cx-code-bg);
+  border: 1px solid var(--cx-border);
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 150ms;
+}
+
+.cx-code:hover .cx-code__copy,
+.cx-code__copy:focus-visible {
+  opacity: 1;
+}
+
+.cx-code__copy:hover {
+  color: var(--cx-text);
+  border-color: var(--cx-border-strong);
+}
+
+.cx-code__copy svg {
+  width: 15px;
+  height: 15px;
+}
+
+.cx-code__copy.is-done {
+  color: var(--cx-ok);
+}
+
+/* Syntax colours, for a highlighter that writes these classes. */
+.cx-code .c,
+.cx-hl-comment {
+  color: var(--cx-hl-comment);
+}
+
+.cx-code .k,
+.cx-hl-keyword {
+  color: var(--cx-hl-keyword);
+}
+
+.cx-code .s,
+.cx-hl-string {
+  color: var(--cx-hl-string);
+}
+
+.cx-code .f,
+.cx-hl-function {
+  color: var(--cx-hl-function);
+}
+
+.cx-code .n,
+.cx-hl-number {
+  color: var(--cx-hl-number);
+}
+
+.cx-code .p,
+.cx-hl-punctuation {
+  color: var(--cx-hl-punctuation);
+}

@@ -1,0 +1,268 @@
+/*
+ * Controls: the compact button, the call to action, fields and keys.
+ *
+ * One gesture for every control that has a border of its own: on hover the
+ * border and the word take the accent and the control rises a pixel and casts.
+ * Pressed, it comes back down. The quiet variants, with no border to raise,
+ * opt out of the lift.
+ */
+
+/* ---- the compact control (the app's `.btn`, the header's buttons) ------- */
+.cx-control,
+a.cx-control {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.3rem 0.65rem;
+  font: 400 var(--cx-step--1) / 1rem var(--cx-sans);
+  white-space: nowrap;
+  color: var(--cx-text);
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+  box-shadow: none;
+  transition:
+    border-color 120ms,
+    color 120ms,
+    background 120ms,
+    box-shadow 120ms,
+    transform 120ms;
+}
+
+.cx-control:hover:not(:disabled),
+a.cx-control:hover {
+  color: var(--cx-accent);
+  border-color: var(--cx-accent);
+  box-shadow: var(--cx-shadow-2);
+  transform: translateY(-1px);
+}
+
+.cx-control:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--cx-shadow-1);
+}
+
+.cx-control:focus-visible {
+  outline: 2px solid var(--cx-accent);
+  outline-offset: 2px;
+}
+
+.cx-control:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+
+.cx-control svg,
+.cx-control .cx-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* A control that is only an icon: one height with a control that has a word. */
+.cx-control--icon {
+  padding-inline: 0.45rem;
+}
+
+.cx-control--quiet,
+a.cx-control--quiet {
+  background: transparent;
+  border-color: transparent;
+}
+
+.cx-control--quiet:hover:not(:disabled),
+a.cx-control--quiet:hover {
+  background: var(--cx-bg-sunken);
+  border-color: transparent;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Selected, in a group of toggles: the soft accent, as the app's tool buttons. */
+.cx-control[aria-pressed='true'],
+.cx-control.is-active {
+  color: var(--cx-accent);
+  background: var(--cx-accent-soft);
+  border-color: var(--cx-accent);
+}
+
+/* ---- the call to action (a landing page's buttons) ---------------------- */
+.cx-button,
+a.cx-button {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.65rem 0.95rem;
+  font: 500 var(--cx-step-0) / 1 var(--cx-sans);
+  color: var(--cx-text);
+  text-decoration: none;
+  cursor: pointer;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  box-shadow: var(--cx-shadow-1);
+  transition:
+    border-color 120ms,
+    box-shadow 120ms,
+    filter 120ms,
+    transform 120ms;
+}
+
+.cx-button:hover,
+a.cx-button:hover,
+a.cx-button:focus {
+  color: var(--cx-text);
+  border-color: var(--cx-border-strong);
+  box-shadow: var(--cx-shadow-2);
+}
+
+.cx-button:focus-visible {
+  outline: 2px solid var(--cx-accent);
+  outline-offset: 2px;
+}
+
+.cx-button--filled,
+a.cx-button--filled,
+a.cx-button--filled:hover,
+a.cx-button--filled:focus {
+  color: var(--cx-on-accent);
+  background: var(--cx-accent);
+  border-color: var(--cx-accent);
+}
+
+.cx-button--filled:hover,
+a.cx-button--filled:hover {
+  filter: brightness(1.08);
+}
+
+.cx-button svg,
+.cx-button .cx-icon {
+  width: 15px;
+  height: 15px;
+}
+
+/* ---- fields ------------------------------------------------------------- */
+.cx-input,
+.cx-select,
+.cx-textarea {
+  box-sizing: border-box;
+  min-width: 0;
+  padding: 0.28rem 0.45rem;
+  font: 400 var(--cx-step--1) / 1.35 var(--cx-sans);
+  color: var(--cx-text);
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+}
+
+.cx-input::placeholder,
+.cx-textarea::placeholder {
+  color: var(--cx-text-faint);
+}
+
+.cx-input:focus,
+.cx-select:focus,
+.cx-textarea:focus {
+  outline: 2px solid var(--cx-accent);
+  outline-offset: -1px;
+}
+
+.cx-input--mono {
+  font-family: var(--cx-mono);
+}
+
+.cx-input[aria-invalid='true'] {
+  border-color: var(--cx-danger);
+  background: var(--cx-danger-soft);
+}
+
+.cx-field {
+  display: grid;
+  gap: 0.25rem;
+  font-size: var(--cx-step--1);
+  color: var(--cx-text-dim);
+}
+
+/* ---- the search well: words on the left, its key on the right ----------- */
+.cx-search,
+button.cx-search {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.3rem 0.5rem 0.3rem 0.7rem;
+  font: 400 var(--cx-step--1) / 1.45 var(--cx-sans);
+  color: var(--cx-text-dim);
+  text-align: left;
+  cursor: pointer;
+  background: var(--cx-bg-sunken);
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+  transition:
+    border-color 120ms,
+    color 120ms;
+}
+
+.cx-search:hover,
+.cx-search:focus-within,
+button.cx-search:focus-visible {
+  color: var(--cx-text);
+  border-color: var(--cx-accent);
+  outline: none;
+}
+
+.cx-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--cx-text);
+  background: none;
+  border: 0;
+  outline: none;
+}
+
+.cx-search input::placeholder {
+  color: var(--cx-text-dim);
+}
+
+.cx-search:focus-within .cx-kbd {
+  display: none;
+}
+
+/* ---- a key, drawn as a key ---------------------------------------------- */
+.cx-kbd,
+kbd.cx-kbd {
+  display: inline-block;
+  padding: 0.05rem 0.35rem;
+  font: 400 var(--cx-step--2) / 1.45 var(--cx-mono);
+  font-variant-numeric: slashed-zero tabular-nums;
+  color: var(--cx-text-dim);
+  white-space: nowrap;
+  background: var(--cx-bg-raised);
+  border: 1px solid var(--cx-border-strong);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  box-shadow: none;
+}
+
+/* ---- the theme toggle: one button, three icons, one shown --------------- */
+.cx-theme-toggle .cx-theme-icon {
+  display: none;
+}
+
+:root:not([data-cx-theme]) .cx-theme-toggle .cx-theme-icon--system,
+:root[data-cx-theme='system'] .cx-theme-toggle .cx-theme-icon--system,
+:root[data-cx-theme='light'] .cx-theme-toggle .cx-theme-icon--light,
+:root[data-cx-theme='dark'] .cx-theme-toggle .cx-theme-icon--dark {
+  display: inline-block;
+}
