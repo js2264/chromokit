@@ -17,6 +17,8 @@ enableRobotsTXT = true
   # header = false
   # Always light (or 'dark'), with no theme toggle:
   # palette = 'light'
+  # A page's description in <head> only, not under its title:
+  # showDescription = false
   # An optional button in the header:
   # cta = { text = 'Open the app', href = 'https://example.org' }
   # Icon links in the header (in the drawer on narrow screens); the icon is a

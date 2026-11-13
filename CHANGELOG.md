@@ -40,6 +40,13 @@ token or kit file is a major one.
     layouts.
   - `params.palette = 'light'` (or `'dark'`): one palette whatever the
     reader's system, with no toggle and no theme.js.
+  - "On this page" for content a shortcode draws: Hugo's contents list only
+    sees Markdown headings, so a shortcode can set the page's list itself
+    (`.Page.Store.Set "chromokit.toc"`, a list of `id` and `title`). The
+    content is rendered before the layout decides on the column.
+  - `params.showDescription = false`: a page's description stays in `<head>`
+    and is not shown under its title.
+  - `single.html` and `list.html` are one partial, `chromokit/page.html`.
   - `chromokit/extend-head.html` and `chromokit/extend-body.html` are empty
     partials for a site to fill from its own `layouts/`.
 - **Icons:** book, calendar, graduation-cap, mail, map-pin, newspaper,
