@@ -1,0 +1,18 @@
+{#-
+  chromokit: Furo's brand, as chromosomix's header draws its own — the mark and
+  the name on one line, then the kicker ("docs" unless html_context sets
+  `chromokit_kicker`) and the release as a chip.
+-#}
+<a class="sidebar-brand{% if logo_url %} centered{% endif %}" href="{{ pathto(master_doc) }}">
+  {%- if logo_url %}
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="{{ logo_url }}" alt=""/>
+  </div>
+  {%- endif %}
+  {% if not theme_sidebar_hide_name %}
+  <span class="sidebar-brand-text">{{ project }}</span>
+  {%- endif %}
+  {%- set kicker = chromokit_kicker if chromokit_kicker is defined else "docs" %}
+  {%- if kicker %}<span class="cx-header__kicker" aria-hidden="true">{{ kicker }}</span>{% endif %}
+  {%- if release %}<span class="cx-header__version">v{{ release }}</span>{% endif %}
+</a>

@@ -17,7 +17,9 @@
     'input, textarea, select, [contenteditable]:not([contenteditable="false"]), dialog, pre, .highlight, .expressive-code, .cx-code, .cx-table-wrap, .tabbed-set, [role="tablist"], [role="slider"], [role="listbox"], [role="menu"]'
 
   const link = (rel) =>
-    document.querySelector(`.cx-pagination__link--${rel}`) || document.querySelector(`a[rel="${rel}"]`)
+    document.querySelector(`.cx-pagination__link--${rel}`) ||
+    document.querySelector(`a[rel="${rel}"]`) ||
+    document.querySelector(`a.${rel}-page`)
 
   const arrowsAreFree = (event) => {
     const target = event.target

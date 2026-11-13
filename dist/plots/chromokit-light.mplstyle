@@ -16,7 +16,7 @@ axes.spines.top: False
 axes.spines.right: False
 axes.grid: True
 axes.axisbelow: True
-axes.prop_cycle: cycler('color', ['1f5fa9', 'c4501e', '1d6b3f', '8a5200', '7a3e9d', '54565a'])
+axes.prop_cycle: cycler('color', ['1f5fa9', 'e44a72', '2c6e5c', '898329', 'a953e3', '4a5704', '7c1870'])
 grid.color: d2d3d6
 grid.linewidth: 0.6
 grid.alpha: 0.7

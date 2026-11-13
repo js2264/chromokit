@@ -36,7 +36,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        target: [html, hugo, zensical, starlight, quarto]
+        target: [html, hugo, zensical, sphinx, starlight, quarto]
     steps:
       - uses: actions/checkout@v7
 
@@ -45,7 +45,7 @@ jobs:
           node-version: 22
 
       - uses: actions/setup-python@v7
-        if: matrix.target == 'zensical' || matrix.target == 'hugo'
+        if: matrix.target == 'zensical' || matrix.target == 'hugo' || matrix.target == 'sphinx'
         with:
           python-version: "3.12"
 
@@ -65,6 +65,7 @@ jobs:
             html)      mkdir -p out && cp -r index.html docs.html assets out/ ;;
             hugo)      pip install hugo && hugo --minify --destination out ;;
             zensical)  pip install zensical && zensical build --clean && mv site out ;;
+            sphinx)    pip install -r docs/requirements.txt && sphinx-build -W --keep-going docs out ;;
             starlight) npm install --no-audit --no-fund && npx astro build && mv dist out ;;
             quarto)    quarto render && mv _site out ;;
           esac

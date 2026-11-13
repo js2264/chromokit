@@ -172,7 +172,7 @@ body {
 }
 
 .cx-header__kicker {
-  font: 600 10.9px / 1.2 var(--cx-sans);
+  font: 600 11px / 1.2 var(--cx-sans);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--cx-accent);
@@ -488,7 +488,7 @@ body {
     gap: 9px;
     align-items: center;
     padding: 6px 8px 6px 4px;
-    font: 600 10.9px / 1.2 var(--cx-sans);
+    font: 600 11px / 1.2 var(--cx-sans);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--cx-accent);
@@ -936,7 +936,7 @@ body {
 .md-typeset table:not([class]) th {
   min-width: 0;
   padding: 8px 11px;
-  font: 600 10.9px / 1.4 var(--cx-sans);
+  font: 600 11px / 1.4 var(--cx-sans);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--cx-text-dim);
@@ -1187,7 +1187,7 @@ html .md-typeset :is(.admonition, details) > :last-child {
 
   .md-nav--primary .md-nav__item--section > .md-nav__link,
   .md-nav--primary > .md-nav__list > .md-nav__item--nested > .md-nav__link {
-    font: 600 10.9px / 1.2 var(--cx-sans);
+    font: 600 11px / 1.2 var(--cx-sans);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--cx-accent);

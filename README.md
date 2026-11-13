@@ -6,7 +6,7 @@ in:
 
 - plain HTML pages
 - Hugo sites
-- [Zensical](https://zensical.org) docs for Python packages
+- [Zensical](https://zensical.org) or [Sphinx](https://www.sphinx-doc.org) (Furo) docs for Python packages
 - [Astro Starlight](https://starlight.astro.build) sites
 - pkgdown sites for R packages
 - Quarto documents, websites, books and slides
@@ -29,6 +29,7 @@ npx github:js2264/chromokit init <target> [dir] --name hicool --repo js2264/hico
 | `html`      | a landing page and a docs page, no build step                                | open `index.html`                  |
 | `hugo`      | a Hugo theme in `themes/chromokit/`, with shortcodes                          | `hugo server`                      |
 | `zensical`  | Zensical docs with metacooler's header and footer (works with Material for MkDocs too) | `uv run zensical serve`   |
+| `sphinx`    | Sphinx docs on the Furo theme, MyST pages, the sidebar brand with kicker and release | `sphinx-build docs docs/_build/html` |
 | `starlight` | doc.chromosomix.app's look as a Starlight plugin, over the Rapide theme      | `npm install && npm run dev`       |
 | `pkgdown`   | an R package's pkgdown site, by copy (or use the [template package](#r))     | `pkgdown::build_site()`            |
 | `quarto`    | a Quarto website with the `chromokit-html` format                            | `quarto preview`                   |
@@ -91,7 +92,7 @@ npx github:js2264/chromokit check          # exit 1 if a kit file was edited or 
 tokens/            the values: chromosomix's palettes (snapshot), Vitesse syntax colours, page measures
 src/css/           the core components (`.cx-*`, no element styles) and the standalone page layout
 src/js/            theme.js (light/dark/system), keys.js (← → and Ctrl+K), behaviours.js (copy, tabs, contents)
-adapters/<host>/   what each framework needs on top: zensical, starlight, pkgdown, quarto, hugo
+adapters/<host>/   what each framework needs on top: zensical, sphinx, starlight, pkgdown, quarto, hugo
 templates/<target>/ starter files (target.json says which kit files go where)
 lib/               the command line, the mark generator, the light/dark selectors
 dist/              generated: everything above, built per host (committed, so copies and CDN links need no build)
@@ -107,11 +108,47 @@ because each palette is declared on whichever switch that host flips:
 |---|---|
 | HTML, Hugo, Starlight | `<html data-theme>` |
 | Zensical | `<body data-md-color-scheme>` |
+| Sphinx (Furo) | `<body data-theme>` |
 | pkgdown | `<html data-bs-theme>` |
 | Quarto | `<body class="quarto-dark">` |
 
 With no switch set, the system's preference decides. `.cx-paper` and
 `.cx-dark` scope a subtree to one palette.
+
+## Data, state and numbers
+
+Three things come from [chromomap](https://github.com/js2264/chromomap):
+
+- **A colour for each kind of genomics data.**
+  - The ten families are reads, alignments, genome, index, fragments, pairs,
+    track, peaks, value and report. Each is a `--cx-family-*` token.
+  - Set `data-family="reads"` on an element and its `--cx-family` follows.
+  - `.cx-dot` draws a family's dot: `.cx-dot--many` is a diamond for a
+    collection, and `any` is hollow.
+- **A colour for each state of a job.**
+  - The states are running, done, cached, stale, failed, queued, never and
+    bypassed. Each is a `--cx-state-*` token.
+  - Running has a violet of its own; the others read the palette's own colours.
+  - `.cx-ring` draws a state's ring and `.cx-state` its chip. Both use
+    `data-state` and are told apart by shape as well as colour.
+- **One formatter for numbers.**
+  - `dist/js/format.mjs` provides `fmt.bytes`, `fmt.bp`, `durationText`,
+    `withUnit` and others. It joins a number to its unit with a no-break space.
+  - `parseNumberInput` accepts `.` or `,` as the decimal separator. When a
+    value could be read two ways, it says so.
+
+Two rules come with them:
+
+- **Each colour means one thing.** Tests hold the family colours, the state
+  colours and the plot series to chromomap's thresholds:
+  - at least 3:1 contrast on every surface;
+  - at least ΔE 12 between any two colours, and at least 8 under simulated
+    protanopia, deuteranopia and tritanopia (`test/colours.test.mjs`).
+- **Nothing on screen is smaller than 11 px** (`test/sizes.test.mjs`).
+
+The plot series, `--cx-series-*` (also used by the matplotlib, ECharts, Plotly
+and ggplot2 themes), are the accent plus six of the family colours. Those six
+are the subset that stays furthest apart under all four kinds of vision.
 
 ## Developing
 

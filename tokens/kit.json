@@ -17,7 +17,7 @@
     "h4": "17px",
     "h5": "15px",
     "small": "13.6px",
-    "label": "10.9px"
+    "label": "11px"
   },
   "mark": {
     "plate": "#17181a",
@@ -26,8 +26,67 @@
     "low": "#ffffff"
   },
   "categorical": {
-    "$comment": "Series colours for plots, in order. The accent first, then the semantic hues, then two quiet ones: colour means something, and a plot with more than six series wants a legend more than a seventh colour.",
-    "light": ["#1f5fa9", "#c4501e", "#1d6b3f", "#8a5200", "#7a3e9d", "#54565a"],
-    "dark": ["#6ba4e8", "#e58a5f", "#6cc48f", "#e3a857", "#b98ad6", "#b3b5b9"]
+    "$comment": "Series colours for plots, in order: the accent, then six of the family colours, the subset whose closest pair is furthest apart under normal vision and the three simulated deficiencies, in both palettes (test/colours.test.mjs holds them to the family thresholds).",
+    "light": [
+      "#1f5fa9",
+      "#e44a72",
+      "#2c6e5c",
+      "#898329",
+      "#a953e3",
+      "#4a5704",
+      "#7c1870"
+    ],
+    "dark": [
+      "#6ba4e8",
+      "#fe7ca1",
+      "#4ccdc7",
+      "#e4e482",
+      "#b067fa",
+      "#879304",
+      "#d26fb7"
+    ]
+  },
+  "family": {
+    "$comment": "One colour per kind of genomics data, from chromomap's src/ui/styles/tokens.css (js2264/chromomap@2b5dfe5, MIT, same author), chosen there under a test this repository runs too (test/colours.test.mjs): at least 3:1 against every surface, every pair at least ΔE 12 apart (8 under simulated protanopia, deuteranopia and tritanopia), at least ΔE 15 from the accent and from every state colour. Related families share a hue: genome and index, fragments and pairs. Never a grey, since greys are states.",
+    "light": {
+      "reads": "#2c6e5c",
+      "alignments": "#34469d",
+      "genome": "#898329",
+      "index": "#594722",
+      "fragments": "#7c1870",
+      "pairs": "#712d46",
+      "track": "#007999",
+      "peaks": "#e44a72",
+      "value": "#4a5704",
+      "report": "#a953e3"
+    },
+    "dark": {
+      "reads": "#4ccdc7",
+      "alignments": "#a39be9",
+      "genome": "#e4e482",
+      "index": "#f8d795",
+      "fragments": "#d26fb7",
+      "pairs": "#f5c2dd",
+      "track": "#0e9fc3",
+      "peaks": "#fe7ca1",
+      "value": "#879304",
+      "report": "#b067fa"
+    }
+  },
+  "state": {
+    "$comment": "What a job, a block or a run is doing, from chromomap (docs/ui.md §4.2). Running is a violet of its own, since the accent already means selection and focus; the others read the palette's own colours. A state is never colour alone: a ring's shape and its word go with it (.cx-ring, .cx-state).",
+    "running": {
+      "light": "#7108dc",
+      "dark": "#9575e2"
+    },
+    "aliases": {
+      "done": "ok",
+      "cached": "ok",
+      "stale": "warn",
+      "failed": "danger",
+      "queued": "text-dim",
+      "never": "border-strong",
+      "bypassed": "text-faint"
+    }
   }
 }

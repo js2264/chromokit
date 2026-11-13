@@ -1,7 +1,7 @@
 # Working in chromokit
 
-chromokit is a UI kit: chromosomix's design tokens and components, built for six
-hosts (plain HTML, Hugo, Zensical, Astro Starlight, pkgdown, Quarto) and copied
+chromokit is a UI kit: chromosomix's design tokens and components, built for seven
+hosts (plain HTML, Hugo, Zensical, Sphinx, Astro Starlight, pkgdown, Quarto) and copied
 into projects by its own command line. Read README.md first.
 
 ## Commands
@@ -24,7 +24,9 @@ node bin/chromokit.mjs init <target> <dir>   # try a starter
   and commit both. `tokens/chromosomix.json` is written by
   `npm run import -- <chromosomix checkout>`, never by hand.
 - **The core never styles a bare element.** Every rule in `src/css/components/`
-  is on a `cx-` class, so the core drops into any host. Element defaults belong
+  is on a `cx-` class, so the core drops into any host. (The one exception sets
+  only a custom property: `[data-family]` and `[data-state]` give an element
+  its `--cx-family` or `--cx-state`.) Element defaults belong
   in `src/css/page.css` (scoped under `.cx-page` / `.cx-prose`) or in an
   adapter.
 - **Host prose rules must not repaint components.** Each host has a "links in
@@ -50,6 +52,13 @@ node bin/chromokit.mjs init <target> <dir>   # try a starter
   starter with the host's own tool and take screenshots, light and dark. On
   GitHub, `site.yml` does this for every target. Send the pictures with the
   change.
+- **Each colour means one thing, and nothing is under 11 px** (chromomap's
+  rules). `--cx-family-*` is a kind of data, `--cx-state-*` what a job is doing;
+  neither is ever the only cue (a dot's shape, a ring's shape, a word).
+  `test/colours.test.mjs` holds the families, the states and the plot series to
+  chromomap's thresholds (contrast, ΔE, simulated colour blindness) with
+  `lib/colour.mjs`; `test/sizes.test.mjs` fails on any font size under 11 px in
+  `dist/`. Retune a colour against those tests, not by eye.
 - Version bumps go through `npm run version:set -- <x.y.z>`, which updates
   `package.json` and `r/DESCRIPTION` and rebuilds; `CHANGELOG.md` gets the
   section.

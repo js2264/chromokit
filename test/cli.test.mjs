@@ -21,7 +21,7 @@ const FLAGS = { name: 'hicool', description: 'Hi-C in one command.', repo: 'js22
 test('there is a target for each kind of site', () => {
   assert.deepEqual(
     targets().map((t) => t.name),
-    ['html', 'hugo', 'pkgdown', 'quarto', 'starlight', 'zensical'],
+    ['html', 'hugo', 'pkgdown', 'quarto', 'sphinx', 'starlight', 'zensical'],
   )
 })
 

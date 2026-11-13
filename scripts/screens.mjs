@@ -45,6 +45,7 @@ const EXAMPLES = {
   html: ['/', 'docs.html'],
   hugo: ['/', 'docs/quickstart/'],
   zensical: ['/', 'quickstart/'],
+  sphinx: ['/', 'quickstart.html'],
   starlight: ['/', 'guides/quickstart/'],
   quarto: ['/', 'getting-started.html'],
   pkgdown: ['/', 'articles/examplepkg.html'],

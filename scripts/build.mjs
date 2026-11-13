@@ -124,10 +124,25 @@ function palette(mode) {
   kit.categorical[mode].forEach((value, index) => {
     out[`series-${index + 1}`] = value
   })
+  for (const [name, value] of Object.entries(kit.family[mode])) out[`family-${name}`] = value
+  out['state-running'] = kit.state.running[mode]
+  // The other states read the palette's own colours, so a retuned `ok` retunes `done`.
+  for (const [name, token] of Object.entries(kit.state.aliases)) out[`state-${name}`] = `var(--cx-${token})`
   return out
 }
 const LIGHT = palette('light')
 const DARK = palette('dark')
+
+/** A palette with every `var(--cx-…)` alias replaced by the colour it reads: for data, not CSS. */
+const resolveAliases = (values) =>
+  Object.fromEntries(
+    Object.entries(values).map(([name, value]) => {
+      const alias = /^var\(--cx-([a-z0-9-]+)\)$/.exec(value)
+      return [name, alias ? values[alias[1]] : value]
+    }),
+  )
+const LIGHT_RESOLVED = resolveAliases(LIGHT)
+const DARK_RESOLVED = resolveAliases(DARK)
 
 const declarations = (values) =>
   Object.entries(values)
@@ -184,14 +199,15 @@ emit('dist/js/theme.js', jsHeader + theme)
 emit('dist/js/keys.js', jsHeader + keys)
 emit('dist/js/behaviours.js', jsHeader + behaviours)
 emit('dist/js/chromokit.js', `${jsHeader}${keys}\n${behaviours}`)
+emit('dist/js/format.mjs', jsHeader + read('src/js/format.mjs'))
 
 // ---------------------------------------------------------------- tokens as data
 
 const raw = {
   version: VERSION,
   source: app.source,
-  light: LIGHT,
-  dark: DARK,
+  light: LIGHT_RESOLVED,
+  dark: DARK_RESOLVED,
   base: {
     sans: app.base.sans,
     mono: app.base.mono,
@@ -228,13 +244,13 @@ emit(
     `$cx-mono: ${app.base.mono} !default;`,
     `$cx-radius: ${app.base.radius} !default;`,
     '',
-    `$cx-light: ${scssMap(LIGHT)} !default;`,
+    `$cx-light: ${scssMap(LIGHT_RESOLVED)} !default;`,
     '',
-    `$cx-dark: ${scssMap(DARK)} !default;`,
+    `$cx-dark: ${scssMap(DARK_RESOLVED)} !default;`,
     '',
-    scssVars(LIGHT, 'light'),
+    scssVars(LIGHT_RESOLVED, 'light'),
     '',
-    scssVars(DARK, 'dark'),
+    scssVars(DARK_RESOLVED, 'dark'),
     '',
     '@function cx($name, $mode: light) {',
     '  @if $mode == dark {',
@@ -640,6 +656,15 @@ ADAPTERS.hugo = () => {
   )
 }
 
+/** Sphinx (Furo): one stylesheet, the keys, and the sidebar brand with the kicker and the release. */
+ADAPTERS.sphinx = () => {
+  emit('dist/sphinx/_static/chromokit.css', bundle(tokensCss, componentsCss, read('adapters/sphinx/furo.css')))
+  emit('dist/sphinx/_static/chromokit.js', `${jsHeader}${keys}\n${behaviours}`)
+  for (const path of listFiles('adapters/sphinx/_templates')) {
+    emit(`dist/sphinx/${relative('adapters/sphinx', path)}`, read(path))
+  }
+}
+
 for (const [name, build] of Object.entries(ADAPTERS)) {
   try {
     build()
@@ -665,8 +690,8 @@ for (const [name, build] of Object.entries(ADAPTERS)) {
       '',
       `.cx_tokens <- list(`,
       `  version = "${VERSION}",`,
-      `  light = list(\n${rList(LIGHT)}\n  ),`,
-      `  dark = list(\n${rList(DARK)}\n  ),`,
+      `  light = list(\n${rList(LIGHT_RESOLVED)}\n  ),`,
+      `  dark = list(\n${rList(DARK_RESOLVED)}\n  ),`,
       `  series = list(light = ${rVector(kit.categorical.light)}, dark = ${rVector(kit.categorical.dark)})`,
       ')',
       '',
@@ -709,4 +734,4 @@ if (CHECK) {
   console.log(`wrote ${outputs.size} files${stale.length > 0 ? `, removed ${stale.length} stale` : ''}`)
 }
 
-export { ADAPTERS, LIGHT, DARK, base, icon, outputs }
+export { ADAPTERS, LIGHT, DARK, LIGHT_RESOLVED, DARK_RESOLVED, base, icon, outputs }

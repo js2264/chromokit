@@ -1,0 +1,12 @@
+{
+  "title": "Sphinx",
+  "description": "Documentation for a Python package with Sphinx and the Furo theme, MyST Markdown pages, in the look of metacooler's docs.",
+  "kit": {
+    "docs/_static/chromokit.css": "dist/sphinx/_static/chromokit.css",
+    "docs/_static/chromokit.js": "dist/sphinx/_static/chromokit.js",
+    "docs/_templates/sidebar/brand.html": "dist/sphinx/_templates/sidebar/brand.html"
+  },
+  "mark": ["docs/_static/mark.svg"],
+  "accent": "docs/_static/site.css",
+  "next": ["pip install -r docs/requirements.txt", "sphinx-build docs docs/_build/html   # or: sphinx-autobuild docs docs/_build/html"]
+}

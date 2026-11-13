@@ -6,6 +6,41 @@ token or kit file is a major one.
 
 ## [Unreleased]
 
+### Added
+
+- **Sphinx**, a seventh kind of site:
+  - `chromokit init sphinx` writes a Sphinx site on the Furo theme, with MyST
+    Markdown pages;
+  - `docs/_static/chromokit.css` maps Furo's variables to the tokens;
+  - a sidebar brand shows the mark, name, kicker and release;
+  - the CI builds the starter (with warnings as errors) and screenshots it.
+- **From chromomap:**
+  - `--cx-family-*`: one colour for each kind of genomics data, with
+    `[data-family]`, `.cx-dot`, `.cx-dot--many` and `.cx-family`.
+  - `--cx-state-*`: one colour for each state of a job, with a running violet
+    of its own, `[data-state]`, `.cx-ring` and `.cx-state`.
+  - `.cx-num`, `.cx-focus-ring` and a focusable `.cx-splitter`.
+  - `dist/js/format.mjs`: one formatter, with numbers joined to their units by
+    a no-break space and input read with `.` or `,` as the decimal separator.
+  - `lib/colour.mjs`: chromomap's colour science (WCAG contrast, ΔE, Machado
+    colour-blindness simulation).
+- **Tests:**
+  - `test/colours.test.mjs` holds the families, the states and the plot series
+    to chromomap's thresholds;
+  - `test/sizes.test.mjs` fails on any font size under 11 px;
+  - `test/format.test.mjs` runs chromomap's cases against the formatter.
+
+### Changed
+
+- **The plot series:**
+  - They are now the accent plus six family colours (seven in all, was six).
+  - The old set failed under simulated protanopia.
+  - The matplotlib, ECharts, Plotly and ggplot2 themes follow them.
+- **The smallest text is 11 px** (was 10.9 px): the kicker, the table headers
+  and the sidebar groups, in every adapter.
+- **`data-theme` on `<body>`** now switches the palette too, as Furo writes it.
+- **`keys.js`** also follows Furo's `a.prev-page` and `a.next-page`.
+
 ## [0.1.0] - 2026-11-13
 
 First release: chromosomix's look, for six kinds of site.

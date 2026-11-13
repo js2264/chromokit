@@ -121,7 +121,7 @@ header.header {
   border-radius: 0.22em;
 }
 .cx-title .cx-header__kicker {
-  font: 600 0.68rem / 1.2 var(--cx-sans);
+  font: 600 0.6875rem / 1.2 var(--cx-sans);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--cx-accent);
@@ -238,7 +238,7 @@ site-search button[data-open-modal] > kbd kbd + kbd::before {
 
 /* ---- sidebar: groups headed like "NEW HERE?" on the landing page -------- */
 .sidebar-pane .top-level > li > details > summary .large {
-  font: 600 0.68rem / 1.2 var(--cx-sans);
+  font: 600 0.6875rem / 1.2 var(--cx-sans);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--cx-accent);
@@ -304,7 +304,7 @@ site-search button[data-open-modal] > kbd kbd + kbd::before {
 .sl-markdown-content thead th {
   background: var(--cx-bg-sunken);
   color: var(--cx-text-dim);
-  font: 600 0.68rem / 1.2 var(--cx-sans);
+  font: 600 0.6875rem / 1.2 var(--cx-sans);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-align: start;

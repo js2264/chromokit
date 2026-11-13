@@ -17,9 +17,10 @@ chromokit_colours <- function(mode = c("light", "dark")) {
 
 #' Categorical colours
 #'
-#' The series colours of a palette, in order: the accent first, then the
-#' semantic hues, then two quiet ones. Colour means something; a plot with
-#' more than six series wants a legend more than a seventh colour.
+#' The series colours of a palette, in order: the accent, then six of the
+#' kit's data-family colours, chosen so that every pair stays apart under
+#' simulated protanopia, deuteranopia and tritanopia. A plot with more than
+#' seven series wants a legend more than an eighth colour.
 #'
 #' @inheritParams chromokit_colours
 #' @param n How many colours.

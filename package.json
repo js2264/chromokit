@@ -1,7 +1,7 @@
 {
   "name": "chromokit",
   "version": "0.1.0",
-  "description": "A shared UI kit \u2014 design tokens, components, and starter templates \u2014 for plain HTML, Hugo, Zensical, Astro Starlight, pkgdown and Quarto sites, in the look of chromosomix.",
+  "description": "A shared UI kit \u2014 design tokens, components, and starter templates \u2014 for plain HTML, Hugo, Zensical, Sphinx, Astro Starlight, pkgdown and Quarto sites, in the look of chromosomix.",
   "type": "module",
   "license": "MIT",
   "author": "Jacques Serizay",
@@ -19,6 +19,7 @@
     "ui-kit",
     "theme",
     "zensical",
+    "sphinx",
     "starlight",
     "pkgdown",
     "quarto",

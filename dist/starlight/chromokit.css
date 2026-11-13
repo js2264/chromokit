@@ -13,7 +13,7 @@
   --cx-step-1: calc(1 * var(--cx-rem));
   --cx-step-2: calc(1.25 * var(--cx-rem));
   --cx-step-3: calc(1.6 * var(--cx-rem));
-  --cx-label: calc(0.6813 * var(--cx-rem));
+  --cx-label: calc(0.6875 * var(--cx-rem));
   --cx-header-h: 53px;
   --cx-sidebar-w: 300px;
   --cx-toc-w: 300px;
@@ -37,6 +37,7 @@
 .cx-light,
 .cx-paper,
 :root[data-theme='light'],
+body[data-theme='light'],
 [data-md-color-scheme='default'],
 :root[data-bs-theme='light'],
 body.quarto-light {
@@ -76,11 +77,30 @@ body.quarto-light {
   --cx-hl-punctuation: #6e6e6e;
   --cx-hl-special: #995728;
   --cx-series-1: #1f5fa9;
-  --cx-series-2: #c4501e;
-  --cx-series-3: #1d6b3f;
-  --cx-series-4: #8a5200;
-  --cx-series-5: #7a3e9d;
-  --cx-series-6: #54565a;
+  --cx-series-2: #e44a72;
+  --cx-series-3: #2c6e5c;
+  --cx-series-4: #898329;
+  --cx-series-5: #a953e3;
+  --cx-series-6: #4a5704;
+  --cx-series-7: #7c1870;
+  --cx-family-reads: #2c6e5c;
+  --cx-family-alignments: #34469d;
+  --cx-family-genome: #898329;
+  --cx-family-index: #594722;
+  --cx-family-fragments: #7c1870;
+  --cx-family-pairs: #712d46;
+  --cx-family-track: #007999;
+  --cx-family-peaks: #e44a72;
+  --cx-family-value: #4a5704;
+  --cx-family-report: #a953e3;
+  --cx-state-running: #7108dc;
+  --cx-state-done: var(--cx-ok);
+  --cx-state-cached: var(--cx-ok);
+  --cx-state-stale: var(--cx-warn);
+  --cx-state-failed: var(--cx-danger);
+  --cx-state-queued: var(--cx-text-dim);
+  --cx-state-never: var(--cx-border-strong);
+  --cx-state-bypassed: var(--cx-text-faint);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -122,16 +142,36 @@ body.quarto-light {
     --cx-hl-punctuation: #8a8a8a;
     --cx-hl-special: #c99076;
     --cx-series-1: #6ba4e8;
-    --cx-series-2: #e58a5f;
-    --cx-series-3: #6cc48f;
-    --cx-series-4: #e3a857;
-    --cx-series-5: #b98ad6;
-    --cx-series-6: #b3b5b9;
+    --cx-series-2: #fe7ca1;
+    --cx-series-3: #4ccdc7;
+    --cx-series-4: #e4e482;
+    --cx-series-5: #b067fa;
+    --cx-series-6: #879304;
+    --cx-series-7: #d26fb7;
+    --cx-family-reads: #4ccdc7;
+    --cx-family-alignments: #a39be9;
+    --cx-family-genome: #e4e482;
+    --cx-family-index: #f8d795;
+    --cx-family-fragments: #d26fb7;
+    --cx-family-pairs: #f5c2dd;
+    --cx-family-track: #0e9fc3;
+    --cx-family-peaks: #fe7ca1;
+    --cx-family-value: #879304;
+    --cx-family-report: #b067fa;
+    --cx-state-running: #9575e2;
+    --cx-state-done: var(--cx-ok);
+    --cx-state-cached: var(--cx-ok);
+    --cx-state-stale: var(--cx-warn);
+    --cx-state-failed: var(--cx-danger);
+    --cx-state-queued: var(--cx-text-dim);
+    --cx-state-never: var(--cx-border-strong);
+    --cx-state-bypassed: var(--cx-text-faint);
   }
 }
 
 :root[data-theme='dark'],
 :root[data-theme='dark'] ::backdrop,
+body[data-theme='dark'],
 .cx-dark,
 [data-md-color-scheme='slate'],
 :root[data-bs-theme='dark'],
@@ -172,11 +212,30 @@ body.quarto-dark {
   --cx-hl-punctuation: #8a8a8a;
   --cx-hl-special: #c99076;
   --cx-series-1: #6ba4e8;
-  --cx-series-2: #e58a5f;
-  --cx-series-3: #6cc48f;
-  --cx-series-4: #e3a857;
-  --cx-series-5: #b98ad6;
-  --cx-series-6: #b3b5b9;
+  --cx-series-2: #fe7ca1;
+  --cx-series-3: #4ccdc7;
+  --cx-series-4: #e4e482;
+  --cx-series-5: #b067fa;
+  --cx-series-6: #879304;
+  --cx-series-7: #d26fb7;
+  --cx-family-reads: #4ccdc7;
+  --cx-family-alignments: #a39be9;
+  --cx-family-genome: #e4e482;
+  --cx-family-index: #f8d795;
+  --cx-family-fragments: #d26fb7;
+  --cx-family-pairs: #f5c2dd;
+  --cx-family-track: #0e9fc3;
+  --cx-family-peaks: #fe7ca1;
+  --cx-family-value: #879304;
+  --cx-family-report: #b067fa;
+  --cx-state-running: #9575e2;
+  --cx-state-done: var(--cx-ok);
+  --cx-state-cached: var(--cx-ok);
+  --cx-state-stale: var(--cx-warn);
+  --cx-state-failed: var(--cx-danger);
+  --cx-state-queued: var(--cx-text-dim);
+  --cx-state-never: var(--cx-border-strong);
+  --cx-state-bypassed: var(--cx-text-faint);
 }
 
 .cx-light,
@@ -217,11 +276,30 @@ body.quarto-dark {
   --cx-hl-punctuation: #6e6e6e;
   --cx-hl-special: #995728;
   --cx-series-1: #1f5fa9;
-  --cx-series-2: #c4501e;
-  --cx-series-3: #1d6b3f;
-  --cx-series-4: #8a5200;
-  --cx-series-5: #7a3e9d;
-  --cx-series-6: #54565a;
+  --cx-series-2: #e44a72;
+  --cx-series-3: #2c6e5c;
+  --cx-series-4: #898329;
+  --cx-series-5: #a953e3;
+  --cx-series-6: #4a5704;
+  --cx-series-7: #7c1870;
+  --cx-family-reads: #2c6e5c;
+  --cx-family-alignments: #34469d;
+  --cx-family-genome: #898329;
+  --cx-family-index: #594722;
+  --cx-family-fragments: #7c1870;
+  --cx-family-pairs: #712d46;
+  --cx-family-track: #007999;
+  --cx-family-peaks: #e44a72;
+  --cx-family-value: #4a5704;
+  --cx-family-report: #a953e3;
+  --cx-state-running: #7108dc;
+  --cx-state-done: var(--cx-ok);
+  --cx-state-cached: var(--cx-ok);
+  --cx-state-stale: var(--cx-warn);
+  --cx-state-failed: var(--cx-danger);
+  --cx-state-queued: var(--cx-text-dim);
+  --cx-state-never: var(--cx-border-strong);
+  --cx-state-bypassed: var(--cx-text-faint);
 }
 
 /*
@@ -1753,6 +1831,291 @@ button.cx-tab {
 }
 
 /*
+ * Data and state: from chromomap (js2264/chromomap, docs/ui.md §4, specs/63).
+ *
+ * Each colour means one thing. `--cx-family-*` is the kind of data a thing
+ * carries (reads, alignments, a genome, a track, peaks…); `--cx-state-*` is
+ * what a job is doing. Neither is ever the only cue: a family dot is drawn
+ * beside its name, and its shape says one (●) or many (◆); a state has its
+ * ring's shape and its word.
+ */
+
+/* An element says its family once, `data-family="reads"`, and its rules read
+   `var(--cx-family)`. `any` is no family: the text colour, drawn hollow. */
+[data-family='reads'] {
+  --cx-family: var(--cx-family-reads);
+}
+
+[data-family='alignments'] {
+  --cx-family: var(--cx-family-alignments);
+}
+
+[data-family='genome'] {
+  --cx-family: var(--cx-family-genome);
+}
+
+[data-family='index'] {
+  --cx-family: var(--cx-family-index);
+}
+
+[data-family='fragments'] {
+  --cx-family: var(--cx-family-fragments);
+}
+
+[data-family='pairs'] {
+  --cx-family: var(--cx-family-pairs);
+}
+
+[data-family='track'] {
+  --cx-family: var(--cx-family-track);
+}
+
+[data-family='peaks'] {
+  --cx-family: var(--cx-family-peaks);
+}
+
+[data-family='value'] {
+  --cx-family: var(--cx-family-value);
+}
+
+[data-family='report'] {
+  --cx-family: var(--cx-family-report);
+}
+
+[data-family='any'] {
+  --cx-family: var(--cx-text);
+}
+
+/* ---- a family dot: ● one item, ◆ a collection, ○ any family ------------- */
+.cx-dot {
+  display: inline-block;
+  flex: none;
+  width: 8px;
+  height: 8px;
+  vertical-align: 0.05em;
+  background: var(--cx-family, var(--cx-text-dim));
+  border-radius: 50%;
+}
+
+.cx-dot--many {
+  width: 7px;
+  height: 7px;
+  border-radius: 1px;
+  transform: rotate(45deg);
+}
+
+.cx-dot--any,
+[data-family='any'].cx-dot,
+[data-family='any'] > .cx-dot {
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--cx-family, var(--cx-text));
+}
+
+/* A family named in words, its dot before it. */
+.cx-family {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(0.35 * var(--cx-rem));
+  font-size: var(--cx-step--1);
+  white-space: nowrap;
+}
+
+/* ---- a state: a ring, and a chip with the word ------------------------- */
+[data-state='running'] {
+  --cx-state: var(--cx-state-running);
+}
+
+[data-state='done'] {
+  --cx-state: var(--cx-state-done);
+}
+
+[data-state='cached'] {
+  --cx-state: var(--cx-state-cached);
+}
+
+[data-state='stale'] {
+  --cx-state: var(--cx-state-stale);
+}
+
+[data-state='failed'] {
+  --cx-state: var(--cx-state-failed);
+}
+
+[data-state='queued'] {
+  --cx-state: var(--cx-state-queued);
+}
+
+[data-state='never'] {
+  --cx-state: var(--cx-state-never);
+}
+
+[data-state='bypassed'] {
+  --cx-state: var(--cx-state-bypassed);
+}
+
+/* The ring says the state by its shape as well as its colour: done is a
+   filled disc, cached a hollow ring, stale a dashed one, running an open arc
+   that turns, failed a ring with a bar through it, queued a dotted ring. */
+.cx-ring {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  vertical-align: -0.1em;
+  border: 2px solid var(--cx-state, var(--cx-text-dim));
+  border-radius: 50%;
+}
+
+.cx-ring[data-state='done'] {
+  background: var(--cx-state);
+}
+
+.cx-ring[data-state='stale'] {
+  border-style: dashed;
+}
+
+.cx-ring[data-state='queued'],
+.cx-ring[data-state='never'] {
+  border-style: dotted;
+}
+
+.cx-ring[data-state='bypassed'] {
+  border-width: 1.5px;
+  opacity: 0.8;
+}
+
+.cx-ring[data-state='failed']::after {
+  position: absolute;
+  top: 50%;
+  left: -2px;
+  width: 12px;
+  height: 2px;
+  content: '';
+  background: var(--cx-state);
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.cx-ring[data-state='running'] {
+  border-right-color: transparent;
+  animation: cx-spin 0.9s linear infinite;
+}
+
+@keyframes cx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cx-ring[data-state='running'] {
+    animation: none;
+  }
+}
+
+/* The chip: the state's word in a pill. Running's violet is a colour for
+   graphics (3:1), short of the 4.5:1 a small word needs, so the running chip
+   keeps it for its border and writes its word in the text colour. */
+.cx-state {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(0.35 * var(--cx-rem));
+  padding: calc(0.05 * var(--cx-rem)) calc(0.45 * var(--cx-rem)) calc(0.05 * var(--cx-rem)) calc(0.35 * var(--cx-rem));
+  font: 500 var(--cx-step--2) / 1.5 var(--cx-sans);
+  color: var(--cx-state, var(--cx-text-dim));
+  white-space: nowrap;
+  border: 1px solid var(--cx-state, var(--cx-border));
+  border-radius: 999px;
+}
+
+.cx-state[data-state='running'],
+.cx-state[data-state='queued'],
+.cx-state[data-state='never'],
+.cx-state[data-state='bypassed'] {
+  color: var(--cx-text-dim);
+}
+
+.cx-state[data-state='running'] {
+  color: var(--cx-text);
+}
+
+.cx-state .cx-ring {
+  width: 10px;
+  height: 10px;
+  border-width: 1.5px;
+}
+
+/* ---- numbers: never broken from their unit ----------------------------- */
+/* Pair with the formatter (dist/js/format.mjs), which joins a number and its
+   unit with a no-break space; this keeps a whole readout on one line and its
+   digits in columns. */
+.cx-num {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* ---- a focus ring for a box that cannot draw its own ------------------- */
+/* A box that fades its edges with `mask-image` hides its own outline; its
+   wrapper draws the ring while the keyboard is inside. */
+.cx-focus-ring {
+  min-width: 0;
+  border-radius: var(--cx-radius);
+}
+
+.cx-focus-ring:has(> :focus-visible) {
+  outline: 2px solid var(--cx-accent);
+  outline-offset: 2px;
+}
+
+.cx-focus-ring > :focus-visible {
+  outline: none;
+}
+
+/* ---- a resize edge the keyboard can move ------------------------------- */
+/* WCAG 2.5.7: every drag has a keyboard alternative. A splitter is a
+   focusable `role="separator"` the arrow keys move; this is its look. */
+.cx-splitter {
+  position: relative;
+  flex: none;
+  width: 6px;
+  cursor: col-resize;
+  background: transparent;
+  touch-action: none;
+}
+
+.cx-splitter[aria-orientation='horizontal'] {
+  width: auto;
+  height: 6px;
+  cursor: row-resize;
+}
+
+.cx-splitter::after {
+  position: absolute;
+  inset: 0 2px;
+  content: '';
+  background: var(--cx-border);
+  border-radius: 999px;
+  opacity: 0;
+  transition: opacity 120ms;
+}
+
+.cx-splitter[aria-orientation='horizontal']::after {
+  inset: 2px 0;
+}
+
+.cx-splitter:hover::after,
+.cx-splitter:focus-visible::after,
+.cx-splitter.is-dragging::after {
+  background: var(--cx-accent);
+  opacity: 1;
+}
+
+.cx-splitter:focus-visible {
+  outline: none;
+}
+
+/*
  * chromokit for Astro Starlight, over the Rapide theme: doc.chromosomix.app's
  * look, with chromosomix's own particulars (version menu, task pages, live
  * views) left out.
@@ -1875,7 +2238,7 @@ header.header {
   border-radius: 0.22em;
 }
 .cx-title .cx-header__kicker {
-  font: 600 0.68rem / 1.2 var(--cx-sans);
+  font: 600 0.6875rem / 1.2 var(--cx-sans);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--cx-accent);
@@ -1992,7 +2355,7 @@ site-search button[data-open-modal] > kbd kbd + kbd::before {
 
 /* ---- sidebar: groups headed like "NEW HERE?" on the landing page -------- */
 .sidebar-pane .top-level > li > details > summary .large {
-  font: 600 0.68rem / 1.2 var(--cx-sans);
+  font: 600 0.6875rem / 1.2 var(--cx-sans);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--cx-accent);
@@ -2058,7 +2421,7 @@ site-search button[data-open-modal] > kbd kbd + kbd::before {
 .sl-markdown-content thead th {
   background: var(--cx-bg-sunken);
   color: var(--cx-text-dim);
-  font: 600 0.68rem / 1.2 var(--cx-sans);
+  font: 600 0.6875rem / 1.2 var(--cx-sans);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   text-align: start;

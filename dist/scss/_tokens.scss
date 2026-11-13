@@ -41,11 +41,30 @@ $cx-light: (
   "hl-punctuation": #6e6e6e,
   "hl-special": #995728,
   "series-1": #1f5fa9,
-  "series-2": #c4501e,
-  "series-3": #1d6b3f,
-  "series-4": #8a5200,
-  "series-5": #7a3e9d,
-  "series-6": #54565a
+  "series-2": #e44a72,
+  "series-3": #2c6e5c,
+  "series-4": #898329,
+  "series-5": #a953e3,
+  "series-6": #4a5704,
+  "series-7": #7c1870,
+  "family-reads": #2c6e5c,
+  "family-alignments": #34469d,
+  "family-genome": #898329,
+  "family-index": #594722,
+  "family-fragments": #7c1870,
+  "family-pairs": #712d46,
+  "family-track": #007999,
+  "family-peaks": #e44a72,
+  "family-value": #4a5704,
+  "family-report": #a953e3,
+  "state-running": #7108dc,
+  "state-done": #1d6b3f,
+  "state-cached": #1d6b3f,
+  "state-stale": #8a5200,
+  "state-failed": #a32020,
+  "state-queued": #54565a,
+  "state-never": #8d8f93,
+  "state-bypassed": #68696d
 ) !default;
 
 $cx-dark: (
@@ -84,11 +103,30 @@ $cx-dark: (
   "hl-punctuation": #8a8a8a,
   "hl-special": #c99076,
   "series-1": #6ba4e8,
-  "series-2": #e58a5f,
-  "series-3": #6cc48f,
-  "series-4": #e3a857,
-  "series-5": #b98ad6,
-  "series-6": #b3b5b9
+  "series-2": #fe7ca1,
+  "series-3": #4ccdc7,
+  "series-4": #e4e482,
+  "series-5": #b067fa,
+  "series-6": #879304,
+  "series-7": #d26fb7,
+  "family-reads": #4ccdc7,
+  "family-alignments": #a39be9,
+  "family-genome": #e4e482,
+  "family-index": #f8d795,
+  "family-fragments": #d26fb7,
+  "family-pairs": #f5c2dd,
+  "family-track": #0e9fc3,
+  "family-peaks": #fe7ca1,
+  "family-value": #879304,
+  "family-report": #b067fa,
+  "state-running": #9575e2,
+  "state-done": #6cc48f,
+  "state-cached": #6cc48f,
+  "state-stale": #e3a857,
+  "state-failed": #ef8a8a,
+  "state-queued": #b3b5b9,
+  "state-never": #727478,
+  "state-bypassed": #8a8c90
 ) !default;
 
 $cx-bg-light: #ffffff !default;
@@ -126,11 +164,30 @@ $cx-hl-operator-light: #9a4d4d !default;
 $cx-hl-punctuation-light: #6e6e6e !default;
 $cx-hl-special-light: #995728 !default;
 $cx-series-1-light: #1f5fa9 !default;
-$cx-series-2-light: #c4501e !default;
-$cx-series-3-light: #1d6b3f !default;
-$cx-series-4-light: #8a5200 !default;
-$cx-series-5-light: #7a3e9d !default;
-$cx-series-6-light: #54565a !default;
+$cx-series-2-light: #e44a72 !default;
+$cx-series-3-light: #2c6e5c !default;
+$cx-series-4-light: #898329 !default;
+$cx-series-5-light: #a953e3 !default;
+$cx-series-6-light: #4a5704 !default;
+$cx-series-7-light: #7c1870 !default;
+$cx-family-reads-light: #2c6e5c !default;
+$cx-family-alignments-light: #34469d !default;
+$cx-family-genome-light: #898329 !default;
+$cx-family-index-light: #594722 !default;
+$cx-family-fragments-light: #7c1870 !default;
+$cx-family-pairs-light: #712d46 !default;
+$cx-family-track-light: #007999 !default;
+$cx-family-peaks-light: #e44a72 !default;
+$cx-family-value-light: #4a5704 !default;
+$cx-family-report-light: #a953e3 !default;
+$cx-state-running-light: #7108dc !default;
+$cx-state-done-light: #1d6b3f !default;
+$cx-state-cached-light: #1d6b3f !default;
+$cx-state-stale-light: #8a5200 !default;
+$cx-state-failed-light: #a32020 !default;
+$cx-state-queued-light: #54565a !default;
+$cx-state-never-light: #8d8f93 !default;
+$cx-state-bypassed-light: #68696d !default;
 
 $cx-bg-dark: #191a1c !default;
 $cx-bg-sunken-dark: #131416 !default;
@@ -167,11 +224,30 @@ $cx-hl-operator-dark: #cb7676 !default;
 $cx-hl-punctuation-dark: #8a8a8a !default;
 $cx-hl-special-dark: #c99076 !default;
 $cx-series-1-dark: #6ba4e8 !default;
-$cx-series-2-dark: #e58a5f !default;
-$cx-series-3-dark: #6cc48f !default;
-$cx-series-4-dark: #e3a857 !default;
-$cx-series-5-dark: #b98ad6 !default;
-$cx-series-6-dark: #b3b5b9 !default;
+$cx-series-2-dark: #fe7ca1 !default;
+$cx-series-3-dark: #4ccdc7 !default;
+$cx-series-4-dark: #e4e482 !default;
+$cx-series-5-dark: #b067fa !default;
+$cx-series-6-dark: #879304 !default;
+$cx-series-7-dark: #d26fb7 !default;
+$cx-family-reads-dark: #4ccdc7 !default;
+$cx-family-alignments-dark: #a39be9 !default;
+$cx-family-genome-dark: #e4e482 !default;
+$cx-family-index-dark: #f8d795 !default;
+$cx-family-fragments-dark: #d26fb7 !default;
+$cx-family-pairs-dark: #f5c2dd !default;
+$cx-family-track-dark: #0e9fc3 !default;
+$cx-family-peaks-dark: #fe7ca1 !default;
+$cx-family-value-dark: #879304 !default;
+$cx-family-report-dark: #b067fa !default;
+$cx-state-running-dark: #9575e2 !default;
+$cx-state-done-dark: #6cc48f !default;
+$cx-state-cached-dark: #6cc48f !default;
+$cx-state-stale-dark: #e3a857 !default;
+$cx-state-failed-dark: #ef8a8a !default;
+$cx-state-queued-dark: #b3b5b9 !default;
+$cx-state-never-dark: #727478 !default;
+$cx-state-bypassed-dark: #8a8c90 !default;
 
 @function cx($name, $mode: light) {
   @if $mode == dark {

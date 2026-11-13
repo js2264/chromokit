@@ -32,7 +32,7 @@ $border-radius: 6px;
   --cx-step-1: calc(1 * var(--cx-rem));
   --cx-step-2: calc(1.25 * var(--cx-rem));
   --cx-step-3: calc(1.6 * var(--cx-rem));
-  --cx-label: calc(0.6813 * var(--cx-rem));
+  --cx-label: calc(0.6875 * var(--cx-rem));
   --cx-header-h: 53px;
   --cx-sidebar-w: 300px;
   --cx-toc-w: 300px;
@@ -56,6 +56,7 @@ $border-radius: 6px;
 .cx-light,
 .cx-paper,
 :root[data-theme='light'],
+body[data-theme='light'],
 [data-md-color-scheme='default'],
 :root[data-bs-theme='light'],
 body.quarto-light {
@@ -95,11 +96,30 @@ body.quarto-light {
   --cx-hl-punctuation: #6e6e6e;
   --cx-hl-special: #995728;
   --cx-series-1: #1f5fa9;
-  --cx-series-2: #c4501e;
-  --cx-series-3: #1d6b3f;
-  --cx-series-4: #8a5200;
-  --cx-series-5: #7a3e9d;
-  --cx-series-6: #54565a;
+  --cx-series-2: #e44a72;
+  --cx-series-3: #2c6e5c;
+  --cx-series-4: #898329;
+  --cx-series-5: #a953e3;
+  --cx-series-6: #4a5704;
+  --cx-series-7: #7c1870;
+  --cx-family-reads: #2c6e5c;
+  --cx-family-alignments: #34469d;
+  --cx-family-genome: #898329;
+  --cx-family-index: #594722;
+  --cx-family-fragments: #7c1870;
+  --cx-family-pairs: #712d46;
+  --cx-family-track: #007999;
+  --cx-family-peaks: #e44a72;
+  --cx-family-value: #4a5704;
+  --cx-family-report: #a953e3;
+  --cx-state-running: #7108dc;
+  --cx-state-done: var(--cx-ok);
+  --cx-state-cached: var(--cx-ok);
+  --cx-state-stale: var(--cx-warn);
+  --cx-state-failed: var(--cx-danger);
+  --cx-state-queued: var(--cx-text-dim);
+  --cx-state-never: var(--cx-border-strong);
+  --cx-state-bypassed: var(--cx-text-faint);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -141,16 +161,36 @@ body.quarto-light {
     --cx-hl-punctuation: #8a8a8a;
     --cx-hl-special: #c99076;
     --cx-series-1: #6ba4e8;
-    --cx-series-2: #e58a5f;
-    --cx-series-3: #6cc48f;
-    --cx-series-4: #e3a857;
-    --cx-series-5: #b98ad6;
-    --cx-series-6: #b3b5b9;
+    --cx-series-2: #fe7ca1;
+    --cx-series-3: #4ccdc7;
+    --cx-series-4: #e4e482;
+    --cx-series-5: #b067fa;
+    --cx-series-6: #879304;
+    --cx-series-7: #d26fb7;
+    --cx-family-reads: #4ccdc7;
+    --cx-family-alignments: #a39be9;
+    --cx-family-genome: #e4e482;
+    --cx-family-index: #f8d795;
+    --cx-family-fragments: #d26fb7;
+    --cx-family-pairs: #f5c2dd;
+    --cx-family-track: #0e9fc3;
+    --cx-family-peaks: #fe7ca1;
+    --cx-family-value: #879304;
+    --cx-family-report: #b067fa;
+    --cx-state-running: #9575e2;
+    --cx-state-done: var(--cx-ok);
+    --cx-state-cached: var(--cx-ok);
+    --cx-state-stale: var(--cx-warn);
+    --cx-state-failed: var(--cx-danger);
+    --cx-state-queued: var(--cx-text-dim);
+    --cx-state-never: var(--cx-border-strong);
+    --cx-state-bypassed: var(--cx-text-faint);
   }
 }
 
 :root[data-theme='dark'],
 :root[data-theme='dark'] ::backdrop,
+body[data-theme='dark'],
 .cx-dark,
 [data-md-color-scheme='slate'],
 :root[data-bs-theme='dark'],
@@ -191,11 +231,30 @@ body.quarto-dark {
   --cx-hl-punctuation: #8a8a8a;
   --cx-hl-special: #c99076;
   --cx-series-1: #6ba4e8;
-  --cx-series-2: #e58a5f;
-  --cx-series-3: #6cc48f;
-  --cx-series-4: #e3a857;
-  --cx-series-5: #b98ad6;
-  --cx-series-6: #b3b5b9;
+  --cx-series-2: #fe7ca1;
+  --cx-series-3: #4ccdc7;
+  --cx-series-4: #e4e482;
+  --cx-series-5: #b067fa;
+  --cx-series-6: #879304;
+  --cx-series-7: #d26fb7;
+  --cx-family-reads: #4ccdc7;
+  --cx-family-alignments: #a39be9;
+  --cx-family-genome: #e4e482;
+  --cx-family-index: #f8d795;
+  --cx-family-fragments: #d26fb7;
+  --cx-family-pairs: #f5c2dd;
+  --cx-family-track: #0e9fc3;
+  --cx-family-peaks: #fe7ca1;
+  --cx-family-value: #879304;
+  --cx-family-report: #b067fa;
+  --cx-state-running: #9575e2;
+  --cx-state-done: var(--cx-ok);
+  --cx-state-cached: var(--cx-ok);
+  --cx-state-stale: var(--cx-warn);
+  --cx-state-failed: var(--cx-danger);
+  --cx-state-queued: var(--cx-text-dim);
+  --cx-state-never: var(--cx-border-strong);
+  --cx-state-bypassed: var(--cx-text-faint);
 }
 
 .cx-light,
@@ -236,11 +295,30 @@ body.quarto-dark {
   --cx-hl-punctuation: #6e6e6e;
   --cx-hl-special: #995728;
   --cx-series-1: #1f5fa9;
-  --cx-series-2: #c4501e;
-  --cx-series-3: #1d6b3f;
-  --cx-series-4: #8a5200;
-  --cx-series-5: #7a3e9d;
-  --cx-series-6: #54565a;
+  --cx-series-2: #e44a72;
+  --cx-series-3: #2c6e5c;
+  --cx-series-4: #898329;
+  --cx-series-5: #a953e3;
+  --cx-series-6: #4a5704;
+  --cx-series-7: #7c1870;
+  --cx-family-reads: #2c6e5c;
+  --cx-family-alignments: #34469d;
+  --cx-family-genome: #898329;
+  --cx-family-index: #594722;
+  --cx-family-fragments: #7c1870;
+  --cx-family-pairs: #712d46;
+  --cx-family-track: #007999;
+  --cx-family-peaks: #e44a72;
+  --cx-family-value: #4a5704;
+  --cx-family-report: #a953e3;
+  --cx-state-running: #7108dc;
+  --cx-state-done: var(--cx-ok);
+  --cx-state-cached: var(--cx-ok);
+  --cx-state-stale: var(--cx-warn);
+  --cx-state-failed: var(--cx-danger);
+  --cx-state-queued: var(--cx-text-dim);
+  --cx-state-never: var(--cx-border-strong);
+  --cx-state-bypassed: var(--cx-text-faint);
 }
 
 .reveal .slide-background { background-image: radial-gradient(circle, color-mix(in srgb, var(--cx-border) 50%, transparent) 0.8px, transparent 1px); background-size: var(--cx-grain) var(--cx-grain); }

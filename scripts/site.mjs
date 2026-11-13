@@ -135,6 +135,7 @@ const ICON_FOR = {
   html: 'code',
   hugo: 'file-text',
   zensical: 'python',
+  sphinx: 'book-open',
   starlight: 'sparkles',
   pkgdown: 'r',
   quarto: 'quarto',

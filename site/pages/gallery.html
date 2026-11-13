@@ -1,5 +1,5 @@
 <!-- title: Gallery · chromokit -->
-<!-- toc: controls Controls; labels Labels and badges; cards Cards and tiles; content Content; chrome Furniture; scopes Light and dark scopes; marks Marks -->
+<!-- toc: controls Controls; labels Labels and badges; cards Cards and tiles; content Content; data Data and state; chrome Furniture; scopes Light and dark scopes; marks Marks -->
 <div class="cx-layout">
   <aside class="cx-sidebar">{{nav}}</aside>
   <main class="cx-main cx-ground">
@@ -117,6 +117,39 @@ mc = MetaCooler(<span class="s">"sample.metacool"</span>)
 <span class="c"># every genome's contigs, as one frame</span>
 mc.<span class="f">genomes</span>().head(<span class="n">10</span>)</code></pre></div>
       <div class="cx-code cx-code--terminal"><pre><code>metacooler create pairs --pairs contacts.pairs.gz --bins fragments.bed out.metacool</code></pre></div>
+
+      <h2 id="data">Data and state</h2>
+      <p>From <a href="https://github.com/js2264/chromomap">chromomap</a>: a colour per kind of data and a colour per state, each meaning one thing and never the only cue. A family's dot sits beside its name and its shape says one (●) or many (◆); a state has its ring's shape and its word. The family colours are held apart under simulated colour blindness by <code>test/colours.test.mjs</code>.</p>
+      <div class="gallery-row">
+        <span class="cx-family" data-family="reads"><span class="cx-dot"></span>reads</span>
+        <span class="cx-family" data-family="alignments"><span class="cx-dot"></span>alignments</span>
+        <span class="cx-family" data-family="genome"><span class="cx-dot"></span>genome</span>
+        <span class="cx-family" data-family="index"><span class="cx-dot"></span>index</span>
+        <span class="cx-family" data-family="fragments"><span class="cx-dot"></span>fragments</span>
+        <span class="cx-family" data-family="pairs"><span class="cx-dot"></span>pairs</span>
+        <span class="cx-family" data-family="track"><span class="cx-dot"></span>track</span>
+        <span class="cx-family" data-family="peaks"><span class="cx-dot"></span>peaks</span>
+        <span class="cx-family" data-family="value"><span class="cx-dot"></span>value</span>
+        <span class="cx-family" data-family="report"><span class="cx-dot"></span>report</span>
+        <span class="cx-family" data-family="any"><span class="cx-dot"></span>any</span>
+      </div>
+      <div class="gallery-row">
+        <span class="cx-family" data-family="reads"><span class="cx-dot cx-dot--many"></span>reads ×4</span>
+        <span class="cx-family" data-family="alignments"><span class="cx-dot cx-dot--many"></span>alignments ×4</span>
+        <span class="cx-family" data-family="genome"><span class="cx-dot cx-dot--many"></span>genome ×4</span>
+        <span class="cx-family" data-family="index"><span class="cx-dot cx-dot--many"></span>index ×4</span>
+      </div>
+      <div class="gallery-row">
+        <span class="cx-state" data-state="running"><span class="cx-ring" data-state="running"></span>running</span>
+        <span class="cx-state" data-state="done"><span class="cx-ring" data-state="done"></span>done</span>
+        <span class="cx-state" data-state="cached"><span class="cx-ring" data-state="cached"></span>cached</span>
+        <span class="cx-state" data-state="stale"><span class="cx-ring" data-state="stale"></span>stale</span>
+        <span class="cx-state" data-state="failed"><span class="cx-ring" data-state="failed"></span>failed</span>
+        <span class="cx-state" data-state="queued"><span class="cx-ring" data-state="queued"></span>queued</span>
+        <span class="cx-state" data-state="never"><span class="cx-ring" data-state="never"></span>never</span>
+        <span class="cx-state" data-state="bypassed"><span class="cx-ring" data-state="bypassed"></span>bypassed</span>
+      </div>
+      <p>Numbers come from one formatter, <code>dist/js/format.mjs</code>, which joins a number to its unit with a no-break space, so <span class="cx-num">1.1&nbsp;GB</span> and <span class="cx-num">2&nbsp;min&nbsp;41&nbsp;s</span> never wrap; and nothing on screen is smaller than 11&nbsp;px.</p>
 
       <h2 id="chrome">Furniture</h2>
       <p>The previous and next cards at the end of a page, and the build line — ← and → follow them.</p>

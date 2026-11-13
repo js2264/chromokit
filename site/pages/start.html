@@ -1,5 +1,5 @@
 <!-- title: Get started · chromokit -->
-<!-- toc: init Start a site; html Plain HTML; hugo Hugo; zensical Zensical; starlight Starlight; pkgdown pkgdown; quarto Quarto; keep Keeping up to date; other Other ways in; plots Plots -->
+<!-- toc: init Start a site; html Plain HTML; hugo Hugo; zensical Zensical; sphinx Sphinx; starlight Starlight; pkgdown pkgdown; quarto Quarto; keep Keeping up to date; other Other ways in; plots Plots -->
 <div class="cx-layout">
   <aside class="cx-sidebar">{{nav}}</aside>
   <main class="cx-main cx-ground">
@@ -29,6 +29,11 @@ hugo server</code></pre></div>
       <div class="cx-code cx-code--terminal"><pre><code>npx github:js2264/chromokit init zensical
 uv run zensical serve</code></pre></div>
       <p>For a Python package's documentation, as metacooler's: a <code>zensical.toml</code>, the header and in-column footer in <code>overrides/</code>, the stylesheet and the arrow keys in <code>docs/</code>. The release beside the name is <code>extra.release</code>; an optional header button is <code>extra.cta</code>. It works the same with Material for MkDocs.</p>
+
+      <h2 id="sphinx">Sphinx</h2>
+      <div class="cx-code cx-code--terminal"><pre><code>npx github:js2264/chromokit init sphinx
+pip install -r docs/requirements.txt &amp;&amp; sphinx-build docs docs/_build/html</code></pre></div>
+      <p>For a Python package already on Sphinx: the Furo theme, restyled by <code>docs/_static/chromokit.css</code>, with the sidebar's brand (mark, name, kicker, release) in <code>docs/_templates/sidebar/brand.html</code>, and MyST Markdown pages. The kicker is <code>html_context["chromokit_kicker"]</code> in <code>conf.py</code>.</p>
 
       <h2 id="starlight">Astro Starlight</h2>
       <div class="cx-code cx-code--terminal"><pre><code>npx github:js2264/chromokit init starlight
