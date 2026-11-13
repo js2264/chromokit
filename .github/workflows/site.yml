@@ -145,14 +145,17 @@ jobs:
           pattern: example-*
           path: ${{ runner.temp }}/examples
 
-      - name: Put each example under examples/<target>/
+      # The R package's own site is its documentation, not an example: it goes
+      # where r/_pkgdown.yml and r/DESCRIPTION say it lives, /r/.
+      - name: Put each example under examples/<target>/, and the R package's site at r/
         run: |
           for dir in "$RUNNER_TEMP"/examples/example-*; do
             target="${dir##*/example-}"
-            mkdir -p "site/_build/examples/$target"
-            cp -r "$dir"/. "site/_build/examples/$target/"
+            if [ "$target" = r ]; then dest=site/_build/r; else dest="site/_build/examples/$target"; fi
+            mkdir -p "$dest"
+            cp -r "$dir"/. "$dest/"
           done
-          ls site/_build/examples
+          ls site/_build/examples site/_build/r
 
       - name: Screenshots, light and dark
         run: |

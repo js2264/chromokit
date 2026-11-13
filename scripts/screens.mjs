@@ -52,8 +52,10 @@ const EXAMPLES = {
   r: ['/', 'reference/theme_chromokit.html'],
 }
 for (const [target, paths] of Object.entries(EXAMPLES)) {
-  if (!existsSync(join(ROOT, 'examples', target))) continue
-  paths.forEach((path, i) => PAGES.push([`${target}-${i === 0 ? 'home' : 'page'}`, `/examples/${target}/${path === '/' ? '' : path}`]))
+  // The R package's site is published at /r/, the others under /examples/.
+  const at = target === 'r' ? 'r' : `examples/${target}`
+  if (!existsSync(join(ROOT, at))) continue
+  paths.forEach((path, i) => PAGES.push([`${target}-${i === 0 ? 'home' : 'page'}`, `/${at}/${path === '/' ? '' : path}`]))
 }
 
 let chromium

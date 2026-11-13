@@ -155,7 +155,7 @@ const examplesPage = `<!-- title: Example sites · chromokit -->
             `<a class="cx-tile" href="${t.name}/"><span class="cx-glyph">{{icon:${ICON_FOR[t.name] ?? 'file-text'}}}</span><strong>${t.title}</strong><span class="cx-tile-text">${t.description.split(':')[0].split('(')[0].trim()}</span></a>`,
         )
         .join('\n      ')}
-      <a class="cx-tile" href="r/"><span class="cx-glyph">{{icon:r}}</span><strong>R template package</strong><span class="cx-tile-text">chromokit's own R package, built with template: package: chromokit</span></a>
+      <a class="cx-tile" href="../r/"><span class="cx-glyph">{{icon:r}}</span><strong>R template package</strong><span class="cx-tile-text">chromokit's own R package, built with template: package: chromokit</span></a>
     </div>
   </div>
 </main>

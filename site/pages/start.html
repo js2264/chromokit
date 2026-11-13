@@ -44,7 +44,7 @@ npm install &amp;&amp; npm run dev</code></pre></div>
       <p>Two ways. As a <strong>template package</strong>, which pkgdown is built for — in <code>_pkgdown.yml</code>:</p>
       <div class="cx-code"><span class="cx-code__title">_pkgdown.yml</span><pre><code>template:
   package: chromokit</code></pre></div>
-      <p>and <code>Config/Needs/website: js2264/chromokit/r</code> in <code>DESCRIPTION</code>, so the site's CI installs it (<code>pak::pak("js2264/chromokit/r")</code> locally). Or <strong>by copy</strong>, with no dependency:</p>
+      <p>and <code>Config/Needs/website: js2264/chromokit/r</code> in <code>DESCRIPTION</code>, so the site's CI installs it (<code>pak::pak("js2264/chromokit/r")</code> locally). The R package's own site, built that way, is at <a href="r/">r/</a>. Or <strong>by copy</strong>, with no dependency:</p>
       <div class="cx-code cx-code--terminal"><pre><code>npx github:js2264/chromokit init pkgdown
 Rscript -e 'pkgdown::build_site()'</code></pre></div>
       <p>which writes <code>pkgdown/extra.scss</code> (the kit, compiled by pkgdown into Bootstrap), the settings in <code>_pkgdown.yml</code>, your own <code>pkgdown/extra.css</code>, the logo and the favicon.</p>

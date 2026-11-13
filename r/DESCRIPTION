@@ -11,7 +11,7 @@ Description: The R side of 'chromokit' (<https://github.com/js2264/chromokit>),
     frames, tables and callouts; and a 'ggplot2' theme and colour scales
     from the same design tokens.
 License: MIT + file LICENSE
-URL: https://github.com/js2264/chromokit
+URL: https://js2264.github.io/chromokit/r/, https://github.com/js2264/chromokit
 BugReports: https://github.com/js2264/chromokit/issues
 Encoding: UTF-8
 Depends: R (>= 4.1)

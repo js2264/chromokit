@@ -70,7 +70,8 @@ npx github:js2264/chromokit check          # exit 1 if a kit file was edited or 
   `Config/Needs/website: js2264/chromokit/r`. To install it locally, run
   `pak::pak("js2264/chromokit/r")`. The same package also provides
   `theme_chromokit()` and `scale_colour_chromokit()` for ggplot2. See
-  [r/README.md](r/README.md).
+  [r/README.md](r/README.md), and the package's own site, built with its own
+  template, at <https://js2264.github.io/chromokit/r/>.
 - **A link:**
   `https://cdn.jsdelivr.net/gh/js2264/chromokit@v0.1.0/dist/css/chromokit.css`
   has the tokens and components. `…/dist/css/chromokit-page.css` adds the

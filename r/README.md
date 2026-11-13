@@ -7,6 +7,8 @@ template package** and a **ggplot2 theme**, from the kit's design tokens.
 pak::pak("js2264/chromokit/r")
 ```
 
+Its site, built with its own template: <https://js2264.github.io/chromokit/r/>.
+
 ## A package's pkgdown site
 
 In `_pkgdown.yml`:
