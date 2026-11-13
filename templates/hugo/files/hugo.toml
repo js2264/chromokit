@@ -12,6 +12,9 @@ enableRobotsTXT = true
   version = '0.1.0'
   # Your own stylesheets, after chromokit's.
   css = ['site.css']
+  # No bar across the top: the sidebar carries the name, the links and the
+  # theme toggle instead.
+  # header = false
   # An optional button in the header:
   # cta = { text = 'Open the app', href = 'https://example.org' }
   # Icon links in the header (in the drawer on narrow screens); the icon is a

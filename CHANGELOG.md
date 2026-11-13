@@ -31,6 +31,13 @@ token or kit file is a major one.
   - `params.links` puts icon links in the header (Scholar, ORCID, email…);
     on narrow screens they move into the drawer.
   - A page's `class` front matter is added to its layout, e.g. to widen it.
+  - `params.header = false`: no bar across the top. The sidebar carries the
+    mark, name and kicker at its top, and the button, links and theme toggle
+    at its foot (`.cx-page--no-header`, `.cx-sidebar__brand`,
+    `.cx-sidebar__actions`). On narrow screens a floating `.cx-drawer-button`
+    opens it.
+  - `chromokit/theme-toggle.html`: the toggle as a partial, for a site's own
+    layouts.
   - `chromokit/extend-head.html` and `chromokit/extend-body.html` are empty
     partials for a site to fill from its own `layouts/`.
 - **Icons:** book, calendar, graduation-cap, mail, map-pin, newspaper,
