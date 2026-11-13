@@ -15,6 +15,8 @@ enableRobotsTXT = true
   # No bar across the top: the sidebar carries the name, the links and the
   # theme toggle instead.
   # header = false
+  # Always light (or 'dark'), with no theme toggle:
+  # palette = 'light'
   # An optional button in the header:
   # cta = { text = 'Open the app', href = 'https://example.org' }
   # Icon links in the header (in the drawer on narrow screens); the icon is a

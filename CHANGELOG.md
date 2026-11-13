@@ -38,6 +38,8 @@ token or kit file is a major one.
     opens it.
   - `chromokit/theme-toggle.html`: the toggle as a partial, for a site's own
     layouts.
+  - `params.palette = 'light'` (or `'dark'`): one palette whatever the
+    reader's system, with no toggle and no theme.js.
   - `chromokit/extend-head.html` and `chromokit/extend-body.html` are empty
     partials for a site to fill from its own `layouts/`.
 - **Icons:** book, calendar, graduation-cap, mail, map-pin, newspaper,
