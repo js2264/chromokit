@@ -20,6 +20,7 @@ jobs:
   kit:
     name: Build, test and starters
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
 
@@ -56,6 +57,7 @@ jobs:
   r:
     name: R package
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes

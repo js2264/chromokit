@@ -32,6 +32,7 @@ jobs:
   example:
     name: Example (${{ matrix.target }})
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     strategy:
       fail-fast: false
       matrix:
@@ -77,6 +78,7 @@ jobs:
   example-r:
     name: Example (pkgdown, by copy and by template package)
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
@@ -124,6 +126,7 @@ jobs:
     needs: [example, example-r]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v7
 
@@ -186,6 +189,7 @@ jobs:
     needs: [example, example-r, site]
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     permissions:
       pages: write
       id-token: write
