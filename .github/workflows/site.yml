@@ -157,6 +157,9 @@ jobs:
           done
           ls site/_build/examples site/_build/r
 
+      - name: Every link of the site leads somewhere
+        run: node scripts/links.mjs site/_build
+
       - name: Screenshots, light and dark
         run: |
           npm install --no-save playwright

@@ -152,15 +152,20 @@ const examplesPage = `<!-- title: Example sites · chromokit -->
       ${exampleTargets
         .map(
           (t) =>
-            `<a class="cx-tile" href="${t.name}/"><span class="cx-glyph">{{icon:${ICON_FOR[t.name] ?? 'file-text'}}}</span><strong>${t.title}</strong><span class="cx-tile-text">${t.description.split(':')[0].split('(')[0].trim()}</span></a>`,
+            `<a class="cx-tile" href="examples/${t.name}/"><span class="cx-glyph">{{icon:${ICON_FOR[t.name] ?? 'file-text'}}}</span><strong>${t.title}</strong><span class="cx-tile-text">${t.description.split(':')[0].split('(')[0].trim()}</span></a>`,
         )
         .join('\n      ')}
-      <a class="cx-tile" href="../r/"><span class="cx-glyph">{{icon:r}}</span><strong>R template package</strong><span class="cx-tile-text">chromokit's own R package, built with template: package: chromokit</span></a>
+      <a class="cx-tile" href="r/"><span class="cx-glyph">{{icon:r}}</span><strong>R template package</strong><span class="cx-tile-text">chromokit's own R package, built with template: package: chromokit</span></a>
     </div>
   </div>
 </main>
 `
 
+/**
+ * Every relative link in a page is written from the site's root (`gallery.html`,
+ * `examples/hugo/`, `r/`), whatever page it is on: `render` puts the page's
+ * way back to the root in front of it. scripts/links.mjs checks the result.
+ */
 function render(name, source) {
   const root = name.includes('/') ? '../' : ''
   const title = source.match(/<!-- title: (.*?) -->/)?.[1] ?? 'chromokit'
