@@ -28,6 +28,7 @@ themselves as \code{\link[=chromokit_colours]{chromokit_colours()}}.
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://js2264.github.io/chromokit/r/}
   \item \url{https://github.com/js2264/chromokit}
   \item Report bugs at \url{https://github.com/js2264/chromokit/issues}
 }
