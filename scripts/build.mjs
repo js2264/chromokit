@@ -647,9 +647,9 @@ ADAPTERS.hugo = () => {
     if (path.endsWith('hugo.css')) continue
     emit(`dist/hugo/${relative('adapters/hugo', path)}`, read(path))
   }
-  emit('dist/hugo/static/chromokit/chromokit.css', bundle(tokensCss, componentsCss, pageCss, read('adapters/hugo/hugo.css')))
-  emit('dist/hugo/static/chromokit/theme.js', jsHeader + theme)
-  emit('dist/hugo/static/chromokit/chromokit.js', `${jsHeader}${keys}\n${behaviours}`)
+  emit('dist/hugo/static/assets/chromokit/chromokit.css', bundle(tokensCss, componentsCss, pageCss, read('adapters/hugo/hugo.css')))
+  emit('dist/hugo/static/assets/chromokit/theme.js', jsHeader + theme)
+  emit('dist/hugo/static/assets/chromokit/chromokit.js', `${jsHeader}${keys}\n${behaviours}`)
   emit(
     'dist/hugo/data/chromokit_icons.json',
     `${JSON.stringify(Object.fromEntries(Object.keys(iconInner).sort().map((name) => [name, icon(name)])), null, 2)}\n`,

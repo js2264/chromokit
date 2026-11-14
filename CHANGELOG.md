@@ -64,6 +64,13 @@ token or kit file is a major one.
 
 ### Changed
 
+- **Hugo: the theme's files are at `/assets/chromokit/`** (were `/chromokit/`),
+  where the plain-HTML starter keeps them. On a GitHub Pages domain, every
+  repository with a Pages site takes the path of its name, so on the domain
+  of chromokit's own site (`<user>.github.io/chromokit/`) a user site's
+  `/chromokit/` folder was never served and the site went unstyled.
+  `chromokit sync` moves them.
+
 - **The plot series:**
   - They are now the accent plus six family colours (seven in all, was six).
   - The old set failed under simulated protanopia.
