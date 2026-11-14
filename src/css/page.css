@@ -114,7 +114,7 @@ body.cx-page {
   color: var(--cx-text);
 }
 
-.cx-nav a[aria-current='page'] {
+.cx-nav a[aria-current] {
   font-weight: 600;
   color: var(--cx-text);
 }
@@ -173,7 +173,7 @@ body.cx-page {
   border-left: 1px solid transparent;
 }
 
-.cx-nav__group ul a[aria-current='page'] {
+.cx-nav__group ul a[aria-current] {
   border-left-color: var(--cx-accent);
 }
 

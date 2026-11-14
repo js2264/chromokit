@@ -47,6 +47,8 @@ token or kit file is a major one.
   - `params.showDescription = false`: a page's description stays in `<head>`
     and is not shown under its title.
   - `single.html` and `list.html` are one partial, `chromokit/page.html`.
+  - A menu item stays marked in the sidebar on the pages below it (Papers on
+    /papers/one-paper/), with `aria-current="true"`.
   - `chromokit/extend-head.html` and `chromokit/extend-body.html` are empty
     partials for a site to fill from its own `layouts/`.
 - **Icons:** book, calendar, graduation-cap, mail, map-pin, newspaper,
