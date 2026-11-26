@@ -1,0 +1,45 @@
+# koszullab/chromosight at 2e6bf59, as MIGRATION.md's CS-1 to CS-7 leave it. Not
+# attached to the session that wrote this file: what the plan does not say
+# (the license's variant, the authors, the layout) its session checks.
+distribution: chromosight
+project_name: chromosight
+package: chromosight
+command: chromosight
+entry_point: chromosight.cli.chromosight:main
+cli: docopt
+description: Detect patterns, such as loops and borders, in Hi-C contact maps by computer vision.
+version: 1.6.3
+version_module: ""
+# CS-1: "optionally src/": the flat layout, kept.
+src_layout: false
+license: GPL-3.0-or-later
+authors:
+  - name: Cyril Matthey-Doret
+maintainers: []
+keywords: [hi-c, pattern-detection, computer-vision]
+status: 5 - Production/Stable
+owner: koszullab
+repository: chromosight
+default_branch: master
+docs_url: https://koszullab.github.io/chromosight/
+doi: ""
+# CS-5 writes the Nature Communications 2020 paper.
+paper: null
+bioconda: true
+python_max: "3.14"
+python_dev: "3.13"
+docstring_style: numpy
+line_length: 88
+ruff_version: 0.17.4
+ty_required: false
+test_data: data_test
+sdist_test_data: true
+pypi_only: true
+install_run: |
+  cli chromosight test
+install_source_builds: {}
+test_apt: ""
+compiled_dependencies: false
+next_python_apt: libhdf5-dev pkg-config
+gpu: false
+image: false

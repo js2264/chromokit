@@ -156,6 +156,7 @@ const examplesPage = `<!-- title: Example sites · chromokit -->
         )
         .join('\n      ')}
       <a class="cx-tile" href="r/"><span class="cx-glyph">{{icon:r}}</span><strong>R template package</strong><span class="cx-tile-text">chromokit's own R package, built with template: package: chromokit</span></a>
+      <a class="cx-tile" href="examples/report/sample.report.html"><span class="cx-glyph">{{icon:layout-grid}}</span><strong>A tool's report</strong><span class="cx-tile-text">metaTOR's report of a run, written by the report kit</span></a>
     </div>
   </div>
 </main>

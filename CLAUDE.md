@@ -2,7 +2,9 @@
 
 chromokit is a UI kit: chromosomix's design tokens and components, built for seven
 hosts (plain HTML, Hugo, Zensical, Sphinx, Astro Starlight, pkgdown, Quarto) and copied
-into projects by its own command line. Read README.md first.
+into projects by its own command line. It also holds the report kit, which the
+project's Python tools write their reports with, and the copier template of their
+repositories. Read README.md first.
 
 ## Commands
 
@@ -11,6 +13,8 @@ npm install            # icon packages the build reads (lucide-static, simple-ic
 npm run build          # write dist/, _extensions/chromokit/, r/R/tokens.R, r/inst/pkgdown/
 npm run check          # the same, writing nothing; fails if any output is stale (CI runs this)
 npm test               # node --test test/*.test.mjs
+npm run test:report    # the report kit's Python tests (uv)
+npm run test:template  # the copier template, rendered and applied (uv, node)
 npm run site           # site/_build/ (chromokit's own site)
 npm run screens        # screenshots of site/_build/ and any examples/ in it (needs Playwright)
 node bin/chromokit.mjs init <target> <dir>   # try a starter
@@ -19,7 +23,8 @@ node bin/chromokit.mjs init <target> <dir>   # try a starter
 ## Rules
 
 - **Generated files are committed and never edited by hand**: everything in
-  `dist/`, `_extensions/chromokit/`, `r/R/tokens.R` and `r/inst/pkgdown/`.
+  `dist/` (the report kit's `dist/report/` too), `_extensions/chromokit/`,
+  `r/R/tokens.R` and `r/inst/pkgdown/`.
   Edit the source (`tokens/`, `src/`, `adapters/`, `lib/`), run `npm run build`,
   and commit both. `tokens/chromosomix.json` is written by
   `npm run import -- <chromosomix checkout>`, never by hand.
@@ -59,6 +64,27 @@ node bin/chromokit.mjs init <target> <dir>   # try a starter
   chromomap's thresholds (contrast, ΔE, simulated colour blindness) with
   `lib/colour.mjs`; `test/sizes.test.mjs` fails on any font size under 11 px in
   `dist/`. Retune a colour against those tests, not by eye.
+- **The report kit** (`adapters/report/` → `dist/report/`, copied by
+  `chromokit add report` into `src/<package>/_report/`) is Python that sits in
+  other packages:
+  - it names no package and imports nothing outside the standard library but
+    jinja2, markupsafe, yaml and pandas, lazily; its `report.txt` and
+    `report_mqc.yaml` stay byte for byte metaTOR's (the fixture in
+    `test/fixtures/report/metator/` is metaTOR's own output);
+  - its source is formatted with ruff at 88 and linted with the conventions'
+    rules (`npm run test:report` does both); the build stamps the copy in
+    ASCII and marks it `# ruff: noqa` and `# fmt: off`, since its hosts lint
+    and format at their own line lengths;
+  - the page carries `report.css` and `report.js` inline: the build escapes
+    `</style` and `</script`, and every `--cx-*` it reads is declared.
+- **The copier template** (`copier.yml`, `template/`) renders with `[= … =]`,
+  `[% … %]` and `[# … #]`; `trim_blocks` eats the newline after a tag, so a
+  tag that ends a line of text is written `+%]`. Files a repository owns once
+  written are `_skip_if_exists`, and there are no `_tasks`. A rendered
+  `tests/test_docs.py` must stay formatted at every line length from 88 to
+  130: short statements, no construct ruff would join. `npm run
+  test:template` renders the six repositories' answers and applies the
+  template to the samples in `test/fixtures/template/samples/`.
 - Version bumps go through `npm run version:set -- <x.y.z>`, which updates
   `package.json` and `r/DESCRIPTION` and rebuilds; `CHANGELOG.md` gets the
   section.

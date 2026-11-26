@@ -1,0 +1,34 @@
+# Installation
+
+[= project_name =] runs on Linux and macOS, with Python 3.10 or newer.
+
+=== "pip"
+
+    ```bash
+    pip install [= distribution =]
+    ```
+
+=== "uv"
+
+    ```bash
+    uv tool install [= distribution =]   # the command
+    uv add [= distribution =]            # a project's dependency
+    ```
+[% if bioconda %]
+
+=== "conda"
+
+    ```bash
+    conda install -c conda-forge -c bioconda [= distribution =]
+    ```
+[% endif %]
+[% if image %]
+
+=== "Docker"
+
+    ```bash
+    docker run --rm ghcr.io/[= owner | lower =]/[= distribution | lower =]:latest [= command =] --help
+    ```
+[% endif %]
+
+`[= command =] --version` says which version is installed.

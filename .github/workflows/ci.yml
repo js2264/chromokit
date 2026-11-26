@@ -1,8 +1,9 @@
 name: CI
 
 # Every push and pull request: the kit's outputs are up to date with their
-# sources, the tests pass, every starter initialises cleanly, and the R
-# package checks.
+# sources, the tests pass, every starter initialises cleanly, the R package
+# checks, the report kit writes metaTOR's report and MultiQC merges it, and
+# the copier template renders and applies.
 
 on:
   push:
@@ -49,10 +50,80 @@ jobs:
           npm pack --dry-run --json > "$RUNNER_TEMP/pack.json"
           node -e '
             const files = require(process.argv[1])[0].files.map((f) => f.path)
-            for (const need of ["bin/chromokit.mjs", "lib/cli.mjs", "dist/css/chromokit.css", "templates/zensical/target.json", "dist/starlight/index.mjs", "_extensions/chromokit/_extension.yml"])
+            for (const need of ["bin/chromokit.mjs", "lib/cli.mjs", "dist/css/chromokit.css", "templates/zensical/target.json", "dist/starlight/index.mjs", "_extensions/chromokit/_extension.yml", "dist/report/__init__.py", "dist/report/base.html.j2"])
               if (!files.includes(need)) { console.error("missing from the package: " + need); process.exit(1) }
             console.log(files.length + " files in the package")
           ' "$RUNNER_TEMP/pack.json"
+
+  # The report kit, as a tool's Python runs it: metaTOR's report written byte
+  # for byte, read back, two samples merged by MultiQC, the page, and the
+  # kit's Python under ruff and ty. On the oldest Python at the floors the
+  # conventions give its dependencies, and on the newest.
+  report:
+    name: Report kit, Python ${{ matrix.python }} (${{ matrix.dependencies }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - python: "3.10"
+            dependencies: floors
+            with: jinja2==3.1.0 pyyaml==6.0 pandas==2.0.0 numpy<2
+          - python: "3.14"
+            dependencies: newest
+            with: jinja2 pyyaml pandas numpy
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: The kit's tests
+        env:
+          WITH: ${{ matrix.with }}
+        run: |
+          args=()
+          for package in $WITH; do args+=(--with "$package"); done
+          uv run --no-project --with pytest "${args[@]}" pytest test/report -q
+
+      - name: The page's plotly.js is on its CDN
+        run: |
+          url=$(sed -n 's/^PLOTLY_JS = "\(.*\)"$/\1/p' dist/report/__init__.py)
+          echo "$url"
+          curl -fsSI "$url" > /dev/null
+
+  # The copier template: rendered with the six repositories' answers
+  # (actionlint, zizmor, the files parsed), then applied to the samples and
+  # run as their CI would run them.
+  template:
+    name: Copier template
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          # copier reads the template from this repository's history.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.13"
+
+      - name: Rendered and applied
+        run: uv run --no-project --with pytest --with pyyaml pytest test/template -q
 
   r:
     name: R package

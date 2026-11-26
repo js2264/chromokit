@@ -1,0 +1,39 @@
+distribution: doctool
+project_name: doctool
+package: doctool
+command: doctool
+entry_point: doctool.cli:main
+cli: docopt
+description: A sample tool with a docopt command line, which chromokit's tests apply the template to.
+version: 1.2.3
+version_module: ""
+src_layout: true
+license: GPL-3.0-or-later
+authors:
+  - name: Josiah Carberry
+maintainers: []
+keywords: [sample]
+status: 5 - Production/Stable
+owner: koszullab
+repository: doctool
+default_branch: master
+docs_url: https://koszullab.github.io/doctool/
+doi: ""
+paper: null
+bioconda: true
+python_max: "3.14"
+python_dev: "3.13"
+docstring_style: numpy
+line_length: 100
+ruff_version: 0.17.4
+ty_required: false
+test_data: tests/data
+sdist_test_data: true
+pypi_only: true
+install_run: ""
+install_source_builds: {}
+test_apt: ""
+compiled_dependencies: false
+next_python_apt: ""
+gpu: false
+image: false

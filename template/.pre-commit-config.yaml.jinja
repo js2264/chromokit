@@ -1,0 +1,20 @@
+# CONVENTIONS.md § 5. ruff's rev is the ruff of uv.lock: CI's lint job fails when they differ.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: check-added-large-files
+        args: [--maxkb=5000]
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v[= ruff_version =]
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format

@@ -1,0 +1,41 @@
+distribution: sampletool
+project_name: sampleTool
+package: sampletool
+command: sampletool
+entry_point: sampletool.cli:cli
+cli: click
+description: A sample tool, which chromokit's tests apply the template to.
+version: 0.1.0
+version_module: ""
+src_layout: true
+license: MIT
+authors:
+  - name: Josiah Carberry
+    orcid: 0000-0002-1825-0097
+maintainers: []
+keywords: [sample]
+status: 3 - Alpha
+owner: js2264
+repository: sampletool
+default_branch: main
+docs_url: https://js2264.github.io/sampletool/
+doi: ""
+paper: null
+bioconda: false
+python_max: "3.14"
+python_dev: "3.13"
+docstring_style: numpy
+line_length: 88
+ruff_version: 0.17.4
+ty_required: true
+test_data: tests/data
+sdist_test_data: true
+pypi_only: true
+install_run: |
+  cli sampletool hello -n CI
+install_source_builds: {}
+test_apt: tabix
+compiled_dependencies: false
+next_python_apt: ""
+gpu: false
+image: false

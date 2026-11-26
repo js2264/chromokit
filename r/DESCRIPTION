@@ -1,7 +1,7 @@
 Package: chromokit
 Type: Package
 Title: The 'chromokit' Look for 'pkgdown' Sites and 'ggplot2' Plots
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: person("Jacques", "Serizay", email = "jacquesserizay@gmail.com",
     role = c("aut", "cre"))
 Description: The R side of 'chromokit' (<https://github.com/js2264/chromokit>),

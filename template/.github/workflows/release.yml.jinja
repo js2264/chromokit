@@ -1,0 +1,247 @@
+name: Release
+
+# CONVENTIONS.md § 14, on a tag vX.Y.Z, which `uv run bump-my-version bump
+# minor` (or patch, or major) makes and `git push --follow-tags` pushes:
+#   1. CI on the tagged commit;
+#   2. the sdist and the wheel built and checked: the tag is v + the wheel's
+#      version, the changelog has its section, the wheel installs and runs;
+#   3. PyPI, by trusted publishing;
+#   4. the GitHub release, its notes the changelog's section[% if image %];
+#   5. the image, built from the released wheel, tested, then pushed[% endif %].
+# Run by hand on an existing tag (Run workflow, then the tag), it builds and
+# checks everything again, and publishes nothing.
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A release is never cancelled.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  ci:
+    name: CI on the tag
+    # ./…, GitHub's documented form, which actionlint checks; zizmor suggests $/…, which it does not take.
+    uses: ./.github/workflows/ci.yml # zizmor: ignore[self-repository]
+    permissions:
+      contents: read
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  build:
+    name: Build and verify
+    needs: ci
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+
+      - name: The sdist and the wheel
+        run: uv build
+
+      - name: Their metadata
+        run: uvx twine==7.0.0 check --strict dist/*
+
+      # The wheel's METADATA holds the version wherever the repository writes it.
+      - name: The tag is v, then the wheel's version
+        id: version
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version=$(unzip -p dist/*.whl '*.dist-info/METADATA' | sed -n 's/^Version: //p')
+          if [ "$TAG" != "v$version" ]; then
+            echo "::error::The tag $TAG is not v$version, the version of the wheel"
+            exit 1
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      # Appendix B.2 of the migration plan: the `## [X.Y.Z]` heading, then
+      # everything up to the next `## ` heading or a `---` line.
+      - name: The changelog's section for it
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          awk -v ver="$VERSION" '
+            /^## / { if (found) exit; if (index($0, "## [" ver "]") == 1) found = 1; next }
+            found && /^---$/ { exit }
+            found
+          ' docs/changelog.md > release-notes.md
+          grep -q '[^[:space:]]' release-notes.md ||
+            { echo "::error::docs/changelog.md has no entry for $VERSION"; exit 1; }
+[% if sdist_test_data %]
+
+      # Packagers run the tests from the sdist (CONVENTIONS.md § 2).
+      - name: The sdist ships the test data
+        run: tar -tzf dist/*.tar.gz | grep -q '/[= test_data =]/'
+[% endif %]
+
+      - name: The wheel, installed in a clean environment, runs
+        run: |
+          uv venv --python [= python_newest =] "$RUNNER_TEMP/smoke"
+          uv pip install --python "$RUNNER_TEMP/smoke/bin/python" dist/*.whl
+          cd "$RUNNER_TEMP"
+          "$RUNNER_TEMP/smoke/bin/[= command =]" --version
+          "$RUNNER_TEMP/smoke/bin/[= command =]" --help
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: |
+            dist/
+            release-notes.md
+
+  publish:
+    name: Publish to PyPI
+    needs: build
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: pypi
+      url: https://pypi.org/project/[= distribution =]/${{ needs.build.outputs.version }}/
+    permissions:
+      # Trusted publishing, no stored token: [= owner =]/[= repository =] is a
+      # trusted publisher of [= distribution =] on PyPI, for this workflow,
+      # release.yml, and the environment pypi. It stays in each repository:
+      # PyPI does not accept a reusable workflow as the publisher.
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+
+      - uses: pypa/gh-action-pypi-publish@7245906fb61fa33a13554f9d5fb856fe61758086 # v1.14.3
+
+  github-release:
+    name: The GitHub release
+    needs: [build, publish]
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+
+      - name: vX.Y.Z, with the changelog's section, the sdist and the wheel
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" dist/* --repo "$GITHUB_REPOSITORY" --title "$TAG" --notes-file release-notes.md --verify-tag
+[% if image %]
+
+  # CONVENTIONS.md § 15: the image of the wheel just published, tested before
+  # it is pushed[% if image_v_tags %]; X.Y.Z, latest, and vX.Y.Z, a scheme already published[% else %]; tags X.Y.Z and latest[% endif %][% if image_variants %], each variant with its suffix[% endif %].
+  image:
+    name: The image[% if image_variants %], ${{ matrix.suffix }}[% endif +%]
+    needs: [build, publish]
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    permissions:
+      contents: read
+      packages: write
+[% if image_variants %]
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+[% for variant in image_variants %]
+          - suffix: [= variant.suffix =]
+            base: [= variant.base =]
+[% endfor %]
+[% endif %]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+
+[% if image_arm64 %]
+      - uses: docker/setup-qemu-action@99012661954931238ded8c8b007157a8430204e1 # v4.4.0
+
+[% endif %]
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+
+      - name: Built from the released wheel
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          load: true
+          tags: [= distribution | lower =]:test
+[% if image_variants %]
+          build-args: BASE=${{ matrix.base }}
+          cache-from: type=gha,scope=${{ matrix.suffix }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.suffix }}
+[% else %]
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+[% endif %]
+
+      - name: The image runs [= command =]
+        run: docker run --rm [= distribution | lower =]:test [= command =] --version
+
+      - uses: docker/metadata-action@dc802804100637a589fabce1cb79ff13a1411302 # v6.2.0
+        id: meta
+        with:
+          images: ghcr.io/${{ github.repository_owner }}/[= distribution | lower =]
+          # No `latest` from the action: the tags below say which image gets it.
+          flavor: |
+            latest=false
+          tags: |
+[% if image_variants %]
+            type=semver,pattern={{version}},suffix=-${{ matrix.suffix }}
+            type=raw,value=latest-${{ matrix.suffix }}
+            type=semver,pattern={{version}},enable=${{ matrix.suffix == '[= image_variants[0].suffix =]' }}
+            type=raw,value=latest,enable=${{ matrix.suffix == '[= image_variants[0].suffix =]' }}
+[% if image_v_tags %]
+            type=semver,pattern=v{{version}},suffix=-${{ matrix.suffix }}
+[% endif %]
+[% else %]
+            type=semver,pattern={{version}}
+            type=raw,value=latest
+[% if image_v_tags %]
+            type=semver,pattern=v{{version}}
+[% endif %]
+[% endif %]
+
+      - uses: docker/login-action@8aa5831fb8d48d8f76594c7ddde61ae58019f550 # v4.8.0
+        if: github.event_name == 'push'
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pushed, for linux/amd64[% if image_arm64 %] and linux/arm64[% endif +%]
+        if: github.event_name == 'push'
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: .
+          push: true
+          platforms: linux/amd64[% if image_arm64 %],linux/arm64[% endif +%]
+[% if image_variants %]
+          build-args: BASE=${{ matrix.base }}
+          cache-from: type=gha,scope=${{ matrix.suffix }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.suffix }}
+[% else %]
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+[% endif %]
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+[% endif %]

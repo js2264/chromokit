@@ -1,0 +1,144 @@
+{#- chromokit 0.2.0 - MIT - https://github.com/js2264/chromokit - the report kit: do not edit, chromokit sync replaces it and chromokit check refuses an edit -#}
+{#- The pieces of a report's page, for a tool's template:
+
+        {% import "_report/macros.html.j2" as kit %}
+        {{ kit.stat("Contigs", kit.number(report.contigs.contigs), "of the assembly") }}
+
+    number, mbp: a number as the page writes it. stat: a card of the overview,
+    which can filter a table. badge: a class, its colour a swatch beside its
+    name. facts, keys: a section's values. table, table_tools: a sortable,
+    filterable table, and its Download CSV button. plot: a plot's place.
+    command: a command line. files: links to the run's outputs. title: a name
+    of report.txt as a heading. -#}
+
+{#- A number, with a thousands separator and `digits` decimals; NA when missing. -#}
+{% macro number(value, digits=0) -%}
+{%- if value is none -%}NA{%- elif digits == 0 -%}{{ "{:,.0f}".format(value) }}{%- else -%}{{ ("{:,.%df}" % digits).format(value) }}{%- endif -%}
+{%- endmacro %}
+
+{#- A length in bp, in Mbp with 2 decimals; NA when missing. -#}
+{% macro mbp(value) -%}
+{%- if value is none -%}NA{%- else -%}{{ "{:,.2f}".format(value / 1000000) }} Mbp{%- endif -%}
+{%- endmacro %}
+
+{#- A name of report.txt as a heading: contig_n50 → Contig n50. -#}
+{% macro title(name) -%}{{ (name | replace("_", " ")) | capitalize }}{%- endmacro %}
+
+{#- A card of the overview: a label, a value, a line under it. swatch: a
+    colour beside the label (a class's). filter: (table id, value): a click
+    shows the rows of that table whose data-filter-value is value. -#}
+{% macro stat(label, value, detail="", swatch=none, filter=none, title=none) -%}
+<div class="cx-stat{% if swatch %} cx-stat--swatch{% endif %}{% if filter %} cx-stat--filter{% endif %}"
+  {%- if swatch %} style="--cx-swatch: {{ swatch }}"{% endif %}
+  {%- if filter %} data-filter-table="{{ filter[0] }}" data-filter-value="{{ filter[1] }}" role="button" tabindex="0"{% endif %}
+  {%- if title %} title="{{ title }}"{% endif %}>
+  <span class="cx-stat__label">{{ label }}</span>
+  <span class="cx-stat__value">{{ value }}</span>
+  {% if detail %}<span class="cx-stat__detail">{{ detail }}</span>{% endif %}
+</div>
+{%- endmacro %}
+
+{#- A class, as a pill: its colour a swatch, its name in the text's colour,
+    so that the name, not the colour alone, tells it. NA without one. -#}
+{% macro badge(label, swatch=none) -%}
+{%- if label -%}<span class="cx-badge cx-badge--swatch"{% if swatch %} style="--cx-swatch: {{ swatch }}"{% endif %}>{{ label }}</span>{%- else -%}NA{%- endif -%}
+{%- endmacro %}
+
+{#- Values as facts, in columns: pairs of (label, value), or a mapping of
+    report.txt's keys, written as report.txt writes them. -#}
+{% macro facts(values) -%}
+<dl class="cx-report__facts">
+  {% if values is mapping %}
+  {% for key, value in values.items() %}<div><dt>{{ key }}</dt><dd>{{ value | value(key) }}</dd></div>{% endfor %}
+  {% else %}
+  {% for label, value in values %}<div><dt>{{ label }}</dt><dd>{{ value }}</dd></div>{% endfor %}
+  {% endif %}
+</dl>
+{%- endmacro %}
+
+{#- A mapping of report.txt's keys as a table of two columns: the Run
+    section's parameters. -#}
+{% macro keys(values) -%}
+<table class="cx-report__keys">
+  <tbody>
+  {% for key, value in values.items() %}<tr><th scope="row">{{ key }}</th><td>{{ value | value(key) }}</td></tr>{% endfor %}
+  </tbody>
+</table>
+{%- endmacro %}
+
+{#- A plot's place: plotly.js draws figures[id] in it once the page has loaded. -#}
+{% macro plot(id, caption=none) -%}
+<figure class="cx-report__figure">
+  {% if caption %}<figcaption>{{ caption }}</figcaption>{% endif %}
+  <div class="cx-report__plot" id="{{ id }}" data-figure></div>
+</figure>
+{%- endmacro %}
+
+{#- Over a table: a filter, the Download CSV button (the rows shown), and how
+    many rows are shown. -#}
+{% macro table_tools(table, file, placeholder="Filter the rows") -%}
+<div class="cx-report__tools">
+  <input type="search" class="cx-input cx-report__filter" data-table="{{ table }}" placeholder="{{ placeholder }}" aria-label="{{ placeholder }}">
+  <button type="button" class="cx-control cx-report__download" data-table="{{ table }}" data-file="{{ file }}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cx-icon" aria-hidden="true"><path d="M12 15V3" /><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="m7 10 5 5 5-5" /></svg> Download CSV</button>
+  <span class="cx-report__count" id="{{ table }}-count" aria-live="polite"></span>
+</div>
+{%- endmacro %}
+
+{#- A table of report.txt (rows: a list of mappings), sortable on a click,
+    filterable as you type, with its Download CSV button. labels: a header
+    for a column ({"length_bp": "Length (bp)"}). A column of numbers is
+    aligned on the right, and sorts by its value. -#}
+{% macro table(id, rows, columns, labels={}, file=none, placeholder="Filter the rows") -%}
+{% set kinds = namespace(numeric=[]) %}
+{% for column in columns %}
+  {% set seen = namespace(numbers=0, others=0) %}
+  {% for row in rows %}
+    {% set cell = row[column] %}
+    {% if cell is number and cell is not boolean %}{% set seen.numbers = seen.numbers + 1 %}{% elif cell is not none %}{% set seen.others = seen.others + 1 %}{% endif %}
+  {% endfor %}
+  {% if seen.numbers and not seen.others %}{% set kinds.numeric = kinds.numeric + [column] %}{% endif %}
+{% endfor %}
+{{ table_tools(id, file or (id ~ ".csv"), placeholder) }}
+<div class="cx-report__scroll">
+<table class="cx-table cx-report__table" id="{{ id }}" data-sortable>
+  <thead><tr>
+  {% for column in columns %}
+    <th scope="col"{% if column in kinds.numeric %} class="cx-report__num"{% endif %}>{{ labels.get(column, column) }}</th>
+  {% endfor %}
+  </tr></thead>
+  <tbody>
+  {% for row in rows %}
+  <tr>
+    {% for column in columns %}
+    {% set cell = row[column] %}
+    {% if cell is number and cell is not boolean %}
+    <td class="cx-report__num" data-sort="{{ cell }}">{{ cell | value(column) }}</td>
+    {% else %}
+    <td>{{ cell | value(column) }}</td>
+    {% endif %}
+    {% endfor %}
+  </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{%- endmacro %}
+
+{#- A command line, in a terminal's frame; step: what it ran. -#}
+{% macro command(line, step=none) -%}
+<div class="cx-code cx-code--terminal cx-report__command">
+  {% if step %}<span class="cx-report__step">{{ step }}</span>{% endif %}
+  <pre><code>{{ line or "NA" }}</code></pre>
+</div>
+{%- endmacro %}
+
+{#- Links to the run's outputs, paths relative to the page. -#}
+{% macro files(paths, missing="No output of the run is beside this page.") -%}
+{% if paths %}
+<ul class="cx-report__files">
+  {% for path in paths %}<li><a href="{{ path }}"><code>{{ path }}</code></a></li>{% endfor %}
+</ul>
+{% else %}
+<p class="cx-report__note">{{ missing }}</p>
+{% endif %}
+{%- endmacro %}

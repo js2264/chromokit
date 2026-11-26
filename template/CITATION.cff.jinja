@@ -1,0 +1,42 @@
+# GitHub shows this file as "Cite this repository", and Zenodo reads it for
+# each release (CONVENTIONS.md § 17). bump-my-version updates version and
+# date-released.
+cff-version: 1.2.0
+message: "If you use [= project_name =], please cite it as below."
+type: software
+title: "[= project_name =]"
+abstract: "[= description | replace('"', '\\"') =]"
+version: "[= version =]"
+date-released: "[= '%Y-%m-%d' | strftime =]"
+[% if doi %]
+doi: "[= doi =]"
+[% endif %]
+license: "[= license =]"
+repository-code: "https://github.com/[= owner =]/[= repository =]"
+url: "[= docs_url =]"
+keywords:
+[% for keyword in keywords %]
+  - "[= keyword =]"
+[% endfor %]
+authors:
+[% for person in authors %]
+[% set words = person.name.split(" ") %]
+  - family-names: "[= words[-1] =]"
+    given-names: "[= words[:-1] | join(' ') =]"
+[% if person.orcid %]
+    orcid: "https://orcid.org/[= person.orcid =]"
+[% endif %]
+[% endfor %]
+[% if paper %]
+preferred-citation:
+  type: article
+  title: "[= paper.title | replace('"', '\\"') =]"
+  journal: "[= paper.journal =]"
+  year: [= paper.year =]
+  doi: "[= paper.doi =]"
+  authors:
+[% for author in paper.authors %]
+    - family-names: "[= author.family =]"
+      given-names: "[= author.given =]"
+[% endfor %]
+[% endif %]

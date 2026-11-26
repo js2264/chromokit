@@ -1,0 +1,94 @@
+# Contributing
+
+Bug reports, fixes, features and corrections to these pages are all welcome,
+on [GitHub](https://github.com/[= owner =]/[= repository =]). [= project_name =] follows
+the project's [conventions](https://github.com/koszullab/.github/blob/main/CONVENTIONS.md).
+
+## Setting up
+
+The environment is [uv](https://docs.astral.sh/uv/)'s; `uv.lock` pins every
+dependency and is committed.
+
+```bash
+git clone https://github.com/[= owner =]/[= repository =].git
+cd [= repository =]
+uv sync                       # the environment: [= project_name =], editable, and the dev group
+uv run pre-commit install     # the hooks: ruff, on every commit
+```
+
+## Testing
+
+```bash
+uv run pytest                                   # the tests, with coverage
+uv run ruff check . && uv run ruff format .     # lint and format
+uv run ty check [= 'src' if src_layout else package =]                            # types
+```
+
+- The command line is tested in-process, with click's `CliRunner`; a
+  subprocess is for third-party programs only, and a test that needs a
+  program that is not installed is skipped.
+- A known bug is an `xfail` test naming its issue in `reason=`.
+- Coverage stays at 80 %, overall and on the lines a pull request changes.
+  Before pushing:
+
+    ```bash
+    uv run pytest
+    uv run diff-cover coverage.xml --compare-branch=origin/[= default_branch =] --fail-under=80
+    ```
+
+## Documenting
+
+The site is built from `docs/` by [zensical](https://zensical.org), in
+[chromokit](https://github.com/js2264/chromokit)'s look, and published at
+<[= docs_url =]>.
+
+```bash
+uv run --only-group docs zensical serve     # http://localhost:8000
+```
+
+- **Pages:** the Markdown files of `docs/`, listed in order by `nav` in
+  `zensical.toml`. A new page goes in both.
+- **The command line:** `docs/cli.md`, written by hand. `tests/test_docs.py`
+  fails when it misses a command or an option, or documents one that does not
+  exist.
+- **The Python API:** `::: [= package =].<module>` directives in `docs/api/`,
+  which mkdocstrings expands from the docstrings ([= docstring_style =] style).
+- **The look:** chromokit's files (`overrides/`, `docs/stylesheets/chromokit.css`,
+  `docs/javascripts/chromokit.js`, listed in `chromokit.json`) are never
+  edited; the site's own styles go in `docs/stylesheets/site.css`.
+
+    ```bash
+    npx github:js2264/chromokit sync     # a newer chromokit
+    npx github:js2264/chromokit check    # nothing of chromokit's edited
+    ```
+
+## Changing things
+
+- **Every commit is a [Conventional Commit](https://www.conventionalcommits.org/en/v1.0.0/):**
+  `type(scope): summary`, and a body that says why.
+- **A change a user can notice** gets its entry under `## Unreleased` in
+  `docs/changelog.md`, ending with a link to its pull request.
+- **A pull request is reviewed as a whole, tested at its head, and squash-merged.**
+- **Nothing a user calls is renamed:** commands, options, output files,
+  modules. An alias is added instead.
+
+## Releasing
+
+From an up-to-date `[= default_branch =]` with green CI:
+
+```bash
+uv run bump-my-version bump minor     # or patch, or major
+git push --follow-tags
+```
+
+bump-my-version sets the version ([% if version_module %]`[= version_module =]`[% else %]`pyproject.toml` and `uv.lock`[% endif %],
+`zensical.toml`'s `release`, `CITATION.cff`), turns `## Unreleased` into the
+version's section, commits `chore(release): vX.Y.Z` and tags `vX.Y.Z`. The tag
+starts `release.yml`: CI on the tag, the sdist and the wheel checked, PyPI by
+trusted publishing, the GitHub release from the changelog[% if image %], and the image[% endif %].
+[% if bioconda %]
+Bioconda's bot picks up the release; when runtime dependencies changed, the
+recipe's are updated in bioconda-recipes the same day.
+[% endif %]
+
+The project's template (chromokit's) brings its changes with `uvx copier update`.

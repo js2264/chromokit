@@ -1,0 +1,34 @@
+# File formats
+
+What [= project_name =] reads and writes.
+
+## The report of a run
+
+`[= command =] report` writes the report of one run, for one sample, in the
+output directory (CONVENTIONS.md § 12): `<sample>.report.txt`,
+`<sample>.report_mqc.yaml` and `<sample>.report.html`.
+
+### `<sample>.report.txt` { #reporttxt }
+
+Every number of the report, for scripts: `[section]`, then a key and its value
+per line; `[table: name]`, then a header and a row per line; `NA` when
+missing. Its `format_version` changes when a key, a column, a unit or a
+MultiQC column changes or goes.
+
+| Section | Key | Unit | MultiQC column |
+|---|---|---|---|
+
+### `<sample>.report_mqc.yaml` { #report_mqcyaml }
+
+[MultiQC](https://multiqc.info)'s custom content (`id: [= distribution | lower | replace('-', '_') =]`):
+the sample's row of its General Statistics table.
+
+### `<sample>.report.html` { #reporthtml }
+
+A page to read the run with. Its plots are drawn by plotly.js, which it loads
+from its CDN: offline, it keeps its numbers and tables.
+
+## Logs
+
+Each command that writes outputs writes its log beside them,
+`<sample>.[= distribution | lower =]_<YYYYMMDDHHMMSS>.log`.

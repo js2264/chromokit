@@ -1,0 +1,146 @@
+{#- chromokit 0.2.0 - MIT - https://github.com/js2264/chromokit - the report kit: do not edit, chromokit sync replaces it and chromokit check refuses an edit -#}
+{#- The page of a tool's report of a run: metaTOR's page, in chromokit's look,
+    light and dark. write_html renders it, from the tool's template:
+
+        {% extends "_report/base.html.j2" %}
+        {% import "_report/macros.html.j2" as kit %}
+        {% set nav = [("mags", "MAGs"), ("contigs", "Contigs")] %}
+        {% block overview %}…cards, plots…{% endblock %}
+        {% block sections %}<section id="mags" class="cx-report__section">…</section>{% endblock %}
+
+    `nav` lists the tool's sections, between Overview and Run. The blocks:
+    title, head (more of <head>: a <style> of the tool's own), meta (the line
+    under the sample's name), overview, sections, run, files, footer and
+    scripts. Without a tool's template, the page shows every section of the
+    report as facts and every table, sortable, under Overview.
+
+    What the page reads (see write_html): tool, report (the sections), sample,
+    tables (each a list of rows), columns, figures, links, inputs, key_numbers,
+    plotly_js, format_version, and the tool's own context. -#}
+{% import "_report/macros.html.j2" as kit %}
+{% set skipped = ["report", "run", "commands"] %}
+{% if nav is not defined %}
+{% set found = namespace(nav=[]) %}
+{% if tool.template is none %}
+{% for name in report if name not in skipped %}{% set found.nav = found.nav + [("section-" ~ name, kit.title(name))] %}{% endfor %}
+{% for name in tables %}{% set found.nav = found.nav + [("table-" ~ name, kit.title(name) ~ (" table" if name in report else ""))] %}{% endfor %}
+{% endif %}
+{% set nav = found.nav %}
+{% endif %}
+<!DOCTYPE html>
+<html lang="en" data-cx-theme-key="chromokit-report:theme">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="{{ tool.name }} {{ tool.version }} (chromokit's report kit)">
+<title>{% block title %}{{ tool.name }} report · {{ sample }}{% endblock %}</title>
+<script>{{ kit_js }}</script>
+<script src="{{ plotly_js }}" charset="utf-8" defer></script>
+<style>{{ kit_css }}</style>
+{% block head %}{% endblock %}
+</head>
+<body class="cx-report">
+<header class="cx-report__bar">
+  <div class="cx-report__brand">
+    <span class="cx-report__tool">{{ tool.name }}</span>
+    <span class="cx-report__kicker" aria-hidden="true">report</span>
+    <span class="cx-chip" title="The version of {{ tool.name }} that wrote this report">v{{ tool.version }}</span>
+  </div>
+  <nav class="cx-report__nav" aria-label="Sections of the report">
+    <a href="#overview">Overview</a>
+    {% for id, label in nav %}
+    <a href="#{{ id }}">{{ label }}</a>
+    {% endfor %}
+    <a href="#run">Run</a>
+    <a href="#files">Files</a>
+  </nav>
+  <div class="cx-report__actions">
+    <button type="button" class="cx-control cx-control--icon cx-control--quiet cx-theme-toggle" data-cx-theme-toggle aria-label="Theme">
+      <span class="cx-theme-icon cx-theme-icon--system"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cx-icon" aria-hidden="true"><rect width="20" height="14" x="2" y="3" rx="2" /><line x1="8" x2="16" y1="21" y2="21" /><line x1="12" x2="12" y1="17" y2="21" /></svg></span>
+      <span class="cx-theme-icon cx-theme-icon--light"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cx-icon" aria-hidden="true"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></svg></span>
+      <span class="cx-theme-icon cx-theme-icon--dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="cx-icon" aria-hidden="true"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401" /></svg></span>
+    </button>
+  </div>
+</header>
+<main class="cx-report__main">
+<div class="cx-report__masthead">
+  <p class="cx-kicker">Sample</p>
+  <h1 class="cx-report__sample">{{ sample }}</h1>
+  <p class="cx-report__meta">
+  {% block meta %}
+    {% for label, value in inputs.items() %}
+    <span class="cx-report__input"><span class="cx-report__label">{{ label }}</span> <code>{{ value }}</code></span>
+    {% endfor %}
+    {% if report.report.written is defined %}
+    <span class="cx-report__input"><span class="cx-report__label">Written</span> {{ report.report.written | replace("T", " ") }}</span>
+    {% endif %}
+    <span class="cx-report__input"><span class="cx-report__label">By</span> {{ tool.name }} {{ tool.version }}</span>
+  {% endblock %}
+  </p>
+</div>
+
+<section id="overview" class="cx-report__section">
+  <h2>Overview</h2>
+  {% block overview %}
+  {% if key_numbers %}
+  <p class="cx-report__lead">The numbers of the run that MultiQC gathers over the samples, in its General Statistics table.</p>
+  <div class="cx-report__cards">
+    {% for card in key_numbers %}
+    {{ kit.stat(card.label, card.value, card.detail) }}
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if tool.template is none and figures %}
+  <div class="cx-report__grid">
+    {% for id in figures %}{{ kit.plot(id, kit.title(id | replace("plot-", ""))) }}{% endfor %}
+  </div>
+  {% endif %}
+  {% endblock %}
+</section>
+
+{% block sections %}
+{% if tool.template is none %}
+{% for name, values in report.items() if name not in skipped %}
+<section id="section-{{ name }}" class="cx-report__section">
+  <h2>{{ kit.title(name) }}</h2>
+  {{ kit.facts(values) }}
+</section>
+{% endfor %}
+{% for name, rows in tables.items() %}
+<section id="table-{{ name }}" class="cx-report__section">
+  <h2>{{ kit.title(name) }}{% if name in report %} table{% endif %}</h2>
+  {{ kit.table("table-" ~ name, rows, columns[name], file=sample ~ "_" ~ name ~ ".csv") }}
+</section>
+{% endfor %}
+{% endif %}
+{% endblock %}
+
+<section id="run" class="cx-report__section">
+  <h2>Run</h2>
+  {% block run %}
+  <p class="cx-report__lead">How the run was made: its parameters, then its command lines.</p>
+  {% if report.run is defined %}{{ kit.keys(report.run) }}{% endif %}
+  {% if report.commands is defined %}
+  {% for step, line in report.commands.items() %}{{ kit.command(line, step) }}{% endfor %}
+  {% endif %}
+  {% endblock %}
+</section>
+
+<section id="files" class="cx-report__section">
+  <h2>Files</h2>
+  {% block files %}
+  <p class="cx-report__lead">The outputs of the run beside this page.</p>
+  {{ kit.files(links.files if links.files is defined else []) }}
+  {% endblock %}
+</section>
+</main>
+
+<footer class="cx-report__footer">
+  {% block footer %}
+  Written by {{ tool.name }} {{ tool.version }} · report format {{ format_version }} · plots drawn by plotly.js, which this page loads from <code>cdn.plot.ly</code> · <a href="https://github.com/js2264/chromokit">chromokit</a>'s report kit
+  {% endblock %}
+</footer>
+<script id="cx-report-figures" type="application/json">{{ figures | tojson }}</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

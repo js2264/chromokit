@@ -1,0 +1,43 @@
+# Dependabot (CONVENTIONS.md § 7).
+#
+# [= project_name =] sets lower bounds only on its runtime dependencies, so
+# users installing it always get the newest upstream releases. Weekly updates
+# of uv.lock make CI run on those releases too: a failing Dependabot pull
+# request means [= project_name =] is already broken for fresh installs. (CI's
+# weekly bounds job re-resolves without the lock; these pull requests move the
+# lock itself.)
+#
+# uv's minor and patch updates come grouped in one pull request, which merges
+# itself once the required checks pass (dependabot-automerge.yml). Major
+# updates come one per pull request, and the actions[% if image %] and the image's base[% endif +%]
+# in a grouped one, for review.
+version: 2
+updates:
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      uv-minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+[% if image %]
+
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 2
+[% endif %]

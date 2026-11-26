@@ -1,0 +1,67 @@
+# Working on [= project_name =]
+
+The instructions for coding agents, here and nowhere else (CONVENTIONS.md
+§ 21): Copilot and Claude Code read this file. Do not add a `CLAUDE.md`, which
+would switch Claude Code off reading it; a personal one holding the line
+`@AGENTS.md` is ignored by git.
+
+[= description =] Read [README.md](README.md) and the
+[documentation]([= docs_url =]) first; the project's conventions are
+[koszullab/.github's CONVENTIONS.md](https://github.com/koszullab/.github/blob/main/CONVENTIONS.md).
+
+## Commands
+
+```bash
+uv sync                                         # the environment
+uv run pytest                                   # the tests, with coverage
+uv run ruff check . && uv run ruff format .     # lint and format
+uv run ty check [= 'src' if src_layout else package =]                            # types
+uv run pre-commit install                       # the hooks
+uv run --only-group docs zensical serve         # the documentation, at http://localhost:8000
+uv run bump-my-version bump minor               # a release (docs/contributing.md)
+```
+
+## Layout
+
+```text
+[= source =]/                the package
+[= source =]/_report/        chromokit's report kit: never edited (chromokit sync replaces it)
+tests/                       pytest; [= test_data =]/ holds the test data
+docs/                        the site's pages; docs/cli.md is the command line's reference
+```
+
+## Rules
+
+- **A pull request is reviewed as a whole, and tested at its head**: the
+  maintainer squash-merges it. A review says how the whole change affects the
+  package: its behaviour, outputs, command line, Python API and docs. This
+  applies to the brief given to an independent reviewer too.
+- **A change a user can notice carries its changelog entry**, under
+  `## Unreleased` in `docs/changelog.md`.
+- **Every commit is a Conventional Commit:** `type(scope): summary`, and a body
+  that says why.
+- **Coverage stays at 80 %**, overall and on the lines a pull request changes:
+  `uv run diff-cover coverage.xml --compare-branch=origin/[= default_branch =] --fail-under=80`.
+- **The command line is tested in-process**, with click's `CliRunner`; a
+  subprocess is for third-party programs only.
+- **Diagnostics go through logging** (`logging.getLogger("[= package =]")`),
+  never `print`.
+- **Nothing a user calls is renamed** (commands, options, output files,
+  modules): an alias is added instead.
+- **chromokit's files are never edited**: `overrides/`,
+  `docs/stylesheets/chromokit.css`, `docs/javascripts/chromokit.js` and
+  `[= source =]/_report/`, which `chromokit.json` lists and `npx
+  github:js2264/chromokit check` verifies. The template's files take their
+  changes from `uvx copier update`.
+[% if gpu %]
+- **GPU runs cost money**: ask before starting one. The GPU tests sit in
+  their own module, and skip themselves without a GPU.
+[% endif %]
+
+## Procedures
+
+- **Adding a command:** its code, its tests (in-process), its section in
+  `docs/cli.md` (`tests/test_docs.py` fails without it), and its changelog
+  entry.
+- **Reviewing a pull request:** as a whole, against these rules; run the tests
+  at its head.

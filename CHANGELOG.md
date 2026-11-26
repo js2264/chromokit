@@ -6,7 +6,39 @@ token or kit file is a major one.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-26
+
 ### Added
+
+- **The report kit**, a tool's report of a run for one sample: metaTOR's
+  report (koszullab/metaTOR's `report.py` and `report.html.j2`), generalised.
+  - `chromokit add report` copies it into `src/<package>/_report/` and records
+    it in `chromokit.json`, beside the site; `sync` updates it, and `check`
+    refuses an edit. It names no package and imports none of the one that
+    holds it.
+  - The writers `report_files`, `write_txt`, `read_txt`, `write_mqc`,
+    `write_html` and `write_report` take the tool (`Tool`: its name, its
+    version, its `FORMAT_VERSION`, its MultiQC General Statistics columns,
+    its page's template). `report.txt` and `report_mqc.yaml` are metaTOR's,
+    byte for byte, for metaTOR's report.
+  - The page's base template (`_report/base.html.j2`) and its macros, in
+    chromokit's look, light and dark: the header, the navigation, the
+    overview's cards, sortable and filterable tables with *Download CSV*,
+    plots drawn by plotly.js from its CDN at a pinned version (2.35.2), their
+    chrome in the page's palette, and the footer. A tool's template extends
+    it with its own sections.
+  - The sample, `test/fixtures/report/metator/`: a run's report from
+    metaTOR's own code, and its page ported to the kit. The site shows it
+    under `examples/report/`.
+- **The copier template of a Python repository** (`copier.yml` at the root,
+  `template/`), from koszullab/.github's conventions: the `pyproject.toml`
+  blocks; pre-commit, `.editorconfig`, `.gitattributes`; the CI, changelog,
+  docs, release, Dependabot and retry workflows, `dependabot.yml`,
+  `codecov.yml` and `zizmor.yml`; the docs' skeleton and `tests/test_docs.py`;
+  `CITATION.cff` and `AGENTS.md`. Its versions are chromokit's tags.
+  Tested with the answers of metacooler, hicstuff, metaTOR, instaGRAAL,
+  chromosight and tinymapper, and on three sample packages.
+- `chromokit kits` lists the kits `add` takes.
 
 - **Sphinx**, a seventh kind of site:
   - `chromokit init sphinx` writes a Sphinx site on the Furo theme, with MyST
@@ -63,6 +95,10 @@ token or kit file is a major one.
   - `test/format.test.mjs` runs chromomap's cases against the formatter.
 
 ### Changed
+
+- **`chromokit.json`** records each kit added beside the site under its name
+  (`report: { package, dir, files }`); a manifest without one, as 0.1.0 wrote
+  them all, reads and checks as before. `check` names every kit it checked.
 
 - **Hugo: the theme's files are at `/assets/chromokit/`** (were `/chromokit/`),
   where the plain-HTML starter keeps them. On a GitHub Pages domain, every

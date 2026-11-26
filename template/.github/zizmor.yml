@@ -1,0 +1,9 @@
+# zizmor, which CI's lint job runs on the workflows (CONVENTIONS.md § 6).
+rules:
+  unpinned-uses:
+    config:
+      # The conventions' pinning: actions/* to a major version, every other
+      # action to a commit SHA, its version in a comment. Dependabot updates both.
+      policies:
+        "actions/*": ref-pin
+        "*": hash-pin

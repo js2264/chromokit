@@ -1,0 +1,32 @@
+name: Changelog
+
+# A workflow of its own, so that adding the no-changelog label re-runs this
+# check and nothing else (CONVENTIONS.md § 9; appendix B.3 of the migration plan).
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+permissions:
+  contents: read
+
+jobs:
+  entry:
+    name: Changelog entry
+    # Skipped, which counts as passed, when the pull request is labelled no-changelog.
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'no-changelog') }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: A change to [= source =]/ comes with a changelog entry
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          changed=$(git diff --name-only "$BASE"...HEAD)
+          if grep -q '^[= source =]/' <<<"$changed" && ! grep -qx 'docs/changelog.md' <<<"$changed"; then
+            echo "::error::[= source =]/ changed but docs/changelog.md did not. Add an entry under Unreleased, or label the pull request no-changelog."
+            exit 1
+          fi

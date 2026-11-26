@@ -1,0 +1,332 @@
+name: CI
+
+# CONVENTIONS.md § 6: lint, test on every supported Python, the dependency
+# bounds, and the wheel installed as a user installs it[% if compiled_dependencies %], with a wheel for
+# every platform[% endif %]. On pushes to [= default_branch =], every pull request, by hand, every
+# week, and from release.yml on a tag.
+on:
+  push:
+    branches: [[= default_branch =]]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+    secrets:
+      CODECOV_TOKEN:
+        required: false
+  schedule:
+    # Weekly: the bounds job is the early warning for upstream releases that
+    # land between two lock updates (CONVENTIONS.md § 7).
+    - cron: "17 5 * * 1"
+
+permissions:
+  contents: read
+
+# A newer push cancels the run it supersedes; a tag's run, called by
+# release.yml, is never cancelled. The group is not `${{ github.workflow }}-…`:
+# called from release.yml, github.workflow is "Release", and the two runs would
+# wait for each other.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+
+      - name: uv.lock is up to date
+        run: uv lock --check
+
+      - name: ruff
+        run: |
+          uv run --locked ruff check .
+          uv run --locked ruff format --check .
+
+      - name: ty
+[% if not ty_required %]
+        # Advisory until the repository's existing diagnostics are fixed (CONVENTIONS.md § 5).
+        continue-on-error: true
+[% endif %]
+        run: uv run --locked ty check [= 'src' if src_layout else package =]
+
+      # Appendix B.1 of the migration plan.
+      - name: pre-commit's ruff is the ruff of uv.lock
+        run: |
+          locked=$(awk '/^name = "ruff"$/ { getline; gsub(/"/, "", $3); print $3; exit }' uv.lock)
+          grep -A3 'astral-sh/ruff-pre-commit' .pre-commit-config.yaml | grep -q "rev: v$locked\$" ||
+            { echo "::error::pre-commit's ruff is not the ruff in uv.lock ($locked)"; exit 1; }
+
+      # zizmor's online audits (impostor commits, known-vulnerable actions)
+      # read the actions' repositories with the job's token.
+      - name: The workflows (actionlint, zizmor)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          uvx --from actionlint-py==1.7.12.25 --with shellcheck-py==0.11.0.1 actionlint
+          uvx zizmor==1.33.1 .github/workflows
+
+  test:
+    name: Test, Python ${{ matrix.python-version }}, ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    # GitHub cancels a job that waits 15 minutes for a runner, as macOS ones
+    # sometimes do: retry-jobs-without-runner.yml re-runs them, and skips them
+    # here on its second re-run, so that CI does not fail for want of a runner.
+    # Re-runs started by hand always run.
+    if: github.triggering_actor != 'github-actions[bot]' || fromJSON(github.run_attempt) < 3
+[% if python_max == "3.14" %]
+    # The next Python is allowed to fail.
+    continue-on-error: ${{ matrix.experimental == true }}
+[% endif %]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [[% for python in pythons %]"[= python =]"[% if not loop.last %], [% endif %][% endfor %]]
+        include:
+          - os: macos-latest
+            python-version: "[= python_newest =]"
+[% if python_max == "3.14" %]
+          # The next Python, built from source where it has no wheel yet.
+          - os: ubuntu-latest
+            python-version: "[= python_next =]"
+            experimental: true
+[% if next_python_apt %]
+            apt: [= next_python_apt =]
+[% endif %]
+[% endif %]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+[% if test_apt %]
+      # macOS has no apt: there, the tests that need a program skip.
+      - name: The programs the tests run
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends [= test_apt =]
+
+[% endif %]
+[% if python_max == "3.14" and next_python_apt %]
+      - name: What the next Python builds with
+        if: matrix.apt
+        env:
+          APT: ${{ matrix.apt }}
+        run: |
+          sudo apt-get update
+          # shellcheck disable=SC2086 # a list of packages
+          sudo apt-get install -y --no-install-recommends $APT
+
+[% endif %]
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: The locked environment
+        run: uv sync --locked
+
+      - name: The command runs
+        run: uv run --locked [= command =] --version
+
+      - name: The tests, with coverage
+        run: uv run --locked pytest
+
+      # One leg only: the newest Python, on Linux.
+      - name: Coverage to Codecov
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '[= python_newest =]'
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
+        with:
+          files: coverage.xml
+[% if gpu %]
+          # The GPU tests upload with the flag gpu (CONVENTIONS.md § 6).
+          flags: cpu
+[% endif %]
+          fail_ci_if_error: false
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  # `test` installs from uv.lock, so it never sees a dependency release newer
+  # than the lock, nor one older than it. This job re-resolves the project at
+  # each end of its declared ranges and runs the suite there: a floor that no
+  # longer works fails it, and so does an upstream release.
+  bounds:
+    name: ${{ matrix.bound }} dependencies, Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - bound: lowest
+            resolution: lowest-direct
+            python-version: "3.10"
+          - bound: highest
+            resolution: highest
+            python-version: "[= python_newest =]"
+    env:
+      # Every uv command must see the same mode: `uv sync` re-locks when the
+      # lockfile's resolution mode differs from the requested one, so setting
+      # it on `uv lock` alone is silently undone by the next step.
+      UV_RESOLUTION: ${{ matrix.resolution }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+[% if test_apt %]
+      - name: The programs the tests run
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends [= test_apt =]
+
+[% endif %]
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Re-resolve at the ${{ matrix.bound }} bound, ignoring uv.lock
+        run: uv lock --upgrade
+
+      - name: The environment
+        run: uv sync
+
+      - name: What it installed
+        run: uv pip list
+
+      - name: The tests
+        run: uv run pytest -q --no-cov
+
+  # The wheel installed as a user installs it: pip, a fresh environment, wheels
+  # only[% if pypi_only %], and no program on PATH: [= distribution =] needs nothing outside PyPI[% endif %].
+  install:
+    name: Install, ${{ matrix.os }}, Python ${{ matrix.python-version }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    # See the test job: a macOS cell that gets no runner twice is skipped.
+    if: github.triggering_actor != 'github-actions[bot]' || fromJSON(github.run_attempt) < 3
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-latest, macos-15-intel]
+        python-version: ["3.10", "[= python_newest =]"]
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # The package's own wheel first, so that --only-binary applies to its
+      # dependencies only.
+      - name: The wheel
+        run: python -m pip wheel --no-deps --wheel-dir dist .
+
+      # Fails if a dependency has no wheel in any version the package allows.
+      - name: Installed from wheels, in a fresh environment
+[% if install_source_builds %]
+        env:
+          PYTHON: ${{ matrix.python-version }}
+        run: |
+          python -m venv "$RUNNER_TEMP/venv"
+          arch=$(uname -m)
+          arch=${arch/arm64/aarch64}
+          if [ "$RUNNER_OS" = macOS ]; then platform="$arch-apple-darwin"; else platform="$arch-manylinux"; fi
+          source_builds=()
+[% for pattern, packages in install_source_builds.items() %]
+          case "$platform-$PYTHON" in [= pattern =]) source_builds+=([% for package in packages %]--no-binary [= package =][% if not loop.last %] [% endif %][% endfor %]) ;; esac
+[% endfor %]
+          "$RUNNER_TEMP/venv/bin/pip" install --only-binary :all: "${source_builds[@]}" dist/*.whl
+[% else %]
+        run: |
+          python -m venv "$RUNNER_TEMP/venv"
+          "$RUNNER_TEMP/venv/bin/pip" install --only-binary :all: dist/*.whl
+[% endif %]
+
+      - name: Every command answers --help, and [= command =] --version[% if pypi_only %], with nothing on PATH[% endif +%]
+        run: |
+          venv="$RUNNER_TEMP/venv"
+[% if pypi_only %]
+          # Nothing on PATH: as `uv tool install`, or an environment that is not activated, leaves it.
+          run() { env -i HOME="$HOME" PATH=/nonexistent "$@"; }
+[% else %]
+          run() { "$@"; }
+[% endif %]
+          "$venv/bin/python" - > "$RUNNER_TEMP/scripts.txt" <<'PYTHON'
+          from importlib.metadata import distribution
+          for entry in distribution("[= distribution =]").entry_points:
+              if entry.group == "console_scripts":
+                  print(entry.name)
+          PYTHON
+          while read -r script; do
+            echo "$script --help"
+            run "$venv/bin/$script" --help > /dev/null
+          done < "$RUNNER_TEMP/scripts.txt"
+          run "$venv/bin/[= command =]" --version
+[% if install_run %]
+
+      - name: A short real run
+        run: |
+          # cli COMMAND ARGS: a command of the installed wheel[% if pypi_only %], with nothing on PATH[% endif %].
+          cli() { [% if pypi_only %]env -i HOME="$HOME" PATH=/nonexistent [% endif %]"$RUNNER_TEMP/venv/bin/$1" "${@:2}"; }
+          [= install_run | trim | indent(10) =]
+[% endif %]
+[% if compiled_dependencies %]
+
+  # Whether a plain pip install needs a compiler, on every platform and Python
+  # the package supports. Resolving from wheels only is not enough: it falls
+  # back to older versions that have wheels. So each platform is resolved as
+  # pip install resolves it, then every version picked must have a wheel.
+  wheels:
+    name: Wheels for every platform
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+
+      - name: pip install finds wheels
+        run: |
+          status=0
+          out=$(mktemp -d)
+          for platform in x86_64-manylinux_2_28 aarch64-manylinux_2_28 aarch64-apple-darwin x86_64-apple-darwin; do
+            for python in [% for python in pythons %][= python =][% if not loop.last %] [% endif %][% endfor %]; do
+              cell="$platform, Python $python"
+              # One file per cell: uv prefers the versions of an existing output file
+              pins="$out/$platform-$python.txt"
+              target=(--python-platform "$platform" --python-version "$python" pyproject.toml)
+              allowed=()
+[% for pattern, packages in wheels_source_builds.items() %]
+              case "$platform-$python" in [= pattern =]) allowed+=([= packages | join(" ") =]) ;; esac
+[% endfor %]
+              wheels=(--only-binary :all: -c "$pins" "${target[@]}" -o "$pins.wheels")
+              if ! uv pip compile --quiet "${target[@]}" -o "$pins"; then
+                echo "FAILED  $cell: the dependencies do not resolve"
+                status=1
+              elif uv pip compile --quiet "${wheels[@]}" 2>/dev/null; then
+                echo "ok      $cell"
+              elif [ "${#allowed[@]}" -gt 0 ] && uv pip compile --quiet "${allowed[@]/#/--no-binary=}" "${wheels[@]}" 2>/dev/null; then
+                echo "::warning::$cell: pip install builds from source what has no wheel among: ${allowed[*]}"
+              else
+                echo "FAILED  $cell: no wheel for a version that pip install picks"
+                uv pip compile --quiet "${wheels[@]}" 2>&1 | awk '{ print "        " $0 }' || true
+                status=1
+              fi
+            done
+          done
+          rm -r "$out"
+          exit $status
+[% endif %]

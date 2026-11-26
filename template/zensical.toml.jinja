@@ -1,0 +1,108 @@
+[# The site's configuration, CONVENTIONS.md § 8: the template's, merged by
+   `copier update`. A repository adds its own pages to nav: its guides, an
+   end-to-end page, a page on upgrading once a release breaks something. #]
+[project]
+site_name = "[= project_name =]"
+site_url = "[= docs_url =]"
+site_description = "[= description | replace('"', '\\"') =]"
+site_author = "[= (authors[0].name if authors else owner) | replace('"', '\\"') =]"
+copyright = "&copy; [= (authors[0].name if authors else owner) | replace('"', '\\"') =]"
+repo_url = "https://github.com/[= owner =]/[= repository =]"
+repo_name = "[= owner =]/[= repository =]"
+docs_dir = "docs"
+site_dir = "site"
+# chromokit's stylesheet first, then the repository's own
+# (docs/stylesheets/site.css), which wins.
+extra_css = ["stylesheets/chromokit.css", "stylesheets/site.css"]
+extra_javascript = ["javascripts/chromokit.js"]
+
+# In this order (CONVENTIONS.md § 8): Home; Getting started; Guides, one per
+# task; Reference; the project.
+nav = [
+  { "Home" = "index.md" },
+  { "Getting started" = [
+    { "Why [= project_name =]?" = "why.md" },
+    { "Installation" = "installation.md" },
+    { "Quickstart" = "quickstart.md" },
+    { "Concepts" = "concepts.md" }
+  ]},
+  { "Reference" = [
+    { "Command line" = "cli.md" },
+    { "File formats" = "formats.md" },
+    { "Python API" = "api/[= package =].md" }
+  ]},
+  { "The project" = [
+    { "Contributing" = "contributing.md" },
+    { "Citing [= project_name =]" = "citation.md" },
+    { "Changelog" = "changelog.md" }
+  ]}
+]
+
+# chromokit (https://github.com/js2264/chromokit): the header and the
+# in-column footer come from overrides/, the palette and the rest of the look
+# from docs/stylesheets/chromokit.css. They are kit files, listed in
+# chromokit.json: `npx github:js2264/chromokit sync` updates them, and local
+# changes go in docs/stylesheets/site.css.
+[project.theme]
+custom_dir = "overrides"
+logo = "assets/mark.svg"
+favicon = "assets/mark.svg"
+# System fonts, as on chromosomix: no web-font request.
+font = false
+features = [
+  "navigation.instant",
+  "navigation.expand",
+  "navigation.sections",
+  "navigation.top",
+  "search.suggest",
+  "search.highlight",
+  "content.code.copy",
+  "content.code.annotate",
+  "content.tabs.link"
+]
+
+# Light and dark follow the system until the header's toggle picks one. The
+# colours are chromokit's, so `primary` and `accent` are "custom".
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "custom"
+accent = "custom"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "custom"
+accent = "custom"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+[project.extra]
+# Beside the name in the header and in every page's footer: bump-my-version
+# keeps it in step with the package (pyproject.toml, [tool.bumpversion]).
+release = "[= version =]"
+# The small word after the name ("" for none).
+kicker = "docs"
+
+# zensical's default Markdown extensions (admonitions, tabs, attribute lists,
+# icons, keys, Mermaid diagrams, highlighting with language classes) are what
+# the kit styles: declaring [project.markdown_extensions] would replace them.
+
+# The Python API pages: `::: [= package =].<module>` in docs/api/*.md, read
+# from the sources without importing them.
+[project.plugins.mkdocstrings.handlers.python]
+paths = ["[= 'src' if src_layout else '.' =]"]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "[= docstring_style =]"
+show_source = true
+show_root_heading = true
+show_root_full_path = true
+show_signature_annotations = true
+separate_signature = true
+line_length = 80
+members_order = "source"
+show_submodules = false
+filters = ["!^_"]

@@ -1,0 +1,44 @@
+# The image of [= project_name =] (CONVENTIONS.md § 15), which release.yml
+# builds from the released wheel (dist/*.whl): it holds what PyPI holds, and
+# the programs pip cannot install. Dependabot updates the base.
+[% if image_variants %]
+# Each variant's base comes from release.yml (build-args: BASE).
+ARG BASE=[= image_variants[0].base =]
+[% else %]
+ARG BASE=[= image_base =]
+[% endif %]
+FROM ${BASE}
+[% if 'micromamba' in (image_variants[0].base if image_variants else image_base) %]
+
+[% if image_env %]
+# Python and the programs, from conda-forge and bioconda.
+COPY --chown=$MAMBA_USER:$MAMBA_USER [= image_env =] /tmp/environment.yaml
+RUN micromamba install -y -n base -f /tmp/environment.yaml \
+    && micromamba clean --all --yes
+[% else %]
+RUN micromamba install -y -n base -c conda-forge python=[= python_dev =] pip \
+    && micromamba clean --all --yes
+[% endif %]
+
+COPY --chown=$MAMBA_USER:$MAMBA_USER dist/*.whl /tmp/dist/
+RUN micromamba run -n base pip install --no-cache-dir /tmp/dist/*.whl \
+    && rm -rf /tmp/dist
+
+WORKDIR /home/mambauser
+ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
+[% else %]
+
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends python3 python3-venv python3-pip \
+    && rm -rf /var/lib/apt/lists/*
+RUN python3 -m venv /opt/venv
+ENV PATH=/opt/venv/bin:$PATH
+
+COPY dist/*.whl /tmp/dist/
+RUN wheel=$(ls /tmp/dist/*.whl) \
+    && pip install --no-cache-dir "${wheel}[% if gpu %][gpu][% endif %]" \
+    && rm -rf /tmp/dist
+
+WORKDIR /work
+[% endif %]

@@ -1,0 +1,44 @@
+# js2264/metacooler at 8c650e7, as MIGRATION.md's MC-1 to MC-6 leave it.
+distribution: metacooler
+project_name: metacooler
+package: metacooler
+command: metacooler
+entry_point: metacooler.cli.main:cli
+cli: click
+description: "Hi-C contact maps for metagenomes: an extension of the cooler format."
+version: 0.4.0
+version_module: src/metacooler/_version.py
+src_layout: true
+license: MIT
+authors:
+  - name: Jacques Serizay
+maintainers: []
+keywords: [hi-c, metagenomics, cooler, contact-maps, hdf5]
+status: 3 - Alpha
+owner: js2264
+repository: metacooler
+default_branch: devel
+docs_url: https://js2264.github.io/metacooler/
+doi: ""
+paper: null
+# Not yet: item 1.1 puts it there.
+bioconda: false
+python_max: "3.14"
+python_dev: "3.14"
+docstring_style: google
+line_length: 88
+ruff_version: 0.17.4
+# MC-1: required from the start, since pre-commit already runs it.
+ty_required: true
+test_data: tests/data
+sdist_test_data: true
+pypi_only: true
+install_run: |
+  cli metacooler info tests/data/assembly_1_1kb.metacool
+  cli metacooler check tests/data/assembly_1_1kb.metacool
+install_source_builds: {}
+test_apt: ""
+compiled_dependencies: false
+next_python_apt: libhdf5-dev pkg-config
+gpu: false
+image: false

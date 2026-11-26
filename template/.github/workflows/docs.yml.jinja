@@ -1,0 +1,66 @@
+name: Docs
+
+# CONVENTIONS.md § 8: the site (docs/ and zensical.toml) built on every pull
+# request, strictly, and deployed to GitHub Pages, at [= docs_url =],
+# from [= default_branch =]. Pages deploys from a branch only: the github-pages
+# environment refuses a tag, and a release is cut with `git push --follow-tags`,
+# so the push of the release commit deploys it, with its version.
+on:
+  push:
+    branches: [[= default_branch =]]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# A newer push cancels the build of a pull request, never a deployment.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
+
+      # The docs dependency group alone (zensical and mkdocstrings): the Python
+      # API pages read the sources without importing them, so neither the
+      # package nor its dependencies are installed. --strict fails on a
+      # warning, such as a link to a page that does not exist.
+      - name: The site
+        run: uv run --locked --only-group docs zensical build --clean --strict
+
+      # chromokit's files (chromokit.json lists them) are as chromokit wrote them.
+      - name: chromokit check
+        run: npx --yes github:js2264/chromokit check
+
+      - name: The site, for GitHub Pages
+        if: github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+
+  deploy:
+    name: Deploy
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
