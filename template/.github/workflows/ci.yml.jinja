@@ -69,7 +69,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          uvx --from actionlint-py==1.7.12.25 actionlint
+          uvx --from actionlint-py==1.7.12.25 --with shellcheck-py==0.11.0.1 actionlint
           uvx zizmor==1.33.1 .github/workflows
 
   test:
@@ -234,6 +234,7 @@ jobs:
 
       # Fails if a dependency has no wheel in any version the package allows.
       - name: Installed from wheels, in a fresh environment
+[% if install_source_builds %]
         env:
           PYTHON: ${{ matrix.python-version }}
         run: |
@@ -246,6 +247,11 @@ jobs:
           case "$platform-$PYTHON" in [= pattern =]) source_builds+=([% for package in packages %]--no-binary [= package =][% if not loop.last %] [% endif %][% endfor %]) ;; esac
 [% endfor %]
           "$RUNNER_TEMP/venv/bin/pip" install --only-binary :all: "${source_builds[@]}" dist/*.whl
+[% else %]
+        run: |
+          python -m venv "$RUNNER_TEMP/venv"
+          "$RUNNER_TEMP/venv/bin/pip" install --only-binary :all: dist/*.whl
+[% endif %]
 
       - name: Every command answers --help, and [= command =] --version[% if pypi_only %], with nothing on PATH[% endif +%]
         run: |

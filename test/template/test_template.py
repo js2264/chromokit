@@ -38,6 +38,9 @@ SAMPLES = sorted(path.name for path in (FIXTURES / "samples").iterdir())
 
 COPIER = "copier==9.19.1"
 ACTIONLINT = "actionlint-py==1.7.12.25"
+#: The shellcheck actionlint runs on every script: without one on PATH, it
+#: skips them silently (GitHub's runners have one, a container may not).
+SHELLCHECK = "shellcheck-py==0.11.0.1"
 ZIZMOR = "zizmor==1.33.1"
 RUFF = "ruff==0.17.4"
 CFFCONVERT = "cffconvert==2.0.0"
@@ -125,9 +128,23 @@ def test_what_is_written(rendered):
             assert not re.search(r"\[=|=\]|\[%|%\]|\[#|#\]", file.read_text()), file
 
 
+def actionlint(*args, cwd):
+    """actionlint, as the lint job runs it: with the pinned shellcheck."""
+    return uvx("--from", ACTIONLINT, "--with", SHELLCHECK, "actionlint", *args, cwd=cwd, check=False)
+
+
+def test_actionlint_runs_shellcheck(tmp_path):
+    """actionlint checks every script with shellcheck, which flags a
+    variable a script sets and never uses (SC2034)."""
+    probe = "on: push\npermissions: {}\njobs:\n  probe:\n    runs-on: ubuntu-latest\n"
+    (tmp_path / "probe.yml").write_text(probe + "    steps:\n      - run: unused=1\n")
+    result = actionlint("probe.yml", cwd=tmp_path)
+    assert "SC2034" in result.stdout, result.stdout + result.stderr
+
+
 def test_the_workflows_pass_actionlint(rendered):
     path, _ = rendered
-    result = uvx("--from", ACTIONLINT, "actionlint", cwd=path, check=False)
+    result = actionlint(cwd=path)
     assert result.returncode == 0, result.stdout + result.stderr
 
 
