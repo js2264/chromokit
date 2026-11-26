@@ -177,7 +177,7 @@ docs' build, bump-my-version, the build, and the install job's own scripts.
   [r/README.md](r/README.md), and the package's own site, built with its own
   template, at <https://js2264.github.io/chromokit/r/>.
 - **A link:**
-  `https://cdn.jsdelivr.net/gh/js2264/chromokit@v0.1.0/dist/css/chromokit.css`
+  `https://cdn.jsdelivr.net/gh/js2264/chromokit@v0.2.0/dist/css/chromokit.css`
   has the tokens and components. `…/dist/css/chromokit-page.css` adds the
   page layout.
 - **npm:** run `npm install chromokit`, then `import 'chromokit/tokens.css'`.

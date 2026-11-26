@@ -6,6 +6,8 @@ token or kit file is a major one.
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-11-26
+
 ### Added
 
 - **The report kit**, a tool's report of a run for one sample: metaTOR's
