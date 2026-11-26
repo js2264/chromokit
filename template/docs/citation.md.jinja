@@ -1,0 +1,21 @@
+# Citing [= project_name =]
+
+[% if paper %]
+If [= project_name =] helps your work, please cite its paper:
+
+> [% for author in paper.authors %][= author.family =] [= author.given[0] =][% if not loop.last %], [% endif %][% endfor %].
+> [= paper.title =]. *[= paper.journal =]* ([= paper.year =]).
+> [doi:[= paper.doi =]](https://doi.org/[= paper.doi =])
+
+[% endif %]
+[% if doi %]
+To cite the software itself, [= project_name =]'s versions are archived on
+Zenodo: [doi:[= doi =]](https://doi.org/[= doi =]) names them all, and each
+version has a DOI of its own there.
+[% else %]
+To cite the software itself, name its version (`[= command =] --version`) and
+its repository, <https://github.com/[= owner =]/[= repository =]>.
+[% endif %]
+
+GitHub's *Cite this repository* button gives the citation in APA and BibTeX,
+from `CITATION.cff`.

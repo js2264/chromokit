@@ -1,0 +1,52 @@
+# koszullab/metaTOR at af54142, as MIGRATION.md's MT-1 to MT-5 leave it.
+distribution: metator
+project_name: metaTOR
+package: metator
+command: metator
+entry_point: metator.cli:cli
+cli: click
+description: A pipeline for binning metagenomic datasets from metaHiC data.
+version: 1.4.0
+version_module: src/metator/version.py
+src_layout: true
+license: GPL-3.0-or-later
+authors:
+  - name: Amaury Bignaud
+  - name: Jacques Serizay
+maintainers:
+  - name: Jacques Serizay
+keywords: [metagenomics, bioinformatics, hi-c]
+status: 5 - Production/Stable
+owner: koszullab
+repository: metaTOR
+default_branch: master
+docs_url: https://koszullab.github.io/metator/
+doi: ""
+# MT-5 writes the Frontiers in Genetics 2019 paper.
+paper: null
+bioconda: true
+python_max: "3.14"
+python_dev: "3.13"
+docstring_style: numpy
+line_length: 130
+ruff_version: 0.17.4
+# MT-3 fixes what ty reports, then makes it required.
+ty_required: true
+test_data: tests_data
+sdist_test_data: false
+sdist_test_data_reason: tests_data/ is 28 MB; the tests run from a clone
+pypi_only: true
+install_run: ""
+install_source_builds: {}
+# pyhmmer, pyrodigal, igraph and pysam (MT-2).
+compiled_dependencies: true
+wheels_source_builds: {}
+next_python_apt: libhdf5-dev pkg-config
+gpu: false
+image: true
+image_base: ghcr.io/mamba-org/micromamba:2.10.0
+image_env: metator.yaml
+image_variants: []
+image_arm64: true
+# MT-4: the published vX.Y.Z goes on beside X.Y.Z.
+image_v_tags: true

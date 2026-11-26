@@ -1,0 +1,36 @@
+# CONVENTIONS.md § 17: the standard Python list, then the repository's own
+# outputs. Never uv.lock or .python-version, which are committed.
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+
+# Tests and coverage
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.ruff_cache/
+.mypy_cache/
+
+# The documentation site, as zensical builds it
+/site/
+
+# Editors and systems
+.vscode/
+.idea/
+.DS_Store
+
+# Instructions for coding agents are AGENTS.md, and nothing else
+# (CONVENTIONS.md § 21): a personal CLAUDE.md holding `@AGENTS.md` stays out.
+CLAUDE.md
+CLAUDE.local.md
+
+# The repository's own outputs

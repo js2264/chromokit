@@ -1,0 +1,40 @@
+distribution: scriptkit
+project_name: scriptKit
+package: scriptkit
+command: scriptkit
+entry_point: scriptkit.cli:main
+cli: scripts
+description: A sample kit of scripts, which chromokit's tests apply the template to.
+version: 0.3.0
+version_module: scriptkit/_version.py
+src_layout: false
+license: MIT
+authors:
+  - name: Josiah Carberry
+maintainers: []
+keywords: [sample]
+status: 4 - Beta
+owner: koszullab
+repository: scriptKit
+default_branch: master
+docs_url: https://koszullab.github.io/scriptkit/
+doi: ""
+paper: null
+bioconda: false
+python_max: "3.14"
+python_dev: "3.13"
+docstring_style: google
+line_length: 130
+ruff_version: 0.17.4
+ty_required: false
+test_data: tests/data
+sdist_test_data: false
+sdist_test_data_reason: the samples' data stays in the repository
+pypi_only: true
+install_run: ""
+install_source_builds: {}
+compiled_dependencies: true
+wheels_source_builds: {}
+next_python_apt: ""
+gpu: true
+image: false

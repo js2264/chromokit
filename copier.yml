@@ -1,0 +1,388 @@
+# chromokit's copier template: what every Python repository of the project
+# shares, from koszullab/.github's CONVENTIONS.md (§ 21). It lives in
+# template/, and its versions are chromokit's tags:
+#
+#     uvx copier copy --vcs-ref v0.2.0 gh:js2264/chromokit .    # once
+#     uvx copier update                                         # then, for a newer tag
+#
+# The answers go in .copier-answers.yml, which the repository commits. A file
+# the repository owns once it is written (README, AGENTS.md, CITATION.cff, the
+# docs pages, the Dockerfile) is written once and never again
+# (_skip_if_exists); the others (pyproject.toml, the workflows, the tools'
+# configuration, tests/test_docs.py) are the template's, and `copier update`
+# merges the template's changes into the repository's own.
+#
+# chromokit's docs kit (overrides/, docs/stylesheets/chromokit.css…) and its
+# report kit (src/<package>/_report/) are not copier's: `npx
+# github:js2264/chromokit init zensical` and `… add report` put them in,
+# `… sync` updates them, and chromokit.json lists them.
+#
+# No _tasks: applying the template runs nothing, and needs no --trust.
+
+_subdirectory: template
+_min_copier_version: "9.4.0"
+_answers_file: .copier-answers.yml
+
+# GitHub's expressions are ${{ … }}, TOML's tables [[ … ]] and bash's tests
+# [[ … ]]: the template's own Jinja is [= … =], [% … %] and [# … #].
+_envops:
+  variable_start_string: "[="
+  variable_end_string: "=]"
+  block_start_string: "[%"
+  block_end_string: "%]"
+  comment_start_string: "[#"
+  comment_end_string: "#]"
+  keep_trailing_newline: true
+  trim_blocks: true
+  lstrip_blocks: true
+
+# Written once: from then on, the repository's own.
+_skip_if_exists:
+  - README.md
+  - AGENTS.md
+  - CITATION.cff
+  - .git-blame-ignore-revs
+  - Dockerfile
+  - docs/*.md
+  - docs/api/*.md
+
+_message_after_copy: |
+  The template is in. Next:
+    1. chromokit's docs and report kits, if they are not in yet:
+         npx github:js2264/chromokit init zensical      # overrides/, the docs' stylesheet
+         npx github:js2264/chromokit add report         # src/[= package =]/_report/
+    2. uv lock, then uv sync, and the tests: uv run pytest
+    3. In a repository that had these files, review `git diff` file by file:
+       keep what is the repository's own (its dependencies, its nav, its jobs),
+       and write down a deviation where it is (CONVENTIONS.md, "How to apply them").
+    4. Commit .copier-answers.yml: `uvx copier update` takes the template's next version.
+
+# ---------------------------------------------------------------------------
+# The package
+# ---------------------------------------------------------------------------
+
+distribution:
+  type: str
+  help: The distribution's name, on PyPI and in [project] (metator)
+  validator: >-
+    [% if not (distribution | regex_search('^[A-Za-z0-9]([A-Za-z0-9._-]*[A-Za-z0-9])?$')) %]
+    A distribution's name: letters, digits, ., _ and -
+    [% endif %]
+
+project_name:
+  type: str
+  help: The name as the project's pages and papers write it (metaTOR, instaGRAAL)
+  default: "[= distribution =]"
+
+package:
+  type: str
+  help: The import package (metator)
+  default: "[= distribution | lower | replace('-', '_') | replace('.', '_') =]"
+  validator: >-
+    [% if not (package | regex_search('^[a-z_][a-z0-9_]*$')) %]
+    An import package's name: lowercase letters, digits and _
+    [% endif %]
+
+command:
+  type: str
+  help: The command, named after the distribution (CONVENTIONS.md § 2)
+  default: "[= distribution | lower =]"
+
+entry_point:
+  type: str
+  help: What the command runs, as [project.scripts] writes it
+  default: "[= package =].cli:cli"
+  validator: >-
+    [% if not (entry_point | regex_search('^[A-Za-z_][\\w.]*:[A-Za-z_][\\w.]*$')) %]
+    module:object, as [project.scripts] takes it
+    [% endif %]
+
+cli:
+  type: str
+  help: >-
+    The command line, as tests/test_docs.py reads it: click, a group with
+    subcommands (hicstuff, metaTOR, metacooler); scripts, console scripts that
+    are each a click command (instaGRAAL, tinymapper); docopt, one usage with
+    subcommands (chromosight)
+  choices:
+    "click: a group with subcommands": click
+    "scripts: console scripts, each a click command": scripts
+    "docopt: one usage, with subcommands": docopt
+  default: click
+
+description:
+  type: str
+  help: One sentence on what the package does
+
+version:
+  type: str
+  help: The package's version now, X.Y.Z
+  default: "0.1.0"
+  validator: "[% if not (version | regex_search('^\\d+\\.\\d+\\.\\d+$')) %]X.Y.Z[% endif %]"
+
+version_module:
+  type: str
+  help: >-
+    The module that holds the version (src/metator/version.py), which hatch
+    reads; empty when [project] writes it (CONVENTIONS.md § 2)
+  default: ""
+
+src_layout:
+  type: bool
+  help: The import package in src/<package>/ (CONVENTIONS.md § 1)
+  default: true
+
+license:
+  type: str
+  help: The license, as an SPDX expression (GPL-3.0-or-later)
+
+authors:
+  type: yaml
+  help: "The authors, in order: a list of {name, email, orcid}, email and orcid optional"
+  default: "[]"
+
+maintainers:
+  type: yaml
+  help: The maintainers, as the authors
+  default: "[]"
+
+keywords:
+  type: yaml
+  help: Keywords, for PyPI
+  default: '["hi-c"]'
+
+status:
+  type: str
+  help: Its Development Status classifier
+  choices:
+    - "3 - Alpha"
+    - "4 - Beta"
+    - "5 - Production/Stable"
+  default: "5 - Production/Stable"
+
+# ---------------------------------------------------------------------------
+# Where it lives
+# ---------------------------------------------------------------------------
+
+owner:
+  type: str
+  help: The GitHub owner (koszullab, js2264)
+
+repository:
+  type: str
+  help: The GitHub repository (metaTOR)
+  default: "[= distribution =]"
+
+default_branch:
+  type: str
+  help: The default branch, which pushes are filtered to and the site deploys from
+  choices: [master, devel, main]
+  default: master
+
+docs_url:
+  type: str
+  help: Where the documentation is published, ending in /
+  default: "https://[= owner | lower =].github.io/[= repository | lower =]/"
+  validator: "[% if not docs_url.endswith('/') %]End it with /[% endif %]"
+
+doi:
+  type: str
+  help: The Zenodo concept DOI of the software (10.5281/zenodo.…), empty for none yet
+  default: ""
+
+paper:
+  type: yaml
+  help: >-
+    The paper to cite, CITATION.cff's preferred-citation: {title, journal,
+    year, doi, authors: [{given, family}]}; empty for none
+  default: "null"
+
+bioconda:
+  type: bool
+  help: The package is on bioconda (its badge and install line)
+  default: true
+
+# ---------------------------------------------------------------------------
+# Python, its tools and its style
+# ---------------------------------------------------------------------------
+
+python_max:
+  type: str
+  help: >-
+    The newest Python it supports (CONVENTIONS.md § 3: 3.10 and newer, no
+    upper bound unless a dependency forces one)
+  default: "3.14"
+  choices: ["3.12", "3.13", "3.14"]
+
+python_cap_reason:
+  type: str
+  help: "Why it stops at Python [= python_max =]: the dependency, and the issue that tracks lifting it"
+  when: "[= python_max != '3.14' =]"
+
+python_dev:
+  type: str
+  help: The Python of development, in .python-version (the newest every dependency has wheels for)
+  default: "[= python_max =]"
+
+docstring_style:
+  type: str
+  help: The docstrings' style, for mkdocstrings and ruff
+  choices: [numpy, google, sphinx]
+  default: numpy
+
+line_length:
+  type: int
+  help: ruff's line length (88 for a new repository; an existing one keeps its own)
+  default: 88
+
+ruff_version:
+  type: str
+  help: The ruff of uv.lock, which pre-commit runs too (appendix B.1 checks it)
+  default: "0.17.4"
+
+ty_required:
+  type: bool
+  help: ty's findings fail CI (false while a repository's existing diagnostics are being fixed)
+  default: false
+
+test_data:
+  type: str
+  help: The test data's folder, whose name stays (tests/data, test_data, tests_data)
+  default: tests/data
+
+sdist_test_data:
+  type: bool
+  help: The sdist ships the test data (CONVENTIONS.md § 2); false when it is too large, with the reason
+  default: true
+
+sdist_test_data_reason:
+  type: str
+  help: Why the sdist leaves the test data out (metaTOR's 28 MB)
+  when: "[= not sdist_test_data =]"
+
+# ---------------------------------------------------------------------------
+# What CI checks
+# ---------------------------------------------------------------------------
+
+pypi_only:
+  type: bool
+  help: Nothing outside PyPI is needed, so the install job runs every command with an empty PATH
+  default: true
+
+install_run:
+  type: str
+  multiline: true
+  help: >-
+    A short real run for the install job, from the repository's root, after
+    --version and --help: bash, where `cli <command> ARGS` runs a command of
+    the installed wheel (with an empty PATH when nothing outside PyPI is
+    needed); empty for none
+  default: ""
+
+install_source_builds:
+  type: yaml
+  help: >-
+    Packages the install job builds from source where no version has a wheel:
+    {"<platform>-<python> pattern": [packages]}, platforms as
+    x86_64-manylinux, aarch64-manylinux, aarch64-apple-darwin and
+    x86_64-apple-darwin
+  default: "{}"
+
+compiled_dependencies:
+  type: bool
+  help: Dependencies with compiled code that may lack a wheel somewhere (adds the wheels job)
+  default: false
+
+wheels_source_builds:
+  type: yaml
+  help: >-
+    Packages the wheels job lets build from source, with a warning, where pip
+    install picks a version without a wheel: {"<platform>-<python> pattern":
+    [packages]}, platforms as x86_64-manylinux_2_28, aarch64-manylinux_2_28,
+    aarch64-apple-darwin and x86_64-apple-darwin
+  default: "{}"
+  when: "[= compiled_dependencies =]"
+
+next_python_apt:
+  type: str
+  help: >-
+    System packages the next Python's test leg builds with, for what has no
+    wheel yet (h5py: libhdf5-dev pkg-config); empty for none
+  default: ""
+  when: "[= python_max == '3.14' =]"
+
+gpu:
+  type: bool
+  help: >-
+    Code that needs a GPU, in a gpu extra, tested in a module of its own on
+    GPU runners: coverage uploads with cpu and gpu flags
+  default: false
+
+# ---------------------------------------------------------------------------
+# The image
+# ---------------------------------------------------------------------------
+
+image:
+  type: bool
+  help: >-
+    Publish a container image (CONVENTIONS.md § 15: only where pip cannot
+    install everything the package runs)
+  default: false
+
+image_base:
+  type: str
+  help: The image's base, pinned to a version (ghcr.io/mamba-org/micromamba:2.10.0)
+  default: ghcr.io/mamba-org/micromamba:2.10.0
+  when: "[= image =]"
+
+image_env:
+  type: str
+  help: The conda environment file the image installs (metator.yaml); empty for none
+  default: ""
+  when: "[= image =]"
+
+image_variants:
+  type: yaml
+  help: >-
+    The image's variants, each a tag suffix and its base, the first one
+    also `latest`: [{suffix: cuda11.8.0, base: "nvidia/cuda:11.8.0-devel-ubuntu22.04"}];
+    empty for one image
+  default: "[]"
+  when: "[= image =]"
+
+image_arm64:
+  type: bool
+  help: Build linux/arm64 too (the base and every program have it)
+  default: true
+  when: "[= image =]"
+
+image_v_tags:
+  type: bool
+  help: Also publish vX.Y.Z and latest-style tags already published (metaTOR's vX.Y.Z)
+  default: false
+  when: "[= image =]"
+
+# ---------------------------------------------------------------------------
+# Computed, never asked
+# ---------------------------------------------------------------------------
+
+source:
+  type: str
+  when: false
+  default: "[% if src_layout %]src/[% endif %][= package =]"
+
+pythons:
+  type: yaml
+  when: false
+  default: >-
+    [[% for minor in range(10, (python_max.split('.')[1] | int) + 1) %]"3.[= minor =]"[% if not loop.last %], [% endif %][% endfor %]]
+
+python_newest:
+  type: str
+  when: false
+  default: "[= python_max =]"
+
+python_next:
+  type: str
+  when: false
+  default: "3.15"

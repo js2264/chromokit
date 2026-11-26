@@ -1,0 +1,22 @@
+# CONVENTIONS.md § 13: two required checks, both at 80 %. Before pushing:
+#   uv run pytest                                                   # the project's figure
+#   uv run diff-cover coverage.xml --compare-branch=origin/[= default_branch =] --fail-under=80   # the patch's
+coverage:
+  status:
+    project:
+      default:
+        target: 80%
+    patch:
+      default:
+        target: 80%
+[% if gpu %]
+
+# The CPU tests upload with the flag cpu, the GPU tests with gpu; each keeps
+# its last figure when a run uploads only the other, and the project's 80 %
+# counts both.
+flags:
+  cpu:
+    carryforward: true
+  gpu:
+    carryforward: true
+[% endif %]

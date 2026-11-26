@@ -1,0 +1,232 @@
+"""The command line's reference, docs/cli.md, follows the command line.
+
+docs/cli.md is written by hand: a section per command, headed
+``### `command` { #command }``, or ``#### `group command` `` for a command of
+a group, with a table whose first column lists the command's options, short
+form first (``-o, --outdir``; ``--balance/--no-balance``). These tests fail
+when the page misses a command or an option, or documents one that the command
+line does not have.
+
+- A command without a section of its own is documented in its group's; a group
+  needs no section when each of its commands has one, and it has no option.
+- A table outside every command's section, such as the page's conventions,
+  documents its options for every command that has them.
+- -h/--help and --version are left out; a hidden option may be documented, and
+  need not be.
+
+chromokit's template (CONVENTIONS.md § 8) writes this file, and `copier
+update` brings its fixes.
+"""
+
+[% if cli == "docopt" %]
+import importlib
+[% endif %]
+import re
+[% if cli == "scripts" %]
+from importlib.metadata import distribution
+[% endif %]
+from pathlib import Path
+
+[% if cli != "docopt" %]
+import click
+[% endif %]
+import pytest
+[% if cli == "click" %]
+
+[% set module, attribute = entry_point.split(":") %]
+[% if attribute == "cli" %]
+from [= module =] import cli
+[% else %]
+from [= module =] import [= attribute =] as cli
+[% endif %]
+[% endif %]
+
+CLI_MD = Path(__file__).resolve().parents[1] / "docs" / "cli.md"
+
+#: A heading of the page, its level and its text.
+_HEADING = re.compile(r"^(#{1,6}) +(.*)$", re.MULTILINE)
+#: A command's heading: ### `pipeline` { #pipeline }, #### `create pairs`.
+_COMMAND = re.compile(r"`([a-z0-9][a-z0-9_ -]*)`")
+#: The first cell of a table's row, and an option in it: | `-o, --outdir` | …
+_FIRST_CELL = re.compile(r"^\|([^|\n]*)\|", re.MULTILINE)
+_OPTION = re.compile(r"`(-[^`]+)`")
+#: Options every command has, which the page leaves out.
+_LEFT_OUT = {"-h", "--help", "-V", "--version"}
+
+
+def _options(text):
+    """The options of the tables of text: the first cell's, in backticks."""
+    found = set()
+    for cell in _FIRST_CELL.findall(text):
+        for span in _OPTION.findall(cell):
+            for name in re.split(r"[,/]", span):
+                if name.strip():
+                    found.add(name.split()[0].split("=")[0])
+    return found - _LEFT_OUT
+
+
+def documented():
+    """The options the page documents: by command, in the command's section;
+    and, in the tables outside every command's section, for every command."""
+    text = CLI_MD.read_text(encoding="utf-8")
+    headings = list(_HEADING.finditer(text))
+    sections = {}
+    shared = _options(text[: headings[0].start()] if headings else text)
+    for heading, following in zip(headings, [*headings[1:], None], strict=True):
+        end = following.start() if following else len(text)
+        body = text[heading.end() : end]
+        command = _COMMAND.match(heading.group(2))
+        if command and len(heading.group(1)) in (3, 4):
+            sections[command.group(1)] = _options(body)
+        else:
+            shared |= _options(body)
+    return sections, shared
+
+
+[% if cli == "docopt" %]
+def _usage():
+    """The usage that docopt reads: the docstring of the command's module."""
+    return importlib.import_module("[= entry_point.split(':')[0] =]").__doc__ or ""
+
+
+def _names(text):
+    """The options named in text: --long, -s, without their values."""
+    names = re.findall(r"(?<![\w-])(--?[A-Za-z][\w-]*)", text)
+    return set(names) - _LEFT_OUT
+
+
+def commands():
+    """Each command of the command line, by its name, and the options of its
+    usage patterns: [options] stands for every option of the options' list."""
+    doc = _usage()
+    usage = re.search(r"usage:(.*?)(?:\n[ \t]*\n|\Z)", doc, re.IGNORECASE | re.S)
+    if usage is None:
+        raise AssertionError("the command's module has no docopt usage")
+    # The options' list: each line, an option and its synonyms (-t, --threads).
+    listed = re.findall(r"^[ \t]*(-.+?)(?:  |$)", doc, re.MULTILINE)
+    synonyms = [_names(line) for line in listed]
+    every = set().union(*synonyms)
+    patterns = []
+    for line in usage.group(1).splitlines():
+        words = line.split()
+        if words and words[0] == "[= command =]":
+            patterns.append(words[1:])
+        elif words and patterns:
+            patterns[-1] += words
+    found = {}
+    for words in patterns:
+        name = next((w for w in words if re.fullmatch(r"[a-z][a-z0-9-]*", w)), None)
+        if name is None:
+            continue
+        text = " ".join(words)
+        named = _names(text) | (every if "[options]" in text else set())
+        for names in synonyms:
+            if names & named:
+                named |= names
+        found[name] = found.get(name, set()) | named
+    return found
+
+
+def options(command):
+    """The options of a command (its usage's), and its hidden ones: none."""
+    return commands()[command], set()
+
+
+def _groups(path):
+    """docopt has no groups."""
+    return False
+
+
+[% else %]
+def commands():
+    """Each command of the command line, by its name: a command of a group by
+    the group's name and its own ("create pairs")."""
+    found = {}
+
+    def walk(command, path):
+        found[" ".join(path)] = command
+        if isinstance(command, click.Group):
+            context = click.Context(command)
+            for name in command.list_commands(context):
+                walk(command.get_command(context, name), [*path, name])
+
+[% if cli == "click" %]
+    context = click.Context(cli)
+    for name in cli.list_commands(context):
+        walk(cli.get_command(context, name), [name])
+[% else %]
+    for entry in distribution("[= distribution =]").entry_points:
+        if entry.group == "console_scripts":
+            command = entry.load()
+            if not isinstance(command, click.Command):
+                raise TypeError(f"{entry.name} is not a click command")
+            walk(command, [entry.name])
+[% endif %]
+    return found
+
+
+def options(path):
+    """The options of a command, and its hidden ones apart."""
+    shown, hidden = set(), set()
+    for param in commands()[path].params:
+        if isinstance(param, click.Option):
+            names = param.opts + param.secondary_opts
+            (hidden if param.hidden else shown).update(names)
+    return shown - _LEFT_OUT, hidden - _LEFT_OUT
+
+
+def _groups(path):
+    """Whether a command is a group."""
+    return isinstance(commands()[path], click.Group)
+
+
+[% endif %]
+def section_of(path, sections):
+    """The section that documents a command: its own, else its group's."""
+    words = path.split()
+    while words:
+        if " ".join(words) in sections:
+            return " ".join(words)
+        words.pop()
+    return None
+
+
+def _needs_a_section(path):
+    """A command needs a section, but a group without options of its own."""
+    return not (_groups(path) and not options(path)[0])
+
+
+def test_every_command_has_a_section():
+    sections, _ = documented()
+    undocumented = [path for path in commands() if section_of(path, sections) is None]
+    missing = [path for path in undocumented if _needs_a_section(path)]
+    assert not missing, f"commands that docs/cli.md misses: {missing}"
+
+
+def test_every_section_is_a_command():
+    sections, _ = documented()
+    unknown = sorted(set(sections) - set(commands()))
+    assert not unknown, f"docs/cli.md documents commands that do not exist: {unknown}"
+
+
+@pytest.mark.parametrize("path", sorted(commands()))
+def test_every_option_is_documented(path):
+    sections, shared = documented()
+    section = section_of(path, sections)
+    shown, _ = options(path)
+    documented_here = sections.get(section, set()) | shared
+    missing = sorted(shown - documented_here)
+    assert not missing, f"options of `{path}` that docs/cli.md misses: {missing}"
+
+
+def test_every_documented_option_exists():
+    sections, shared = documented()
+    known = {path: set().union(*options(path)) for path in commands()}
+    unknown = []
+    for section, names in sections.items():
+        here = [known[path] for path in known if section_of(path, sections) == section]
+        extra = sorted(names - set().union(*here))
+        unknown += [f"`{section}` {name}" for name in extra]
+    every = set().union(*known.values())
+    unknown += [f"(every command) {name}" for name in sorted(shared - every)]
+    assert not unknown, f"docs/cli.md documents options that do not exist: {unknown}"

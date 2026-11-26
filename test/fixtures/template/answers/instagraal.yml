@@ -1,0 +1,68 @@
+# koszullab/instaGRAAL at e4906fc with #53 and #54, as MIGRATION.md's IG-1 to IG-5 leave it.
+distribution: instagraal
+project_name: instaGRAAL
+package: instagraal
+command: instagraal
+entry_point: instagraal.cli.main:main
+cli: scripts
+description: Large genome reassembly based on Hi-C data
+version: 0.2.0
+version_module: ""
+src_layout: true
+license: GPL-3.0-only
+authors:
+  - name: Lyam Baudry
+  - name: Hervé Marie-Nelly
+maintainers: []
+keywords: [hi-c, genome-assembly, scaffolding]
+status: 3 - Alpha
+owner: koszullab
+repository: instaGRAAL
+default_branch: master
+docs_url: https://koszullab.github.io/instagraal/
+doi: ""
+paper:
+  title: "instaGRAAL: chromosome-level quality scaffolding of genomes using a proximity ligation-based scaffolder"
+  journal: Genome Biology
+  year: 2020
+  doi: 10.1186/s13059-020-02041-z
+  authors:
+    - {given: Lyam, family: Baudry}
+    - {given: Nadège, family: Guiglielmoni}
+    - {given: Hervé, family: Marie-Nelly}
+    - {given: Alexandre, family: Cormier}
+    - {given: Martial, family: Marbouty}
+    - {given: Komlan, family: Avia}
+    - {given: Yann Loe, family: Mie}
+    - {given: Olivier, family: Godfroy}
+    - {given: Lieven, family: Sterck}
+    - {given: J. Mark, family: Cock}
+    - {given: Christophe, family: Zimmer}
+    - {given: Susana M., family: Coelho}
+    - {given: Romain, family: Koszul}
+bioconda: false
+python_max: "3.12"
+python_cap_reason: "#14 capped Python without a reason: IG-1 tries 3.13 and 3.14 on the GPU pods, then lifts it or names the dependency"
+python_dev: "3.12"
+docstring_style: numpy
+line_length: 130
+ruff_version: 0.17.4
+ty_required: false
+test_data: tests/data
+sdist_test_data: true
+pypi_only: true
+install_run: ""
+install_source_builds: {}
+compiled_dependencies: false
+gpu: true
+image: true
+image_base: nvidia/cuda:11.8.0-devel-ubuntu22.04
+image_env: ""
+# #54's builds; the first, 11.8.0, runs on most drivers and gets `latest`.
+image_variants:
+  - {suffix: cuda11.8.0, base: "nvidia/cuda:11.8.0-devel-ubuntu22.04"}
+  - {suffix: cuda12.4.1, base: "nvidia/cuda:12.4.1-devel-ubuntu22.04"}
+  - {suffix: cuda12.8.1, base: "nvidia/cuda:12.8.1-devel-ubuntu24.04"}
+  - {suffix: cuda13.2.1, base: "nvidia/cuda:13.2.1-devel-ubuntu24.04"}
+image_arm64: false
+image_v_tags: false

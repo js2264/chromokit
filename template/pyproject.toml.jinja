@@ -1,0 +1,206 @@
+[# The pyproject.toml of CONVENTIONS.md § 2, § 5, § 13 and § 14. The
+   repository's own entries (its dependencies, its extras, more commands, its
+   ruff, pytest and coverage exceptions) go where the comments say: `copier
+   update` keeps them, and brings the template's changes around them. #]
+[build-system]
+# 1.27 is the first hatchling that writes PEP 639 license metadata.
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "[= distribution =]"
+[% if version_module %]
+# The version is __version__ in [= version_module =] (CONVENTIONS.md § 2).
+dynamic = ["version"]
+[% else %]
+version = "[= version =]"
+[% endif %]
+description = "[= description | replace('"', '\\"') =]"
+readme = "README.md"
+[% if python_max != "3.14" %]
+# [= python_cap_reason =]
+requires-python = ">=3.10,<3.[= (python_max.split('.')[1] | int) + 1 =]"
+[% else %]
+requires-python = ">=3.10"
+[% endif %]
+license = "[= license =]"
+license-files = ["LICENSE"]
+[% macro people(list) %]
+[% for person in list %]
+    { name = "[= person.name =]"[% if person.email %], email = "[= person.email =]"[% endif %] },
+[% endfor %]
+[% endmacro %]
+authors = [
+[= people(authors) =]]
+maintainers = [
+[= people(maintainers or authors) =]]
+keywords = [[% for keyword in keywords %]"[= keyword =]"[% if not loop.last %], [% endif %][% endfor %]]
+classifiers = [
+    "Development Status :: [= status =]",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3 :: Only",
+[% for python in pythons %]
+    "Programming Language :: Python :: [= python =]",
+[% endfor %]
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: MacOS",
+]
+# Every runtime dependency has a floor, and every floor a reason, the oldest
+# version the bounds job passes with (CONVENTIONS.md § 3).
+dependencies = [
+]
+
+[project.optional-dependencies]
+# Optional runtime features only, never tools (CONVENTIONS.md § 2).
+[% if gpu %]
+# gpu: what only the GPU code needs.
+gpu = [
+]
+[% endif %]
+
+[dependency-groups]
+# Never published (CONVENTIONS.md § 2): `uv sync` installs dev, and
+# `uv run --only-group docs …` the docs alone.
+dev = [
+    "bump-my-version>=1.2",
+    "diff-cover>=9",
+    "pre-commit>=4",
+    "pytest>=8",
+    "pytest-cov>=6",
+    "ruff>=[= ruff_version =]",
+    "ty>=0.0.38",
+]
+docs = [
+    "zensical>=0.0.43",
+    "mkdocstrings[python]>=0.25",
+]
+
+[project.urls]
+Homepage = "https://github.com/[= owner =]/[= repository =]"
+Documentation = "[= docs_url =]"
+Repository = "https://github.com/[= owner =]/[= repository =]"
+Changelog = "[= docs_url =]changelog/"
+Issues = "https://github.com/[= owner =]/[= repository =]/issues"
+
+[project.scripts]
+[= command =] = "[= entry_point =]"
+
+[% if version_module %]
+[tool.hatch.version]
+path = "[= version_module =]"
+
+[% endif %]
+[tool.hatch.build.targets.wheel]
+packages = ["[= source =]"]
+
+[tool.hatch.build.targets.sdist]
+# The sources, the tests and their data, README, LICENSE, CITATION.cff and the
+# changelog: what packagers build and test from. Repository tooling and media
+# stay out.
+exclude = [
+    "/.github",
+    "/uv.lock",
+    "/.pre-commit-config.yaml",
+    "/Makefile",
+    "/AGENTS.md",
+    "/benchmarks",
+    "/docs/images",
+[% if not sdist_test_data %]
+    # [= sdist_test_data_reason =]
+    "/[= test_data =]",
+[% endif %]
+]
+
+[% if version_module %]
+[tool.uv]
+# uv notices a new version in [= version_module =] (CONVENTIONS.md § 2).
+cache-keys = [{ file = "pyproject.toml" }, { file = "[= version_module =]" }]
+
+[% endif %]
+[tool.ruff]
+line-length = [= line_length =]
+target-version = "py310"
+# chromokit's report kit, linted and formatted in chromokit.
+extend-exclude = ["[= source =]/_report"]
+
+[tool.ruff.lint]
+# An explicit list, so that upgrading ruff never changes the rules.
+select = ["E", "W", "F", "I", "B", "UP", "SIM", "RUF"]
+ignore = [
+    "E501",  # the formatter wraps code; long strings and docstrings are allowed
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "[= {'numpy': 'numpy', 'google': 'google', 'sphinx': 'pep257'}[docstring_style] =]"
+
+[tool.ty.src]
+# chromokit's report kit, type-checked in chromokit.
+exclude = ["[= source =]/_report"]
+
+[tool.pytest.ini_options]
+minversion = "8"
+testpaths = ["tests"]
+xfail_strict = true
+addopts = [
+    "-ra",
+    "--strict-config",
+    "--strict-markers",
+    "--cov=[= package =]",
+    "--cov-report=term-missing",
+    "--cov-report=xml",
+]
+
+[tool.coverage.run]
+# chromokit's report kit is tested in chromokit.
+omit = ["*/[= package =]/_report/*"]
+
+[tool.bumpversion]
+current_version = "[= version =]"
+commit = true
+tag = true
+tag_name = "v{new_version}"
+message = "chore(release): v{new_version}"
+allow_dirty = false
+
+[% if version_module %]
+[[tool.bumpversion.files]]
+filename = "[= version_module =]"
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+[% else %]
+# The package's own entries: the name anchors the search, keeping it off
+# current_version above and off the other packages of uv.lock.
+[[tool.bumpversion.files]]
+filename = "pyproject.toml"
+search = "name = \"[= distribution =]\"\nversion = \"{current_version}\""
+replace = "name = \"[= distribution =]\"\nversion = \"{new_version}\""
+
+[[tool.bumpversion.files]]
+filename = "uv.lock"
+search = "name = \"[= distribution =]\"\nversion = \"{current_version}\""
+replace = "name = \"[= distribution =]\"\nversion = \"{new_version}\""
+[% endif %]
+
+[[tool.bumpversion.files]]
+# The version the documentation's header and footer show.
+filename = "zensical.toml"
+search = 'release = "{current_version}"'
+replace = 'release = "{new_version}"'
+
+[[tool.bumpversion.files]]
+# The Unreleased entries become this version's section, under a fresh Unreleased.
+filename = "docs/changelog.md"
+search = "## Unreleased"
+replace = "## Unreleased\n\n## [{new_version}] - {now:%Y-%m-%d}"
+
+[[tool.bumpversion.files]]
+filename = "CITATION.cff"
+search = 'version: "{current_version}"'
+replace = 'version: "{new_version}"'
+
+[[tool.bumpversion.files]]
+filename = "CITATION.cff"
+regex = true
+search = 'date-released: "\d{{4}}-\d{{2}}-\d{{2}}"'
+replace = 'date-released: "{now:%Y-%m-%d}"'

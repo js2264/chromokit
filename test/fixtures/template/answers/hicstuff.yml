@@ -1,0 +1,64 @@
+# koszullab/hicstuff at 3cf59f9, as MIGRATION.md's HS-1 to HS-6 leave it.
+distribution: hicstuff
+project_name: hicstuff
+package: hicstuff
+command: hicstuff
+entry_point: hicstuff.cli:cli
+cli: click
+description: General purpose stuff to generate and handle Hi-C data in its simplest form.
+version: 4.0.0
+version_module: ""
+src_layout: true
+license: BSD-3-Clause
+authors:
+  - name: Jacques Serizay
+  - name: Cyril Matthey-Doret
+  - name: Lyam Baudry
+maintainers:
+  - name: Jacques Serizay
+keywords: [hi-c, genomics, bioinformatics]
+status: 5 - Production/Stable
+owner: koszullab
+repository: hicstuff
+default_branch: master
+docs_url: https://koszullab.github.io/hicstuff/
+# HS-6 checks which of three DOIs is the concept DOI first.
+doi: ""
+paper: null
+bioconda: true
+python_max: "3.14"
+python_dev: "3.13"
+docstring_style: numpy
+line_length: 100
+ruff_version: 0.17.5
+ty_required: false
+test_data: test_data
+sdist_test_data: true
+# bwa runs in-process, through pybwa: a pip install alone runs the pipeline.
+pypi_only: true
+install_run: |
+  cli hicstuff pipeline -a bwa -e DpnII -g test_data/genome/seq.fa -o out \
+    test_data/sample.reads_for.fastq.gz test_data/sample.reads_rev.fastq.gz
+  ls out/abs_fragments_contacts_weighted.cool out/valid_idx.pairs.gz
+  grep "## aligner: bwa mem in-process, pybwa" out/hicstuff_*.log
+  # The tests, from the installed wheel: those that need a program skip.
+  "$RUNNER_TEMP/venv/bin/pip" install pytest
+  cli python -m pytest -q -o addopts=""
+install_source_builds:
+  # pybwa has no wheel for macOS with Python 3.14.
+  "*-apple-darwin-3.14": [pybwa]
+compiled_dependencies: true
+wheels_source_builds:
+  "*-apple-darwin-3.14": [pybwa]
+  # biopython has no wheel for Intel macOS since 1.87.
+  "x86_64-apple-darwin-*": [biopython]
+next_python_apt: libhdf5-dev pkg-config
+gpu: false
+image: true
+# HS-5 pins it to a version.
+image_base: mambaorg/micromamba:2.10.0
+image_env: ""
+image_variants: []
+# HS-5 checks bioconda's aligners for linux-aarch64 first.
+image_arm64: false
+image_v_tags: false

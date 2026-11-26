@@ -1,0 +1,25 @@
+# Command line
+
+Every command of [= project_name =], and every option. `tests/test_docs.py`
+checks this page against the command line: a command or an option that is
+missing here, or that the command line does not have, fails the tests.
+
+[% if cli == "scripts" %]
+Each command has a section headed with its name, `` ### `[= command =]` { #[= command =] } ``,
+[% else %]
+Each command has a section headed with its name, `` ### `name` { #name } ``
+(`` #### `group name` `` for a command of a group),
+[% endif %]
+with a table whose first column lists its options, short form first:
+`` | `-o, --outdir` | … | ``. `-h, --help`[% if cli != "docopt" %] and `--version`[% endif %] are left out.
+
+## Commands
+[% if cli == "scripts" %]
+
+### `[= command =]` { #[= command =] }
+
+What it does, in one line.
+
+| Option | Default | Description |
+|---|---|---|
+[% endif %]

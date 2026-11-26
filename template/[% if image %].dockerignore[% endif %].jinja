@@ -1,0 +1,6 @@
+# The image needs the released wheel[% if image_env %] and its environment[% endif %], nothing else (CONVENTIONS.md § 15).
+*
+!dist/*.whl
+[% if image_env %]
+!/[= image_env =]
+[% endif %]

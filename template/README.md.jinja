@@ -1,0 +1,47 @@
+# [= project_name =]
+
+[![PyPI](https://img.shields.io/pypi/v/[= distribution =])](https://pypi.org/project/[= distribution =]/)
+[![Python versions](https://img.shields.io/pypi/pyversions/[= distribution =])](https://pypi.org/project/[= distribution =]/)
+[% if bioconda %]
+[![bioconda](https://img.shields.io/conda/vn/bioconda/[= distribution | lower =])](https://anaconda.org/bioconda/[= distribution | lower =])
+[% endif %]
+[![CI](https://github.com/[= owner =]/[= repository =]/actions/workflows/ci.yml/badge.svg)](https://github.com/[= owner =]/[= repository =]/actions/workflows/ci.yml)
+[![Docs](https://github.com/[= owner =]/[= repository =]/actions/workflows/docs.yml/badge.svg)]([= docs_url =])
+[![Codecov](https://codecov.io/gh/[= owner =]/[= repository =]/branch/[= default_branch =]/graph/badge.svg)](https://codecov.io/gh/[= owner =]/[= repository =])
+[% if doi %]
+[![DOI](https://zenodo.org/badge/DOI/[= doi =].svg)](https://doi.org/[= doi =])
+[% endif %]
+[![License](https://img.shields.io/pypi/l/[= distribution =])](LICENSE)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+
+[= description =]
+
+## Install
+
+```bash
+pip install [= distribution =]
+```
+[% if bioconda %]
+
+```bash
+conda install -c conda-forge -c bioconda [= distribution =]
+```
+[% endif %]
+[% if image %]
+
+```bash
+docker pull ghcr.io/[= owner | lower =]/[= distribution | lower =]:latest
+```
+[% endif %]
+
+## Quick start
+
+```bash
+[= command =] --help
+```
+
+## Documentation
+
+<[= docs_url =]>: [installation]([= docs_url =]installation/),
+[quick start]([= docs_url =]quickstart/), [the command line]([= docs_url =]cli/)
+and [how to cite [= project_name =]]([= docs_url =]citation/).

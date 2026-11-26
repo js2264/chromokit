@@ -1,0 +1,46 @@
+# js2264/tinyMapper at cf09301, as MIGRATION.md's TM-1 to TM-6 leave it. Not
+# attached to the session that wrote this file: what the plan does not say
+# (the entry point) its session checks.
+distribution: tinymapper
+project_name: tinymapper
+package: tinymapper
+command: tinymapper
+entry_point: tinymapper.cli:main
+# tinymapper, and tinymapper-report (R-8).
+cli: scripts
+description: Map and process ChIP-seq, RNA-seq, ATAC-seq, MNase-seq, Hi-C and shotgun reads.
+version: 0.14.25
+version_module: ""
+src_layout: true
+license: GPL-3.0-or-later
+authors:
+  - name: Jacques Serizay
+maintainers: []
+keywords: [chip-seq, rna-seq, atac-seq, mnase-seq, hi-c]
+status: 4 - Beta
+owner: js2264
+repository: tinyMapper
+default_branch: master
+docs_url: https://js2264.github.io/tinyMapper/
+doi: ""
+paper: null
+# TM-7, later.
+bioconda: false
+python_max: "3.14"
+python_dev: "3.13"
+docstring_style: numpy
+line_length: 88
+ruff_version: 0.15.12
+ty_required: false
+test_data: tests
+sdist_test_data: false
+sdist_test_data_reason: tests/ holds 200 MB of genomes and their indexes
+# bwa-mem2, bowtie2, STAR, samtools, deepTools, MACS3: its test_commands job
+# runs them, in the micromamba environment of env/conda-lock.yml.
+pypi_only: false
+install_run: ""
+install_source_builds: {}
+compiled_dependencies: false
+next_python_apt: ""
+gpu: false
+image: false
