@@ -5,8 +5,9 @@ package: metacooler
 command: metacooler
 entry_point: metacooler.cli.main:cli
 cli: click
-description: "Hi-C contact maps for metagenomes: an extension of the cooler format."
+description: "Hi-C contact maps for metagenomes — an extension of the cooler format."
 version: 0.4.0
+released: 2026-11-23
 version_module: src/metacooler/_version.py
 src_layout: true
 license: MIT
@@ -19,6 +20,8 @@ owner: js2264
 repository: metacooler
 default_branch: devel
 docs_url: https://js2264.github.io/metacooler/
+# Its page keeps its name, and so its URL (CONVENTIONS.md § 8).
+formats_page: format.md
 doi: ""
 paper: null
 # Not yet: item 1.1 puts it there.

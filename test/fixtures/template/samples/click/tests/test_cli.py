@@ -14,5 +14,11 @@ def test_data():
     assert CliRunner().invoke(cli, ["data", "clean", "--legacy"]).output == "clean\n"
 
 
+def test_fit():
+    assert CliRunner().invoke(cli, ["fit", "fast"]).output == "fast 10\n"
+    result = CliRunner().invoke(cli, ["fitting", "slow", "--seed", "1"])
+    assert result.output == "slow 10 1\n"
+
+
 def test_version():
     assert "0.1.0" in CliRunner().invoke(cli, ["--version"]).output

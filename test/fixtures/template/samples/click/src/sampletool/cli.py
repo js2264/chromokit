@@ -1,4 +1,5 @@
-"""sampletool's command line: a group, a command, and a group of commands."""
+"""sampletool's command line: a group, a command, and groups of commands, one
+of them also under a hidden name, an alias."""
 
 import click
 
@@ -42,3 +43,33 @@ def show(output, verbose):
 def clean(legacy, verbose):
     """Clean the data."""
     click.echo("clean")
+
+
+@cli.group()
+def fit():
+    """Fit a model."""
+
+
+rounds = click.option("--rounds", default=10, help="How many rounds.")
+
+
+@fit.command()
+@rounds
+@verbose
+def fast(rounds, verbose):
+    """Fit quickly."""
+    click.echo(f"fast {rounds}")
+
+
+@fit.command()
+@rounds
+@click.option("--seed", default=0, help="The seed of the sample.")
+@verbose
+def slow(rounds, seed, verbose):
+    """Fit slowly, on a sample."""
+    click.echo(f"slow {rounds} {seed}")
+
+
+# The same group under a second, hidden name: an alias, which the
+# documentation need not name.
+cli.add_command(click.Group(name="fitting", commands=fit.commands, hidden=True))
