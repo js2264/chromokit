@@ -27,6 +27,9 @@ token or kit file is a major one.
   an alias, needs no section, as a hidden option needs none.
 - **The `ty` line of the template's `AGENTS.md` and contributing page** had its
   comment one column off the others'.
+- **The template's `.gitignore` ignores zensical's `.cache/`**, which a local
+  docs build left at the root and `uv build` then put in the sdist: the
+  `.gitignore` zensical writes inside it hides it from git, not from hatchling.
 
 ## [0.2.0] - 2026-11-26
 
