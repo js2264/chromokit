@@ -145,7 +145,8 @@ uvx copier update                                          # a newer tag, merged
 - **Its questions:** the distribution, its import package and command; the
   owner and the default branch; the docstring style and the line length; the
   image and its base; compiled dependencies (the `wheels` job); nothing
-  needed outside PyPI (an empty `PATH` in the `install` job); a GPU. The
+  needed outside PyPI (an empty `PATH` in the `install` job), and the
+  programs the tests run otherwise; a GPU. The
   answers go in `.copier-answers.yml`, which the repository commits.
 - **Written once:** README, `AGENTS.md`, `CITATION.cff`, the docs' pages and
   the Dockerfile become the repository's (`_skip_if_exists`). The other files

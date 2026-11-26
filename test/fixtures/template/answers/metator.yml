@@ -39,6 +39,7 @@ pypi_only: true
 install_run: ""
 install_source_builds: {}
 # pyhmmer, pyrodigal, igraph and pysam (MT-2).
+test_apt: ""
 compiled_dependencies: true
 wheels_source_builds: {}
 next_python_apt: libhdf5-dev pkg-config

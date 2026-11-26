@@ -47,6 +47,8 @@ install_run: |
 install_source_builds:
   # pybwa has no wheel for macOS with Python 3.14.
   "*-apple-darwin-3.14": [pybwa]
+# The aligners, and bgzip for the final pairs file.
+test_apt: bowtie2 bwa minimap2 samtools tabix
 compiled_dependencies: true
 wheels_source_builds:
   "*-apple-darwin-3.14": [pybwa]

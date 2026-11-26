@@ -40,6 +40,7 @@ sdist_test_data_reason: tests/ holds 200 MB of genomes and their indexes
 pypi_only: false
 install_run: ""
 install_source_builds: {}
+test_apt: ""
 compiled_dependencies: false
 next_python_apt: ""
 gpu: false

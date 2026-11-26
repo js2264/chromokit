@@ -33,6 +33,7 @@ sdist_test_data_reason: the samples' data stays in the repository
 pypi_only: true
 install_run: ""
 install_source_builds: {}
+test_apt: ""
 compiled_dependencies: true
 wheels_source_builds: {}
 next_python_apt: ""

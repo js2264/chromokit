@@ -288,6 +288,14 @@ install_source_builds:
     x86_64-apple-darwin
   default: "{}"
 
+test_apt:
+  type: str
+  help: >-
+    Programs the tests run, as Ubuntu packages, which the test and bounds jobs
+    install on Linux (hicstuff: bowtie2 bwa minimap2 samtools tabix); empty
+    for none. A test that needs a program that is missing skips.
+  default: ""
+
 compiled_dependencies:
   type: bool
   help: Dependencies with compiled code that may lack a wheel somewhere (adds the wheels job)

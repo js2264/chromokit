@@ -32,6 +32,7 @@ sdist_test_data: true
 pypi_only: true
 install_run: ""
 install_source_builds: {}
+test_apt: ""
 compiled_dependencies: false
 next_python_apt: ""
 gpu: false

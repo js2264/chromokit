@@ -107,6 +107,15 @@ jobs:
         with:
           persist-credentials: false
 
+[% if test_apt %]
+      # macOS has no apt: there, the tests that need a program skip.
+      - name: The programs the tests run
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends [= test_apt =]
+
+[% endif %]
 [% if python_max == "3.14" and next_python_apt %]
       - name: What the next Python builds with
         if: matrix.apt
@@ -173,6 +182,13 @@ jobs:
         with:
           persist-credentials: false
 
+[% if test_apt %]
+      - name: The programs the tests run
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends [= test_apt =]
+
+[% endif %]
       - uses: astral-sh/setup-uv@1db35dd8eee11c5894872e0b383ae6c406cf738d # v10.4.0
         with:
           python-version: ${{ matrix.python-version }}

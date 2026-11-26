@@ -37,6 +37,7 @@ install_run: |
   cli metacooler info tests/data/assembly_1_1kb.metacool
   cli metacooler check tests/data/assembly_1_1kb.metacool
 install_source_builds: {}
+test_apt: ""
 compiled_dependencies: false
 next_python_apt: libhdf5-dev pkg-config
 gpu: false
