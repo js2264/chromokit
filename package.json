@@ -1,7 +1,7 @@
 {
   "name": "chromokit",
   "version": "0.1.0",
-  "description": "A shared UI kit \u2014 design tokens, components, and starter templates \u2014 for plain HTML, Hugo, Zensical, Sphinx, Astro Starlight, pkgdown and Quarto sites, in the look of chromosomix.",
+  "description": "A shared UI kit — design tokens, components, and starter templates — for plain HTML, Hugo, Zensical, Sphinx, Astro Starlight, pkgdown and Quarto sites, in the look of chromosomix.",
   "type": "module",
   "license": "MIT",
   "author": "Jacques Serizay",
@@ -58,6 +58,8 @@
   "scripts": {
     "build": "node scripts/build.mjs",
     "test": "node --test test/*.test.mjs",
+    "test:report": "uv run --no-project --with pytest --with jinja2 --with pyyaml --with pandas --with numpy pytest test/report -q",
+    "test:template": "uv run --no-project --with pytest --with pyyaml pytest test/template -q",
     "check": "node scripts/build.mjs --check",
     "site": "node scripts/site.mjs",
     "screens": "node scripts/screens.mjs",
