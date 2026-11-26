@@ -21,7 +21,7 @@ uv run pre-commit install     # the hooks: ruff, on every commit
 ```bash
 uv run pytest                                   # the tests, with coverage
 uv run ruff check . && uv run ruff format .     # lint and format
-uv run ty check [= 'src' if src_layout else package =]                            # types
+[= '%-48s' | format('uv run ty check ' ~ ('src' if src_layout else package)) =]# types
 ```
 
 - The command line is tested in-process, with click's `CliRunner`; a

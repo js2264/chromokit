@@ -15,7 +15,7 @@ would switch Claude Code off reading it; a personal one holding the line
 uv sync                                         # the environment
 uv run pytest                                   # the tests, with coverage
 uv run ruff check . && uv run ruff format .     # lint and format
-uv run ty check [= 'src' if src_layout else package =]                            # types
+[= '%-48s' | format('uv run ty check ' ~ ('src' if src_layout else package)) =]# types
 uv run pre-commit install                       # the hooks
 uv run --only-group docs zensical serve         # the documentation, at http://localhost:8000
 uv run bump-my-version bump minor               # a release (docs/contributing.md)
