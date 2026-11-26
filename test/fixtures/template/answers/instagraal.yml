@@ -7,6 +7,8 @@ entry_point: instagraal.cli.main:main
 cli: scripts
 description: Large genome reassembly based on Hi-C data
 version: 0.2.0
+# Its date on PyPI.
+released: "2026-04-27"
 version_module: ""
 src_layout: true
 license: GPL-3.0-only
@@ -20,6 +22,7 @@ owner: koszullab
 repository: instaGRAAL
 default_branch: master
 docs_url: https://koszullab.github.io/instagraal/
+formats_page: formats.md
 doi: ""
 paper:
   title: "instaGRAAL: chromosome-level quality scaffolding of genomes using a proximity ligation-based scaffolder"

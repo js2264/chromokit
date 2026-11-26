@@ -20,8 +20,10 @@ htmlcov/
 .ruff_cache/
 .mypy_cache/
 
-# The documentation site, as zensical builds it
+# The documentation site, as zensical builds it, and its cache, which a
+# .gitignore of its own hides from git but not from the sdist's builder
 /site/
+/.cache/
 
 # Editors and systems
 .vscode/

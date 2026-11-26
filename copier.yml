@@ -120,6 +120,14 @@ version:
   default: "0.1.0"
   validator: "[% if not (version | regex_search('^\\d+\\.\\d+\\.\\d+$')) %]X.Y.Z[% endif %]"
 
+released:
+  type: str
+  help: >-
+    The date that version was released, YYYY-MM-DD, as the changelog gives it
+    (CITATION.cff's date-released); today for one not released yet
+  default: "[= '%Y-%m-%d' | strftime =]"
+  validator: "[% if not (released | regex_search('^\\d{4}-\\d{2}-\\d{2}$')) %]YYYY-MM-DD[% endif %]"
+
 version_module:
   type: str
   help: >-
@@ -196,6 +204,15 @@ paper:
     The paper to cite, CITATION.cff's preferred-citation: {title, journal,
     year, doi, authors: [{given, family}]}; empty for none
   default: "null"
+
+formats_page:
+  type: str
+  help: >-
+    The page of docs/ on the files the package reads and writes, its report
+    and its log included (CONVENTIONS.md § 8, § 12): formats.md, or the name
+    an existing page keeps, and so its URL (metacooler's format.md)
+  default: formats.md
+  validator: "[% if not (formats_page | regex_search('^[a-z0-9][a-z0-9_-]*\\.md$')) %]A page of docs/: name.md[% endif %]"
 
 bioconda:
   type: bool

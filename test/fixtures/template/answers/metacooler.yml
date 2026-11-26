@@ -1,12 +1,14 @@
-# js2264/metacooler at 8c650e7, as MIGRATION.md's MC-1 to MC-6 leave it.
+# js2264/metacooler at 8c650e7, as MIGRATION.md's MC-1 to MC-6 leave it: the
+# answers its pull request commits.
 distribution: metacooler
 project_name: metacooler
 package: metacooler
 command: metacooler
 entry_point: metacooler.cli.main:cli
 cli: click
-description: "Hi-C contact maps for metagenomes: an extension of the cooler format."
+description: "Hi-C contact maps for metagenomes — an extension of the cooler format."
 version: 0.4.0
+released: "2026-11-23"
 version_module: src/metacooler/_version.py
 src_layout: true
 license: MIT
@@ -19,6 +21,8 @@ owner: js2264
 repository: metacooler
 default_branch: devel
 docs_url: https://js2264.github.io/metacooler/
+# Its page keeps its name, and so its URL (CONVENTIONS.md § 8).
+formats_page: format.md
 doi: ""
 paper: null
 # Not yet: item 1.1 puts it there.
@@ -36,6 +40,8 @@ pypi_only: true
 install_run: |
   cli metacooler info tests/data/assembly_1_1kb.metacool
   cli metacooler check tests/data/assembly_1_1kb.metacool
+  cli metacooler report tests/data/assembly_1_1kb.metacool -o "$RUNNER_TEMP/report"
+  ls "$RUNNER_TEMP"/report/assembly_1_1kb.report.html "$RUNNER_TEMP"/report/assembly_1_1kb.metacooler_*.log
 install_source_builds: {}
 test_apt: ""
 compiled_dependencies: false

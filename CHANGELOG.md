@@ -6,6 +6,31 @@ token or kit file is a major one.
 
 ## [Unreleased]
 
+### Fixed
+
+- **The template wrote metacooler's format page under another name, and dated
+  every repository's version the day it was applied.** Two questions fix it:
+  `formats_page`, the page on the files a package reads and writes
+  (`formats.md` by default; metacooler's `format.md` keeps its name and URL,
+  CONVENTIONS.md § 8), which names the page the template writes and its entry
+  in the nav; and `released`, the date of the version in the answers, which
+  `CITATION.cff`'s `date-released` now gives rather than the day the template
+  was applied. An answers file quotes the date: YAML reads a bare one as a
+  date, which copier refuses.
+- **The template's `tests/test_docs.py` reads `docs/cli.md` as its headings
+  nest.** It took a comment of a bash example for a heading, and the tables of
+  a command's sub-section (`#### Examples`) for tables outside every
+  command's section, whose options count for every command. It now skips
+  fenced code, and a section runs to the next heading of its level or above.
+  A heading may name several commands that share their options
+  (`` #### `normalize normcc` and `normalize hiczin` ``), and a hidden command,
+  an alias, needs no section, as a hidden option needs none.
+- **The `ty` line of the template's `AGENTS.md` and contributing page** had its
+  comment one column off the others'.
+- **The template's `.gitignore` ignores zensical's `.cache/`**, which a local
+  docs build left at the root and `uv build` then put in the sdist: the
+  `.gitignore` zensical writes inside it hides it from git, not from hatchling.
+
 ## [0.2.0] - 2026-11-26
 
 ### Added

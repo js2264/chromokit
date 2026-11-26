@@ -123,6 +123,13 @@ def test_what_is_written(rendered):
         assert name in files, name
     assert ("Dockerfile" in files) == answers["image"] == (".dockerignore" in files)
     assert not [name for name in files if "CLAUDE" in name]
+    # The formats page under the name the answers give it, in the nav too.
+    page = answers.get("formats_page", "formats.md")
+    assert f"docs/{page}" in files
+    assert f'"File formats" = "{page}"' in (path / "zensical.toml").read_text()
+    # CITATION.cff dates the version the answers give, when they date it.
+    if "released" in answers:
+        assert f'date-released: "{answers["released"]}"' in (path / "CITATION.cff").read_text()
     for file in path.rglob("*"):
         if file.is_file() and ".git/" not in str(file) and file.name != ".copier-answers.yml":
             assert not re.search(r"\[=|=\]|\[%|%\]|\[#|#\]", file.read_text()), file
@@ -306,6 +313,30 @@ def test_the_tests_pass_and_test_docs_checks_the_reference(sample):
     finally:
         reference.write_text(text)
     assert result.returncode != 0 and "not-a-command" in result.stdout
+
+
+def test_test_docs_reads_sections_as_their_headings_nest(sample):
+    """In the click sample's reference, a sub-section documents its command's
+    options (`hello`'s --shout), two commands share a section (`fit fast` and
+    `fit slow`), an example's comment is no heading, and a hidden alias
+    (`fitting`) needs no section; an option documented in the sub-section of
+    another command's section is not its own."""
+    project, answers = sample
+    if answers["cli"] != "click":
+        pytest.skip("the click sample's reference")
+    reference = project / "docs" / "cli.md"
+    text = reference.read_text()
+    row = "| `--shout/--no-shout` | off | In capitals. |\n"
+    assert row in text and "#### `fit fast` and `fit slow`" in text
+    moved = text.replace(row, "").replace("is hidden.\n", "is hidden.\n\n##### Shouting\n\n| Option |\n|---|\n" + row)
+    reference.write_text(moved)
+    try:
+        result = run("uv", "run", "--locked", "pytest", "-p", "no:cacheprovider", "--no-cov", "tests/test_docs.py", cwd=project, check=False)
+    finally:
+        reference.write_text(text)
+    assert result.returncode != 0
+    assert "options of `hello` that docs/cli.md misses: ['--no-shout', '--shout']" in result.stdout
+    assert "`data clean` --no-shout" in result.stdout
 
 
 def test_ruff_and_ty_pass(sample):

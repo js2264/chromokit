@@ -7,6 +7,8 @@ entry_point: hicstuff.cli:cli
 cli: click
 description: General purpose stuff to generate and handle Hi-C data in its simplest form.
 version: 4.0.0
+# Its date on PyPI.
+released: "2026-11-23"
 version_module: ""
 src_layout: true
 license: BSD-3-Clause
@@ -22,6 +24,7 @@ owner: koszullab
 repository: hicstuff
 default_branch: master
 docs_url: https://koszullab.github.io/hicstuff/
+formats_page: formats.md
 # HS-6 checks which of three DOIs is the concept DOI first.
 doi: ""
 paper: null
