@@ -9,6 +9,8 @@ entry_point: chromosight.cli.chromosight:main
 cli: docopt
 description: Detect patterns, such as loops and borders, in Hi-C contact maps by computer vision.
 version: 1.6.3
+# Its date on PyPI.
+released: "2022-10-05"
 version_module: ""
 # CS-1: "optionally src/": the flat layout, kept.
 src_layout: false
@@ -22,6 +24,7 @@ owner: koszullab
 repository: chromosight
 default_branch: master
 docs_url: https://koszullab.github.io/chromosight/
+formats_page: formats.md
 doi: ""
 # CS-5 writes the Nature Communications 2020 paper.
 paper: null

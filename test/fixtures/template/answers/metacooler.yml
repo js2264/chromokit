@@ -7,7 +7,7 @@ entry_point: metacooler.cli.main:cli
 cli: click
 description: "Hi-C contact maps for metagenomes — an extension of the cooler format."
 version: 0.4.0
-released: 2026-11-23
+released: "2026-11-23"
 version_module: src/metacooler/_version.py
 src_layout: true
 license: MIT
