@@ -1,4 +1,5 @@
-# js2264/metacooler at 8c650e7, as MIGRATION.md's MC-1 to MC-6 leave it.
+# js2264/metacooler at 8c650e7, as MIGRATION.md's MC-1 to MC-6 leave it: the
+# answers its pull request commits.
 distribution: metacooler
 project_name: metacooler
 package: metacooler
@@ -39,6 +40,8 @@ pypi_only: true
 install_run: |
   cli metacooler info tests/data/assembly_1_1kb.metacool
   cli metacooler check tests/data/assembly_1_1kb.metacool
+  cli metacooler report tests/data/assembly_1_1kb.metacool -o "$RUNNER_TEMP/report"
+  ls "$RUNNER_TEMP"/report/assembly_1_1kb.report.html "$RUNNER_TEMP"/report/assembly_1_1kb.metacooler_*.log
 install_source_builds: {}
 test_apt: ""
 compiled_dependencies: false
