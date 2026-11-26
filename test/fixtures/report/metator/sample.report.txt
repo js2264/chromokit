@@ -1,0 +1,136 @@
+# metaTOR report of sample
+# format 1: [section] then a key and its value per line; [table: name] then a header and a row
+# per line, on spaces; NA: missing. See https://koszullab.github.io/metator/formats/#the-report-of-a-run
+
+[report]
+format_version   1
+sample           sample
+map              out/sample.metacool
+metator_version  1.4.0
+written          2026-11-26T10:15:30
+map_written      2026-11-26T10:12:04.220232
+
+[run]
+steps                    network,partition,validation,markers,mge,host
+input                    sample.metacool
+assembly                 data/assembly.fa
+enzyme                   NA
+depth                    NA
+normalization            empirical_hit
+algorithm                louvain
+iterations               10
+overlap_pct              80
+res_param                1
+size_bp                  20000
+rec_iter                 5
+rec_overlap_pct          90
+seed                     3
+rec_seed                 3
+mge_threshold_bin        0.8
+host_min_share_pct       10.00
+host_min_contigs         5
+markers_predate_genomes  true
+
+[contigs]
+contigs                    55
+contigs_bp                 578000
+contig_n50_bp              13074
+contig_l50                 14
+contig_n90_bp              5905
+contig_max_bp              40000
+contig_median_bp           8506
+gc_pct                     49.46
+coverage_median            30.5469
+in_final_clusters_contigs  55
+in_final_clusters_bp       578000
+in_final_clusters_pct      100.00
+in_mags_contigs            52
+in_mags_bp                 560000
+in_mags_pct                96.89
+in_mges_contigs            3
+in_mges_bp                 18000
+unbinned_contigs           0
+unbinned_bp                0
+
+[contacts]
+contacts                   60000
+qc_source                  pairs
+qc_distance_threshold_bp   1001
+intra_contig_short         14734
+intra_contig_long          13693
+inter_contig_intra_genome  28919
+inter_genome               2654
+trans_contig_ratio         0.5262
+intra_genome_fraction      0.9558
+network_contigs            55
+network_edges              748
+normalization              empirical_hit
+
+[clusters]
+core_clusters         5
+overlapping_clusters  5
+recursive_steps       0
+recursive_clusters    0
+final_clusters        5
+final_clusters_bp     578000
+hq_mags               4
+hq_mags_bp            438000
+mq_mags               1
+mq_mags_bp            140000
+lq_mags               0
+lq_mags_bp            0
+contaminated_mags     0
+contaminated_mags_bp  0
+other_clusters        0
+other_clusters_bp     0
+mags                  5
+
+[mges]
+mge_clusters         2
+mge_contigs          3
+mge_bp               18000
+mge_genomes          2
+mags_losing_contigs  2
+mge_random_clusters  NA
+
+[hosts]
+min_share_pct                    10.00
+min_contigs                      5
+mge_clusters_with_host           2
+mge_clusters_with_one_host       2
+mge_clusters_with_several_hosts  0
+mge_clusters_without_host        0
+mags_hosting_mges                2
+
+[commands]
+network     metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3
+partition   metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3
+validation  metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3
+markers     metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3
+mge         metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3
+host        metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3
+
+[table: rounds]
+round        step        clusters  contigs  length_bp
+core         partition   5         55       578000
+overlapping  partition   5         55       578000
+final        validation  5         55       578000
+mge          mge         2         3        18000
+
+[table: mags]
+name                 quality  length_bp  contigs  completeness_pct  contamination_pct  gc_pct  n50_bp  hic_abundance       sg_abundance        intra_genome_ratio  n_mges  mges
+metator_00004_00000  HQ       120000     14       100.00            0.00               30.03   10335   6.415               6.33866657125682    0.9623              0       NA
+metator_00005_00000  HQ       110000     11       100.00            0.00               69.89   11943   17.38083333333333   17.796010204410674  0.9662              0       NA
+metator_00002_00000  HQ       100000     7        100.00            0.00               40.73   16772   14.175              14.748087410697462  0.8399              1       MetaTOR_MGE_00001
+metator_00003_00000  HQ       90000      9        100.00            0.00               59.91   12870   32.174166666666665  31.553173614437057  0.9304              1       MetaTOR_MGE_00002
+metator_00001_00000  MQ       140000     11       89.51             0.00               49.87   22978   29.855              29.56406219919802   0.9731              0       NA
+
+[table: mge_clusters]
+name               contigs  length_bp  gc_pct  n_hosts  hosts                host_shares_pct
+MetaTOR_MGE_00001  2        12000      44.46   1        metator_00002_00000  93.47
+MetaTOR_MGE_00002  1        6000       55.87   1        metator_00003_00000  94.01
+
+[table: hosts]
+mge                mag                  share_pct
+MetaTOR_MGE_00001  metator_00002_00000  93.47
+MetaTOR_MGE_00002  metator_00003_00000  94.01

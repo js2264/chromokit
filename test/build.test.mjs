@@ -81,3 +81,18 @@ test('the R package and the npm package agree on the version', () => {
   const version = JSON.parse(read('package.json')).version
   assert.match(read('r/DESCRIPTION'), new RegExp(`^Version: ${version.replace(/\./g, '\\.')}$`, 'm'))
 })
+
+test('the report kit: stamped, left alone by the package that holds it, every placeholder filled', () => {
+  const version = JSON.parse(read('package.json')).version
+  const python = read('dist/report/__init__.py').split('\n')
+  assert.match(python[0], new RegExp(`^# chromokit ${version.replace(/\./g, '\\.')} - MIT - .* do not edit`))
+  assert.deepEqual(python.slice(2, 4), ['# ruff: noqa', '# fmt: off'])
+  assert.match(python.slice(0, 4).join('\n'), /^[\x00-\x7f]*$/)
+  for (const name of ['base.html.j2', 'macros.html.j2']) {
+    const text = read(`dist/report/${name}`)
+    assert.match(text, new RegExp(`^\\{#- chromokit ${version.replace(/\./g, '\\.')} `), name)
+    assert.doesNotMatch(text, /\[\[icon:/, name)
+  }
+  assert.doesNotMatch(read('dist/report/report.js').toLowerCase(), /<\/script/)
+  assert.doesNotMatch(read('dist/report/report.css').toLowerCase(), /<\/style/)
+})

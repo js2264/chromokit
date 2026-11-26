@@ -1,0 +1,1879 @@
+{
+ "source": "koszullab/metaTOR af54142: tests/test_report.py's run (pipeline --mges on the mock community, stub miComplete), dumped with metator.report.collect and figures",
+ "sections": {
+  "report": {
+   "format_version": 1,
+   "sample": "sample",
+   "map": "out/sample.metacool",
+   "metator_version": "1.4.0",
+   "written": "2026-11-26T10:15:30",
+   "map_written": "2026-11-26T10:12:04.220232"
+  },
+  "run": {
+   "steps": "network,partition,validation,markers,mge,host",
+   "input": "sample.metacool",
+   "assembly": "data/assembly.fa",
+   "enzyme": null,
+   "depth": null,
+   "normalization": "empirical_hit",
+   "algorithm": "louvain",
+   "iterations": 10,
+   "overlap_pct": 80,
+   "res_param": 1.0,
+   "size_bp": 20000,
+   "rec_iter": 5,
+   "rec_overlap_pct": 90,
+   "seed": 3,
+   "rec_seed": 3,
+   "mge_threshold_bin": 0.8,
+   "host_min_share_pct": 10.0,
+   "host_min_contigs": 5,
+   "markers_predate_genomes": true
+  },
+  "contigs": {
+   "contigs": 55,
+   "contigs_bp": 578000,
+   "contig_n50_bp": 13074,
+   "contig_l50": 14,
+   "contig_n90_bp": 5905,
+   "contig_max_bp": 40000,
+   "contig_median_bp": 8506.0,
+   "gc_pct": 49.45761245674736,
+   "coverage_median": 30.5469,
+   "in_final_clusters_contigs": 55,
+   "in_final_clusters_bp": 578000,
+   "in_final_clusters_pct": 100.0,
+   "in_mags_contigs": 52,
+   "in_mags_bp": 560000,
+   "in_mags_pct": 96.88581314878893,
+   "in_mges_contigs": 3,
+   "in_mges_bp": 18000,
+   "unbinned_contigs": 0,
+   "unbinned_bp": 0
+  },
+  "contacts": {
+   "contacts": 60000,
+   "qc_source": "pairs",
+   "qc_distance_threshold_bp": 1001,
+   "intra_contig_short": 14734,
+   "intra_contig_long": 13693,
+   "inter_contig_intra_genome": 28919,
+   "inter_genome": 2654,
+   "trans_contig_ratio": 0.526217,
+   "intra_genome_fraction": 0.955767,
+   "network_contigs": 55,
+   "network_edges": 748,
+   "normalization": "empirical_hit"
+  },
+  "clusters": {
+   "core_clusters": 5,
+   "overlapping_clusters": 5,
+   "recursive_steps": 0,
+   "recursive_clusters": 0,
+   "final_clusters": 5,
+   "final_clusters_bp": 578000,
+   "hq_mags": 4,
+   "hq_mags_bp": 438000,
+   "mq_mags": 1,
+   "mq_mags_bp": 140000,
+   "lq_mags": 0,
+   "lq_mags_bp": 0,
+   "contaminated_mags": 0,
+   "contaminated_mags_bp": 0,
+   "other_clusters": 0,
+   "other_clusters_bp": 0,
+   "mags": 5
+  },
+  "mges": {
+   "mge_clusters": 2,
+   "mge_contigs": 3,
+   "mge_bp": 18000,
+   "mge_genomes": 2,
+   "mags_losing_contigs": 2,
+   "mge_random_clusters": null
+  },
+  "hosts": {
+   "min_share_pct": 10.0,
+   "min_contigs": 5,
+   "mge_clusters_with_host": 2,
+   "mge_clusters_with_one_host": 2,
+   "mge_clusters_with_several_hosts": 0,
+   "mge_clusters_without_host": 0,
+   "mags_hosting_mges": 2
+  },
+  "commands": {
+   "network": "metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3",
+   "partition": "metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3",
+   "validation": "metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3",
+   "markers": "metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3",
+   "mge": "metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3",
+   "host": "metator pipeline sample.metacool -a data/assembly.fa -o out -T tmp -s 20000 -i 10 -j 5 --mges mges.txt --seed 3"
+  }
+ },
+ "tables": {
+  "rounds": {
+   "columns": [
+    "round",
+    "step",
+    "clusters",
+    "contigs",
+    "length_bp"
+   ],
+   "dtypes": [
+    "str",
+    "str",
+    "int64",
+    "int64",
+    "int64"
+   ],
+   "rows": [
+    [
+     "core",
+     "partition",
+     5,
+     55,
+     578000
+    ],
+    [
+     "overlapping",
+     "partition",
+     5,
+     55,
+     578000
+    ],
+    [
+     "final",
+     "validation",
+     5,
+     55,
+     578000
+    ],
+    [
+     "mge",
+     "mge",
+     2,
+     3,
+     18000
+    ]
+   ]
+  },
+  "mags": {
+   "columns": [
+    "name",
+    "quality",
+    "length_bp",
+    "contigs",
+    "completeness_pct",
+    "contamination_pct",
+    "gc_pct",
+    "n50_bp",
+    "hic_abundance",
+    "sg_abundance",
+    "intra_genome_ratio",
+    "n_mges",
+    "mges"
+   ],
+   "dtypes": [
+    "str",
+    "str",
+    "int64",
+    "int64",
+    "float64",
+    "float64",
+    "float64",
+    "float64",
+    "float64",
+    "float64",
+    "float64",
+    "int64",
+    "str"
+   ],
+   "rows": [
+    [
+     "metator_00004_00000",
+     "HQ",
+     120000,
+     14,
+     100.0,
+     0.0,
+     30.03,
+     10335.0,
+     6.415,
+     6.33866657125682,
+     0.962273770073923,
+     0,
+     null
+    ],
+    [
+     "metator_00005_00000",
+     "HQ",
+     110000,
+     11,
+     100.0,
+     0.0,
+     69.89,
+     11943.0,
+     17.38083333333333,
+     17.796010204410674,
+     0.966157616892911,
+     0,
+     null
+    ],
+    [
+     "metator_00002_00000",
+     "HQ",
+     100000,
+     7,
+     100.0,
+     0.0,
+     40.73,
+     16772.0,
+     14.175,
+     14.748087410697462,
+     0.8398733305796503,
+     1,
+     "MetaTOR_MGE_00001"
+    ],
+    [
+     "metator_00003_00000",
+     "HQ",
+     90000,
+     9,
+     100.0,
+     0.0,
+     59.91,
+     12870.0,
+     32.174166666666665,
+     31.553173614437057,
+     0.9303739078526075,
+     1,
+     "MetaTOR_MGE_00002"
+    ],
+    [
+     "metator_00001_00000",
+     "MQ",
+     140000,
+     11,
+     89.51,
+     0.0,
+     49.87,
+     22978.0,
+     29.855,
+     29.56406219919802,
+     0.9731233133226854,
+     0,
+     null
+    ]
+   ]
+  },
+  "mge_clusters": {
+   "columns": [
+    "name",
+    "contigs",
+    "length_bp",
+    "gc_pct",
+    "n_hosts",
+    "hosts",
+    "host_shares_pct"
+   ],
+   "dtypes": [
+    "str",
+    "int64",
+    "int64",
+    "float64",
+    "int64",
+    "str",
+    "str"
+   ],
+   "rows": [
+    [
+     "MetaTOR_MGE_00001",
+     2,
+     12000,
+     44.458333333333286,
+     1,
+     "metator_00002_00000",
+     "93.47"
+    ],
+    [
+     "MetaTOR_MGE_00002",
+     1,
+     6000,
+     55.866666666666596,
+     1,
+     "metator_00003_00000",
+     "94.01"
+    ]
+   ]
+  },
+  "hosts": {
+   "columns": [
+    "mge",
+    "mag",
+    "share_pct"
+   ],
+   "dtypes": [
+    "str",
+    "str",
+    "float64"
+   ],
+   "rows": [
+    [
+     "MetaTOR_MGE_00001",
+     "metator_00002_00000",
+     93.47
+    ],
+    [
+     "MetaTOR_MGE_00002",
+     "metator_00003_00000",
+     94.01
+    ]
+   ]
+  }
+ },
+ "figures": {
+  "plot-quality": {
+   "data": [
+    {
+     "type": "scatter",
+     "mode": "markers",
+     "name": "HQ (4)",
+     "x": [
+      100.0,
+      100.0,
+      100.0,
+      100.0
+     ],
+     "y": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "text": [
+      "metator_00004_00000",
+      "metator_00005_00000",
+      "metator_00002_00000",
+      "metator_00003_00000"
+     ],
+     "customdata": [
+      [
+       120000,
+       14,
+       0
+      ],
+      [
+       110000,
+       11,
+       0
+      ],
+      [
+       100000,
+       7,
+       1
+      ],
+      [
+       90000,
+       9,
+       1
+      ]
+     ],
+     "marker": {
+      "color": "#1a9850",
+      "size": [
+       9.286335345030997,
+       9.146426544510454,
+       9.0,
+       8.846049894151541
+      ],
+      "line": {
+       "width": 0.5,
+       "color": "#333"
+      },
+      "opacity": 0.85
+     },
+     "hovertemplate": "<b>%{text}</b><br>completeness %{x:.1f}%<br>contamination %{y:.1f}%<br>%{customdata[0]:,} bp, %{customdata[1]} contigs<br>%{customdata[2]} MGE cluster(s)<extra></extra>"
+    },
+    {
+     "type": "scatter",
+     "mode": "markers",
+     "name": "MQ (1)",
+     "x": [
+      89.51
+     ],
+     "y": [
+      0.0
+     ],
+     "text": [
+      "metator_00001_00000"
+     ],
+     "customdata": [
+      [
+       140000,
+       11,
+       0
+      ]
+     ],
+     "marker": {
+      "color": "#91cf60",
+      "size": [
+       9.549647869859768
+      ],
+      "line": {
+       "width": 0.5,
+       "color": "#333"
+      },
+      "opacity": 0.85
+     },
+     "hovertemplate": "<b>%{text}</b><br>completeness %{x:.1f}%<br>contamination %{y:.1f}%<br>%{customdata[0]:,} bp, %{customdata[1]} contigs<br>%{customdata[2]} MGE cluster(s)<extra></extra>"
+    }
+   ],
+   "layout": {
+    "font": {
+     "family": "Inter, Segoe UI, Helvetica, Arial, sans-serif",
+     "size": 12
+    },
+    "margin": {
+     "l": 60,
+     "r": 20,
+     "t": 30,
+     "b": 50
+    },
+    "paper_bgcolor": "rgba(0,0,0,0)",
+    "plot_bgcolor": "rgba(0,0,0,0)",
+    "hovermode": "closest",
+    "xaxis": {
+     "title": "Completeness (%)",
+     "range": [
+      -2,
+      105
+     ]
+    },
+    "yaxis": {
+     "title": "Contamination (%)",
+     "range": [
+      -1,
+      12.0
+     ]
+    },
+    "shapes": [
+     {
+      "type": "line",
+      "x0": 50,
+      "x1": 50,
+      "y0": 0,
+      "y1": 1,
+      "yref": "paper",
+      "line": {
+       "dash": "dot",
+       "color": "#999",
+       "width": 1
+      }
+     },
+     {
+      "type": "line",
+      "x0": 70,
+      "x1": 70,
+      "y0": 0,
+      "y1": 1,
+      "yref": "paper",
+      "line": {
+       "dash": "dot",
+       "color": "#999",
+       "width": 1
+      }
+     },
+     {
+      "type": "line",
+      "x0": 90,
+      "x1": 90,
+      "y0": 0,
+      "y1": 1,
+      "yref": "paper",
+      "line": {
+       "dash": "dot",
+       "color": "#999",
+       "width": 1
+      }
+     },
+     {
+      "type": "line",
+      "x0": 0,
+      "x1": 1,
+      "xref": "paper",
+      "y0": 5,
+      "y1": 5,
+      "line": {
+       "dash": "dot",
+       "color": "#999",
+       "width": 1
+      }
+     },
+     {
+      "type": "line",
+      "x0": 0,
+      "x1": 1,
+      "xref": "paper",
+      "y0": 10,
+      "y1": 10,
+      "line": {
+       "dash": "dot",
+       "color": "#999",
+       "width": 1
+      }
+     }
+    ],
+    "height": 460
+   }
+  },
+  "plot-classes": {
+   "data": [
+    {
+     "type": "bar",
+     "x": [
+      "HQ",
+      "MQ",
+      "LQ",
+      "Contaminated",
+      "Other"
+     ],
+     "y": [
+      4,
+      1,
+      0,
+      0,
+      0
+     ],
+     "customdata": [
+      0.438,
+      0.14,
+      0.0,
+      0.0,
+      0.0
+     ],
+     "text": [
+      "4 · 0.44 Mbp",
+      "1 · 0.14 Mbp",
+      "0 · 0.00 Mbp",
+      "0 · 0.00 Mbp",
+      "0 · 0.00 Mbp"
+     ],
+     "textposition": "outside",
+     "cliponaxis": false,
+     "marker": {
+      "color": [
+       "#1a9850",
+       "#91cf60",
+       "#fdae61",
+       "#d73027",
+       "#bdbdbd"
+      ]
+     },
+     "hovertemplate": "%{x}: %{y} cluster(s), %{customdata:.2f} Mbp<extra></extra>"
+    }
+   ],
+   "layout": {
+    "font": {
+     "family": "Inter, Segoe UI, Helvetica, Arial, sans-serif",
+     "size": 12
+    },
+    "margin": {
+     "l": 60,
+     "r": 20,
+     "t": 30,
+     "b": 50
+    },
+    "paper_bgcolor": "rgba(0,0,0,0)",
+    "plot_bgcolor": "rgba(0,0,0,0)",
+    "hovermode": "closest",
+    "height": 320,
+    "yaxis": {
+     "title": "Final clusters",
+     "rangemode": "tozero"
+    }
+   }
+  },
+  "plot-rounds": {
+   "data": [
+    {
+     "type": "bar",
+     "x": [
+      "core",
+      "overlapping",
+      "final",
+      "mge"
+     ],
+     "y": [
+      5,
+      5,
+      5,
+      2
+     ],
+     "text": [
+      5,
+      5,
+      5,
+      2
+     ],
+     "textposition": "outside",
+     "cliponaxis": false,
+     "marker": {
+      "color": "#4c78a8"
+     },
+     "customdata": [
+      578000,
+      578000,
+      578000,
+      18000
+     ],
+     "hovertemplate": "%{x}: %{y} clusters, %{customdata:,} bp<extra></extra>"
+    }
+   ],
+   "layout": {
+    "font": {
+     "family": "Inter, Segoe UI, Helvetica, Arial, sans-serif",
+     "size": 12
+    },
+    "margin": {
+     "l": 60,
+     "r": 20,
+     "t": 30,
+     "b": 50
+    },
+    "paper_bgcolor": "rgba(0,0,0,0)",
+    "plot_bgcolor": "rgba(0,0,0,0)",
+    "hovermode": "closest",
+    "height": 320,
+    "yaxis": {
+     "title": "Clusters",
+     "rangemode": "tozero"
+    }
+   }
+  },
+  "plot-lengths": {
+   "data": [
+    {
+     "type": "bar",
+     "name": "MAG",
+     "x": [
+      3.3499999999999996,
+      3.45,
+      3.55,
+      3.6500000000000004,
+      3.75,
+      3.8499999999999996,
+      3.95,
+      4.05,
+      4.15,
+      4.25,
+      4.35,
+      4.45,
+      4.55,
+      4.65
+     ],
+     "y": [
+      1,
+      2,
+      7,
+      1,
+      6,
+      6,
+      7,
+      6,
+      7,
+      3,
+      2,
+      3,
+      null,
+      1
+     ],
+     "width": 0.1,
+     "opacity": 0.75,
+     "marker": {
+      "color": "#4c78a8"
+     },
+     "customdata": [
+      [
+       1995.2623149688789,
+       2511.88643150958
+      ],
+      [
+       2511.88643150958,
+       3162.2776601683795
+      ],
+      [
+       3162.2776601683795,
+       3981.0717055349733
+      ],
+      [
+       3981.0717055349733,
+       5011.872336272725
+      ],
+      [
+       5011.872336272725,
+       6309.57344480193
+      ],
+      [
+       6309.57344480193,
+       7943.282347242814
+      ],
+      [
+       7943.282347242814,
+       10000.0
+      ],
+      [
+       10000.0,
+       12589.254117941662
+      ],
+      [
+       12589.254117941662,
+       15848.93192461114
+      ],
+      [
+       15848.93192461114,
+       19952.62314968879
+      ],
+      [
+       19952.62314968879,
+       25118.864315095823
+      ],
+      [
+       25118.864315095823,
+       31622.776601683792
+      ],
+      [
+       31622.776601683792,
+       39810.71705534969
+      ],
+      [
+       39810.71705534969,
+       50118.72336272725
+      ]
+     ],
+     "hovertemplate": "MAG: %{y} contigs of %{customdata[0]:,.0f} to %{customdata[1]:,.0f} bp<extra></extra>"
+    },
+    {
+     "type": "bar",
+     "name": "MGE",
+     "x": [
+      3.3499999999999996,
+      3.45,
+      3.55,
+      3.6500000000000004,
+      3.75,
+      3.8499999999999996,
+      3.95,
+      4.05,
+      4.15,
+      4.25,
+      4.35,
+      4.45,
+      4.55,
+      4.65
+     ],
+     "y": [
+      null,
+      null,
+      null,
+      1,
+      1,
+      1,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+     ],
+     "width": 0.1,
+     "opacity": 0.75,
+     "marker": {
+      "color": "#f58518"
+     },
+     "customdata": [
+      [
+       1995.2623149688789,
+       2511.88643150958
+      ],
+      [
+       2511.88643150958,
+       3162.2776601683795
+      ],
+      [
+       3162.2776601683795,
+       3981.0717055349733
+      ],
+      [
+       3981.0717055349733,
+       5011.872336272725
+      ],
+      [
+       5011.872336272725,
+       6309.57344480193
+      ],
+      [
+       6309.57344480193,
+       7943.282347242814
+      ],
+      [
+       7943.282347242814,
+       10000.0
+      ],
+      [
+       10000.0,
+       12589.254117941662
+      ],
+      [
+       12589.254117941662,
+       15848.93192461114
+      ],
+      [
+       15848.93192461114,
+       19952.62314968879
+      ],
+      [
+       19952.62314968879,
+       25118.864315095823
+      ],
+      [
+       25118.864315095823,
+       31622.776601683792
+      ],
+      [
+       31622.776601683792,
+       39810.71705534969
+      ],
+      [
+       39810.71705534969,
+       50118.72336272725
+      ]
+     ],
+     "hovertemplate": "MGE: %{y} contigs of %{customdata[0]:,.0f} to %{customdata[1]:,.0f} bp<extra></extra>"
+    }
+   ],
+   "layout": {
+    "font": {
+     "family": "Inter, Segoe UI, Helvetica, Arial, sans-serif",
+     "size": 12
+    },
+    "margin": {
+     "l": 60,
+     "r": 20,
+     "t": 30,
+     "b": 50
+    },
+    "paper_bgcolor": "rgba(0,0,0,0)",
+    "plot_bgcolor": "rgba(0,0,0,0)",
+    "hovermode": "closest",
+    "barmode": "overlay",
+    "height": 320,
+    "xaxis": {
+     "title": "Contig length (bp)",
+     "tickvals": [
+      2.0,
+      2.3010299956639813,
+      2.6989700043360187,
+      3.0,
+      3.3010299956639813,
+      3.6989700043360187,
+      4.0,
+      4.301029995663981,
+      4.698970004336019,
+      5.0,
+      5.301029995663981,
+      5.698970004336019,
+      6.0,
+      6.301029995663981,
+      6.698970004336019,
+      7.0
+     ],
+     "ticktext": [
+      "100",
+      "200",
+      "500",
+      "1 k",
+      "2 k",
+      "5 k",
+      "10 k",
+      "20 k",
+      "50 k",
+      "100 k",
+      "200 k",
+      "500 k",
+      "1 M",
+      "2 M",
+      "5 M",
+      "10 M"
+     ]
+    },
+    "yaxis": {
+     "title": "Contigs",
+     "type": "log",
+     "dtick": 1,
+     "minor": {
+      "dtick": "D1",
+      "showgrid": true,
+      "gridcolor": "#f0f0f0"
+     }
+    }
+   }
+  },
+  "plot-contigs": {
+   "data": [
+    {
+     "type": "scattergl",
+     "mode": "markers",
+     "name": "metator_00004_00000",
+     "x": [
+      30.214137441276,
+      29.9698891665065,
+      29.8129994233462,
+      30.3502321981424,
+      29.6952104499274,
+      29.4716941497741,
+      30.3020531011501,
+      30.1305970149253,
+      30.9366130558183,
+      29.8499267935578,
+      29.5884532865223,
+      29.9338478500551,
+      29.5884650045058,
+      30.45
+     ],
+     "y": [
+      9.0555,
+      9.5909,
+      10.0837,
+      10.647,
+      10.0178,
+      10.1728,
+      9.9126,
+      10.4396,
+      10.0142,
+      10.2969,
+      10.4108,
+      9.7469,
+      10.5034,
+      9.3863
+     ],
+     "text": [
+      "contig_026",
+      "contig_052",
+      "contig_039",
+      "contig_023",
+      "contig_047",
+      "contig_001",
+      "contig_027",
+      "contig_055",
+      "contig_011",
+      "contig_049",
+      "contig_002",
+      "contig_048",
+      "contig_024",
+      "contig_041"
+     ],
+     "customdata": [
+      [
+       18306,
+       "metator_00004_00000"
+      ],
+      [
+       15609,
+       "metator_00004_00000"
+      ],
+      [
+       12139,
+       "metator_00004_00000"
+      ],
+      [
+       10336,
+       "metator_00004_00000"
+      ],
+      [
+       10335,
+       "metator_00004_00000"
+      ],
+      [
+       9521,
+       "metator_00004_00000"
+      ],
+      [
+       9303,
+       "metator_00004_00000"
+      ],
+      [
+       7504,
+       "metator_00004_00000"
+      ],
+      [
+       7399,
+       "metator_00004_00000"
+      ],
+      [
+       5464,
+       "metator_00004_00000"
+      ],
+      [
+       5127,
+       "metator_00004_00000"
+      ],
+      [
+       3628,
+       "metator_00004_00000"
+      ],
+      [
+       3329,
+       "metator_00004_00000"
+      ],
+      [
+       2000,
+       "metator_00004_00000"
+      ]
+     ],
+     "marker": {
+      "size": [
+       4.262593458026051,
+       4.193375080615699,
+       4.0841829114204735,
+       4.014352500651009,
+       4.0143104809633074,
+       3.9786825651569444,
+       3.968623020956989,
+       3.875292825371008,
+       3.8691730273216827,
+       3.737510690673476,
+       3.7098633174403997,
+       3.5596672783880576,
+       3.522313795156667,
+       3.3010299956639813
+      ],
+      "opacity": 0.7
+     },
+     "hovertemplate": "<b>%{text}</b><br>%{customdata[1]}<br>%{customdata[0]:,} bp<br>GC %{x:.1f}%<br>Shotgun coverage %{y:.2f}<extra></extra>"
+    },
+    {
+     "type": "scattergl",
+     "mode": "markers",
+     "name": "metator_00005_00000",
+     "x": [
+      69.689213893967,
+      70.0061040744697,
+      70.2692366528988,
+      70.0679158824973,
+      69.5218956711044,
+      69.5475433015199,
+      69.505328775387,
+      70.4231625835189,
+      70.4618507866689,
+      69.847533632287,
+      70.0239170874302
+     ],
+     "y": [
+      30.8983,
+      30.9946,
+      30.5469,
+      30.8201,
+      30.3205,
+      29.5866,
+      29.5613,
+      33.1768,
+      29.2478,
+      28.5829,
+      29.1946
+     ],
+     "text": [
+      "contig_016",
+      "contig_036",
+      "contig_009",
+      "contig_012",
+      "contig_029",
+      "contig_022",
+      "contig_018",
+      "contig_031",
+      "contig_054",
+      "contig_044",
+      "contig_007"
+     ],
+     "customdata": [
+      [
+       16410,
+       "metator_00005_00000"
+      ],
+      [
+       13106,
+       "metator_00005_00000"
+      ],
+      [
+       13074,
+       "metator_00005_00000"
+      ],
+      [
+       12221,
+       "metator_00005_00000"
+      ],
+      [
+       11943,
+       "metator_00005_00000"
+      ],
+      [
+       11316,
+       "metator_00005_00000"
+      ],
+      [
+       9946,
+       "metator_00005_00000"
+      ],
+      [
+       6735,
+       "metator_00005_00000"
+      ],
+      [
+       5911,
+       "metator_00005_00000"
+      ],
+      [
+       5575,
+       "metator_00005_00000"
+      ],
+      [
+       3763,
+       "metator_00005_00000"
+      ]
+     ],
+     "marker": {
+      "size": [
+       4.2151085810530935,
+       4.11747016362012,
+       4.116408480629899,
+       4.087106744099093,
+       4.0771134323037606,
+       4.053692938784954,
+       3.997648454896206,
+       3.8283376000590046,
+       3.7716609593488872,
+       3.746244871720198,
+       3.5755342183198646
+      ],
+      "opacity": 0.7
+     },
+     "hovertemplate": "<b>%{text}</b><br>%{customdata[1]}<br>%{customdata[0]:,} bp<br>GC %{x:.1f}%<br>Shotgun coverage %{y:.2f}<extra></extra>"
+    },
+    {
+     "type": "scattergl",
+     "mode": "markers",
+     "name": "metator_00002_00000",
+     "x": [
+      40.4474807856532,
+      40.1036269430051,
+      40.5437634152158,
+      40.7452750784298,
+      39.4780155184575,
+      39.9465492847036,
+      39.6650968079539
+     ],
+     "y": [
+      22.0428,
+      19.2181,
+      19.928,
+      19.7428,
+      20.8912,
+      19.9017,
+      18.6968
+     ],
+     "text": [
+      "contig_034",
+      "contig_019",
+      "contig_043",
+      "contig_020",
+      "contig_050",
+      "contig_045",
+      "contig_004"
+     ],
+     "customdata": [
+      [
+       29275,
+       "metator_00002_00000"
+      ],
+      [
+       22195,
+       "metator_00002_00000"
+      ],
+      [
+       16772,
+       "metator_00002_00000"
+      ],
+      [
+       13069,
+       "metator_00002_00000"
+      ],
+      [
+       8506,
+       "metator_00002_00000"
+      ],
+      [
+       6361,
+       "metator_00002_00000"
+      ],
+      [
+       3822,
+       "metator_00002_00000"
+      ]
+     ],
+     "marker": {
+      "size": [
+       4.4664969037444004,
+       4.346255149361386,
+       4.224584853731531,
+       4.116242357963335,
+       3.929725378378004,
+       3.803525395576532,
+       3.5822906827189946
+      ],
+      "opacity": 0.7
+     },
+     "hovertemplate": "<b>%{text}</b><br>%{customdata[1]}<br>%{customdata[0]:,} bp<br>GC %{x:.1f}%<br>Shotgun coverage %{y:.2f}<extra></extra>"
+    },
+    {
+     "type": "scattergl",
+     "mode": "markers",
+     "name": "metator_00003_00000",
+     "x": [
+      60.2856069146937,
+      59.9328358208955,
+      60.5205905205905,
+      60.4325414612281,
+      60.8144491810634,
+      59.9223759703003,
+      59.1024555461473,
+      59.5612066816255,
+      59.6511627906976
+     ],
+     "y": [
+      60.1192,
+      58.8672,
+      61.9401,
+      60.9913,
+      60.652,
+      60.9625,
+      57.7906,
+      58.7334,
+      59.5113
+     ],
+     "text": [
+      "contig_017",
+      "contig_033",
+      "contig_035",
+      "contig_003",
+      "contig_030",
+      "contig_051",
+      "contig_013",
+      "contig_028",
+      "contig_014"
+     ],
+     "customdata": [
+      [
+       26610,
+       "metator_00003_00000"
+      ],
+      [
+       13400,
+       "metator_00003_00000"
+      ],
+      [
+       12870,
+       "metator_00003_00000"
+      ],
+      [
+       8924,
+       "metator_00003_00000"
+      ],
+      [
+       8914,
+       "metator_00003_00000"
+      ],
+      [
+       5926,
+       "metator_00003_00000"
+      ],
+      [
+       5905,
+       "metator_00003_00000"
+      ],
+      [
+       4011,
+       "metator_00003_00000"
+      ],
+      [
+       3440,
+       "metator_00003_00000"
+      ]
+     ],
+     "marker": {
+      "size": [
+       4.425044874551388,
+       4.127104798364807,
+       4.109578546904387,
+       3.9505595616118008,
+       3.9500726297501574,
+       3.7727616471440317,
+       3.771219901949534,
+       3.6032526619816467,
+       3.53655844257153
+      ],
+      "opacity": 0.7
+     },
+     "hovertemplate": "<b>%{text}</b><br>%{customdata[1]}<br>%{customdata[0]:,} bp<br>GC %{x:.1f}%<br>Shotgun coverage %{y:.2f}<extra></extra>"
+    },
+    {
+     "type": "scattergl",
+     "mode": "markers",
+     "name": "metator_00001_00000",
+     "x": [
+      49.87,
+      49.6942999278471,
+      49.7040647575942,
+      50.2387096774193,
+      49.5850622406639,
+      49.767008387698,
+      49.9235367718615,
+      49.7796143250688,
+      51.2072750078394,
+      51.0152284263959,
+      49.2262343404568
+     ],
+     "y": [
+      38.972,
+      41.4633,
+      38.6335,
+      41.1622,
+      37.776,
+      39.0358,
+      40.191,
+      41.8107,
+      40.0163,
+      40.218,
+      36.7038
+     ],
+     "text": [
+      "contig_037",
+      "contig_053",
+      "contig_042",
+      "contig_008",
+      "contig_032",
+      "contig_015",
+      "contig_046",
+      "contig_005",
+      "contig_021",
+      "contig_040",
+      "contig_038"
+     ],
+     "customdata": [
+      [
+       40000,
+       "metator_00001_00000"
+      ],
+      [
+       26333,
+       "metator_00001_00000"
+      ],
+      [
+       22978,
+       "metator_00001_00000"
+      ],
+      [
+       15500,
+       "metator_00001_00000"
+      ],
+      [
+       8194,
+       "metator_00001_00000"
+      ],
+      [
+       7511,
+       "metator_00001_00000"
+      ],
+      [
+       7193,
+       "metator_00001_00000"
+      ],
+      [
+       3630,
+       "metator_00001_00000"
+      ],
+      [
+       3189,
+       "metator_00001_00000"
+      ],
+      [
+       2758,
+       "metator_00001_00000"
+      ],
+      [
+       2714,
+       "metator_00001_00000"
+      ]
+     ],
+     "marker": {
+      "size": [
+       4.6020599913279625,
+       4.4205003391374795,
+       4.361312225102327,
+       4.190331698170292,
+       3.9134959596171237,
+       3.8756977619802075,
+       3.8569100603007858,
+       3.5599066250361124,
+       3.503654519242959,
+       3.4405942618398306,
+       3.433609843323718
+      ],
+      "opacity": 0.7
+     },
+     "hovertemplate": "<b>%{text}</b><br>%{customdata[1]}<br>%{customdata[0]:,} bp<br>GC %{x:.1f}%<br>Shotgun coverage %{y:.2f}<extra></extra>"
+    },
+    {
+     "type": "scattergl",
+     "mode": "markers",
+     "name": "MGE clusters",
+     "x": [
+      44.2857142857142,
+      55.8666666666666,
+      44.7
+     ],
+     "y": [
+      60.8824,
+      86.4442,
+      61.3391
+     ],
+     "text": [
+      "contig_010",
+      "contig_025",
+      "contig_006"
+     ],
+     "customdata": [
+      [
+       7000,
+       "MetaTOR_MGE_00001"
+      ],
+      [
+       6000,
+       "MetaTOR_MGE_00002"
+      ],
+      [
+       5000,
+       "MetaTOR_MGE_00001"
+      ]
+     ],
+     "marker": {
+      "size": [
+       3.845098040014257,
+       3.778151250383644,
+       3.6989700043360187
+      ],
+      "opacity": 0.7,
+      "color": "#f58518"
+     },
+     "hovertemplate": "<b>%{text}</b><br>%{customdata[1]}<br>%{customdata[0]:,} bp<br>GC %{x:.1f}%<br>Shotgun coverage %{y:.2f}<extra></extra>"
+    }
+   ],
+   "layout": {
+    "font": {
+     "family": "Inter, Segoe UI, Helvetica, Arial, sans-serif",
+     "size": 12
+    },
+    "margin": {
+     "l": 60,
+     "r": 20,
+     "t": 30,
+     "b": 50
+    },
+    "paper_bgcolor": "rgba(0,0,0,0)",
+    "plot_bgcolor": "rgba(0,0,0,0)",
+    "hovermode": "closest",
+    "height": 520,
+    "xaxis": {
+     "title": "GC content (%)"
+    },
+    "yaxis": {
+     "title": "Shotgun coverage",
+     "type": "log",
+     "dtick": 1,
+     "minor": {
+      "dtick": "D1",
+      "showgrid": true,
+      "gridcolor": "#f0f0f0"
+     }
+    },
+    "title": {
+     "text": "Contigs",
+     "font": {
+      "size": 13
+     }
+    }
+   }
+  },
+  "plot-contacts": {
+   "data": [
+    {
+     "type": "bar",
+     "orientation": "h",
+     "y": [
+      "Within a contig, < 1 kb",
+      "Within a contig, ≥ 1 kb",
+      "Between contigs of a genome",
+      "Between genomes"
+     ],
+     "x": [
+      14734,
+      13693,
+      28919,
+      2654
+     ],
+     "marker": {
+      "color": [
+       "#9ecae1",
+       "#4292c6",
+       "#1a9850",
+       "#d73027"
+      ]
+     },
+     "hovertemplate": "%{y}: %{x:,} contacts<extra></extra>"
+    }
+   ],
+   "layout": {
+    "font": {
+     "family": "Inter, Segoe UI, Helvetica, Arial, sans-serif",
+     "size": 12
+    },
+    "margin": {
+     "l": 200,
+     "r": 20,
+     "t": 30,
+     "b": 50
+    },
+    "paper_bgcolor": "rgba(0,0,0,0)",
+    "plot_bgcolor": "rgba(0,0,0,0)",
+    "hovermode": "closest",
+    "height": 260,
+    "xaxis": {
+     "title": "Contacts"
+    }
+   }
+  },
+  "plot-heatmap": {
+   "data": [
+    {
+     "type": "heatmap",
+     "z": [
+      [
+       0.5933867480027865,
+       -1.6054095181662131,
+       -1.8280726825355906,
+       -1.528914395258949,
+       -1.512148618315756
+      ],
+      [
+       -1.6054095181662131,
+       0.46973819761894964,
+       -1.5774844136173116,
+       -1.4039782007725203,
+       -1.320821614371494
+      ],
+      [
+       -1.8280726825355906,
+       -1.5774844136173116,
+       0.17765456016558237,
+       -1.5653112541157415,
+       -1.5722119293308416
+      ],
+      [
+       -1.528914395258949,
+       -1.4039782007725203,
+       -1.5653112541157415,
+       0.35364854017095315,
+       -1.2920145762053412
+      ],
+      [
+       -1.512148618315756,
+       -1.320821614371494,
+       -1.5722119293308416,
+       -1.2920145762053412,
+       0.4242536052098997
+      ]
+     ],
+     "x": [
+      "metator_00004_00000",
+      "metator_00005_00000",
+      "metator_00002_00000",
+      "metator_00003_00000",
+      "metator_00001_00000"
+     ],
+     "y": [
+      "metator_00004_00000",
+      "metator_00005_00000",
+      "metator_00002_00000",
+      "metator_00003_00000",
+      "metator_00001_00000"
+     ],
+     "colorscale": "Reds",
+     "colorbar": {
+      "title": "log10"
+     },
+     "hovertemplate": "%{y} with %{x}<br>log10 weight %{z:.2f}<extra></extra>"
+    }
+   ],
+   "layout": {
+    "font": {
+     "family": "Inter, Segoe UI, Helvetica, Arial, sans-serif",
+     "size": 12
+    },
+    "margin": {
+     "l": 170,
+     "r": 20,
+     "t": 40,
+     "b": 150
+    },
+    "paper_bgcolor": "rgba(0,0,0,0)",
+    "plot_bgcolor": "rgba(0,0,0,0)",
+    "hovermode": "closest",
+    "height": 640,
+    "xaxis": {
+     "showticklabels": true,
+     "tickangle": -45
+    },
+    "yaxis": {
+     "showticklabels": true,
+     "autorange": "reversed"
+    },
+    "title": {
+     "text": "empirical_hit weights of the network, summed by MAG",
+     "font": {
+      "size": 12
+     }
+    }
+   }
+  },
+  "plot-hosts": {
+   "data": [
+    {
+     "type": "sankey",
+     "arrangement": "snap",
+     "node": {
+      "label": [
+       "MetaTOR_MGE_00001",
+       "MetaTOR_MGE_00002",
+       "metator_00002_00000",
+       "metator_00003_00000"
+      ],
+      "pad": 8,
+      "thickness": 14,
+      "color": [
+       "#f58518",
+       "#f58518",
+       "#4c78a8",
+       "#4c78a8"
+      ]
+     },
+     "link": {
+      "source": [
+       0,
+       1
+      ],
+      "target": [
+       2,
+       3
+      ],
+      "value": [
+       93.47,
+       94.01
+      ],
+      "color": "rgba(245, 133, 24, 0.35)",
+      "hovertemplate": "%{source.label} → %{target.label}: %{value:.1f}% of its signal<extra></extra>"
+     }
+    }
+   ],
+   "layout": {
+    "font": {
+     "family": "Inter, Segoe UI, Helvetica, Arial, sans-serif",
+     "size": 12
+    },
+    "margin": {
+     "l": 60,
+     "r": 20,
+     "t": 30,
+     "b": 50
+    },
+    "paper_bgcolor": "rgba(0,0,0,0)",
+    "plot_bgcolor": "rgba(0,0,0,0)",
+    "hovermode": "closest",
+    "height": 320
+   }
+  }
+ },
+ "links": {
+  "mags": {
+   "metator_00004_00000": {
+    "fasta": "fasta/mags/metator_00004_00000.fa",
+    "stitched": "fasta/mags/metator_00004_00000.stitched.fa",
+    "cool": "cool/metator_00004_00000.cool"
+   },
+   "metator_00005_00000": {
+    "fasta": "fasta/mags/metator_00005_00000.fa",
+    "stitched": "fasta/mags/metator_00005_00000.stitched.fa",
+    "cool": "cool/metator_00005_00000.cool"
+   },
+   "metator_00002_00000": {
+    "fasta": "fasta/mags/metator_00002_00000.fa",
+    "stitched": "fasta/mags/metator_00002_00000.stitched.fa",
+    "cool": "cool/metator_00002_00000.cool"
+   },
+   "metator_00003_00000": {
+    "fasta": "fasta/mags/metator_00003_00000.fa",
+    "stitched": "fasta/mags/metator_00003_00000.stitched.fa",
+    "cool": "cool/metator_00003_00000.cool"
+   },
+   "metator_00001_00000": {
+    "fasta": "fasta/mags/metator_00001_00000.fa",
+    "stitched": "fasta/mags/metator_00001_00000.stitched.fa",
+    "cool": "cool/metator_00001_00000.cool"
+   }
+  },
+  "files": [
+   "tables/binning.txt",
+   "tables/cluster_members.txt",
+   "tables/cluster_summary.txt",
+   "tables/clusters.txt",
+   "tables/contig_data_final.txt",
+   "tables/mge_hosts.txt",
+   "tables/network.txt",
+   "plots/bins_distribution.pdf",
+   "plots/bins_size_distribution.pdf",
+   "plots/mge_hosts.pdf",
+   "sample.report.txt",
+   "sample.report_mqc.yaml"
+  ]
+ },
+ "context": {
+  "qualities": [
+   "HQ",
+   "MQ",
+   "LQ",
+   "Contaminated",
+   "Other"
+  ],
+  "colours": {
+   "HQ": "#1a9850",
+   "MQ": "#91cf60",
+   "LQ": "#fdae61",
+   "Contaminated": "#d73027",
+   "Other": "#bdbdbd"
+  }
+ },
+ "plotly_js": "https://cdn.plot.ly/plotly-2.35.2.min.js",
+ "format_version": 1,
+ "version": "1.4.0",
+ "columns": [
+  [
+   "contigs_bp",
+   "contigs",
+   {
+    "title": "Assembly",
+    "description": "Length of the contigs of the map",
+    "suffix": " bp",
+    "format": "{:,.0f}"
+   }
+  ],
+  [
+   "contig_n50_bp",
+   "contigs",
+   {
+    "title": "Contig N50",
+    "description": "N50 of the contigs of the map",
+    "suffix": " bp",
+    "format": "{:,.0f}"
+   }
+  ],
+  [
+   "trans_contig_ratio",
+   "contacts",
+   {
+    "title": "3D ratio",
+    "description": "Share of the contacts between two contigs",
+    "min": 0,
+    "max": 1,
+    "format": "{:,.3f}"
+   }
+  ],
+  [
+   "in_mags_pct",
+   "contigs",
+   {
+    "title": "Binned",
+    "description": "Share of the length of the contigs in a MAG",
+    "suffix": "%",
+    "min": 0,
+    "max": 100,
+    "format": "{:,.1f}"
+   }
+  ],
+  [
+   "hq_mags",
+   "clusters",
+   {
+    "title": "HQ MAGs",
+    "description": "Final clusters of completeness >= 90% and contamination <= 5%",
+    "format": "{:,.0f}",
+    "scale": "Greens"
+   }
+  ],
+  [
+   "mq_mags",
+   "clusters",
+   {
+    "title": "MQ MAGs",
+    "description": "Final clusters of completeness >= 70% and contamination <= 10%",
+    "format": "{:,.0f}",
+    "scale": "Greens"
+   }
+  ],
+  [
+   "lq_mags",
+   "clusters",
+   {
+    "title": "LQ MAGs",
+    "description": "Final clusters of completeness >= 50% and contamination <= 10%",
+    "format": "{:,.0f}"
+   }
+  ],
+  [
+   "contaminated_mags",
+   "clusters",
+   {
+    "title": "Contaminated",
+    "description": "Final clusters of completeness >= 50% and contamination > 10%",
+    "format": "{:,.0f}",
+    "scale": "Reds"
+   }
+  ],
+  [
+   "mge_clusters",
+   "mges",
+   {
+    "title": "MGE clusters",
+    "description": "Clusters of the MGE contigs (metator mge)",
+    "format": "{:,.0f}"
+   }
+  ],
+  [
+   "mge_clusters_with_host",
+   "hosts",
+   {
+    "title": "Hosted MGEs",
+    "description": "MGE clusters with at least one host MAG (metator host)",
+    "format": "{:,.0f}"
+   }
+  ]
+ ]
+}

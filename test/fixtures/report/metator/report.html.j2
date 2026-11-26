@@ -1,0 +1,180 @@
+{#- metaTOR's page (koszullab/metaTOR af54142, src/metator/templates/report.html.j2),
+    ported to the report kit: the same sections, numbers, tables, plots and
+    words, on the kit's base and with its macros. The sample of chromokit's
+    tests, and the way metaTOR's own template extends the kit. -#}
+{% extends "_report/base.html.j2" %}
+{% import "_report/macros.html.j2" as kit %}
+{% set meta = report.report %}
+{% set clusters = report.clusters %}
+{% set contigs = report.contigs %}
+{% set contacts = report.contacts %}
+{% set nav = [("mags", "MAGs"), ("contigs", "Contigs"), ("contacts", "Contacts")] + ([("mges", "MGEs and hosts")] if "mges" in report else []) %}
+
+{% block overview %}
+<p class="cx-report__lead">The final clusters of the run, by quality class (miComplete's completeness and contamination: HQ &ge; 90% and &le; 5%, MQ &ge; 70% and &le; 10%, LQ &ge; 50% and &le; 10%, contaminated &ge; 50% and &gt; 10%, other &lt; 50%). Click a class to list its MAGs.</p>
+<div class="cx-report__cards">
+  {% for quality, key, label in [("HQ", "hq_mags", "HQ MAGs"), ("MQ", "mq_mags", "MQ MAGs"), ("LQ", "lq_mags", "LQ MAGs"), ("Contaminated", "contaminated_mags", "Contaminated"), ("Other", "other_clusters", "Other clusters")] %}
+  {{ kit.stat(label, kit.number(clusters[key]), kit.mbp(clusters[key ~ "_bp"]), swatch=colours[quality], filter=("table-mags", quality), title="List the " ~ label) }}
+  {% endfor %}
+</div>
+<div class="cx-report__cards">
+  {{ kit.stat("Binned", kit.number(contigs.in_mags_pct, 1) ~ "%", "of the assembly in a MAG (" ~ kit.mbp(contigs.in_mags_bp) ~ ")") }}
+  {{ kit.stat("Contigs", kit.number(contigs.contigs), kit.mbp(contigs.contigs_bp) ~ ", N50 " ~ kit.number(contigs.contig_n50_bp) ~ " bp") }}
+  {{ kit.stat("3D ratio", kit.number(contacts.trans_contig_ratio, 3), "of " ~ kit.number(contacts.contacts) ~ " contacts join two contigs") }}
+  {{ kit.stat("Final clusters", kit.number(clusters.final_clusters), kit.mbp(clusters.final_clusters_bp)) }}
+  {% if "mges" in report %}
+  {{ kit.stat("MGE clusters", kit.number(report.mges.mge_clusters), (kit.number(report.hosts.mge_clusters_with_host) ~ " with a host MAG") if "hosts" in report else "hosts not found yet") }}
+  {% endif %}
+</div>
+<div class="cx-report__grid">
+  {{ kit.plot("plot-classes", "Final clusters by quality class") }}
+  {{ kit.plot("plot-rounds", "Clusters of each round of the clustering") }}
+</div>
+{% endblock %}
+
+{% block sections %}
+<section id="mags" class="cx-report__section">
+  <h2>MAGs</h2>
+  <p class="cx-report__lead">Each MAG, a dot: its completeness against its contamination, its size its length. Hover for its details; the dotted lines are the thresholds of the classes.</p>
+  {{ kit.plot("plot-quality") }}
+  <h3>The MAGs</h3>
+  <p class="cx-report__note">The MAGs of the map: its genomes but the MGE genomes, with the values of their validation (completeness, contamination, N50…), the length and the contigs that they have now; <em>intra-genome ratio</em>: the share of the contacts of their contigs that stay within the MAG. Click a column to sort it.</p>
+  {{ kit.table_tools("table-mags", meta.sample ~ "_mags.csv", "Filter the MAGs (name, class, MGE…)") }}
+  <div class="cx-report__scroll">
+  <table class="cx-table cx-report__table" id="table-mags" data-sortable>
+    <thead><tr>
+      <th>MAG</th><th>Class</th><th class="cx-report__num">Length (bp)</th><th class="cx-report__num">Contigs</th><th class="cx-report__num">Completeness (%)</th><th class="cx-report__num">Contamination (%)</th>
+      <th class="cx-report__num">GC (%)</th><th class="cx-report__num">N50 (bp)</th><th class="cx-report__num">Hi-C abundance</th><th class="cx-report__num">Shotgun abundance</th><th class="cx-report__num">Intra-genome ratio</th><th>MGE clusters</th><th>Files</th>
+    </tr></thead>
+    <tbody>
+    {% for row in tables.mags %}
+    {% set link = links.mags[row.name] %}
+    <tr data-filter-value="{{ row.quality or '' }}">
+      <td>{{ row.name }}</td>
+      <td data-sort="{{ loop.index0 }}">{{ kit.badge(row.quality, colours[row.quality] if row.quality else none) }}</td>
+      <td class="cx-report__num" data-sort="{{ row.length_bp }}">{{ kit.number(row.length_bp) }}</td>
+      <td class="cx-report__num">{{ row.contigs }}</td>
+      <td class="cx-report__num" data-sort="{{ row.completeness_pct if row.completeness_pct is not none else '' }}">{{ kit.number(row.completeness_pct, 1) }}</td>
+      <td class="cx-report__num" data-sort="{{ row.contamination_pct if row.contamination_pct is not none else '' }}">{{ kit.number(row.contamination_pct, 1) }}</td>
+      <td class="cx-report__num">{{ kit.number(row.gc_pct, 1) }}</td>
+      <td class="cx-report__num" data-sort="{{ row.n50_bp if row.n50_bp is not none else '' }}">{{ kit.number(row.n50_bp) }}</td>
+      <td class="cx-report__num">{{ kit.number(row.hic_abundance, 3) }}</td>
+      <td class="cx-report__num">{{ kit.number(row.sg_abundance, 3) }}</td>
+      <td class="cx-report__num">{{ kit.number(row.intra_genome_ratio, 3) }}</td>
+      <td>{{ row.mges or "" }}</td>
+      <td>{% if link.fasta %}<a href="{{ link.fasta }}">fasta</a>{% endif %}{% if link.stitched %} · <a href="{{ link.stitched }}">stitched</a>{% endif %}{% if link.cool %} · <a href="{{ link.cool }}">cool</a>{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="contigs" class="cx-report__section">
+  <h2>Contigs</h2>
+  <p class="cx-report__lead">The contigs of the assembly in the map, and where they went: in a MAG, in an MGE cluster, or in none.</p>
+  {{ kit.facts([
+    ("Contigs", kit.number(contigs.contigs)),
+    ("Length", kit.mbp(contigs.contigs_bp)),
+    ("N50 / L50", kit.number(contigs.contig_n50_bp) ~ " bp / " ~ kit.number(contigs.contig_l50)),
+    ("N90", kit.number(contigs.contig_n90_bp) ~ " bp"),
+    ("Longest", kit.number(contigs.contig_max_bp) ~ " bp"),
+    ("GC content", kit.number(contigs.gc_pct, 2) ~ "%"),
+    ("Median shotgun coverage", kit.number(contigs.coverage_median, 2)),
+    ("In final clusters", kit.number(contigs.in_final_clusters_contigs) ~ " (" ~ kit.number(contigs.in_final_clusters_pct, 1) ~ "% of bp)"),
+    ("In MAGs", kit.number(contigs.in_mags_contigs) ~ " (" ~ kit.number(contigs.in_mags_pct, 1) ~ "% of bp)"),
+    ("In MGE clusters", kit.number(contigs.in_mges_contigs) ~ " (" ~ kit.mbp(contigs.in_mges_bp) ~ ")"),
+    ("In none", kit.number(contigs.unbinned_contigs) ~ " (" ~ kit.mbp(contigs.unbinned_bp) ~ ")"),
+  ]) }}
+  <div class="cx-report__grid">
+    {{ kit.plot("plot-lengths", "Length of the contigs") }}
+    {{ kit.plot("plot-contigs", "GC content and coverage") }}
+  </div>
+</section>
+
+<section id="contacts" class="cx-report__section">
+  <h2>Contacts</h2>
+  <p class="cx-report__lead">The Hi-C contacts of the map, as metacooler counted them on the reads ({{ contacts.qc_source or "NA" }}, at {{ kit.number(contacts.qc_distance_threshold_bp) }} bp): the <em>3D ratio</em>, the share of the contacts that join two contigs, is the signal that the clustering uses.</p>
+  {{ kit.facts([
+    ("Contacts", kit.number(contacts.contacts)),
+    ("3D ratio", kit.number(contacts.trans_contig_ratio, 4)),
+    ("Within the genomes", kit.number(contacts.intra_genome_fraction * 100 if contacts.intra_genome_fraction is not none else none, 1) ~ "%"),
+    ("Network", kit.number(contacts.network_contigs) ~ " contigs, " ~ kit.number(contacts.network_edges) ~ " edges"),
+    ("Normalization", contacts.normalization),
+  ]) }}
+  <div class="cx-report__grid">
+    {{ kit.plot("plot-contacts", "The contacts of the reads") }}
+    {{ kit.plot("plot-heatmap", "Contacts between the MAGs") }}
+  </div>
+</section>
+
+{% if "mges" in report %}
+<section id="mges" class="cx-report__section">
+  <h2>MGEs and their hosts</h2>
+  <p class="cx-report__lead">The clusters of the contigs of mobile genetic elements (metator mge), and the MAGs that host them (metator host{% if "hosts" in report %}: a share of the signal of an MGE cluster with the MAGs of at least {{ kit.number(report.hosts.min_share_pct, 1) }}%, and {{ report.hosts.min_contigs }} contigs in contact{% endif %}).</p>
+  {% set mge_facts = [
+    ("MGE clusters", kit.number(report.mges.mge_clusters)),
+    ("MGE contigs", kit.number(report.mges.mge_contigs) ~ " (" ~ kit.mbp(report.mges.mge_bp) ~ ")"),
+    ("MGE genomes in the map", kit.number(report.mges.mge_genomes)),
+    ("MAGs that lost contigs to them", kit.number(report.mges.mags_losing_contigs)),
+  ] %}
+  {% if "hosts" in report %}
+  {% set mge_facts = mge_facts + [
+    ("With one host", kit.number(report.hosts.mge_clusters_with_one_host)),
+    ("With several hosts", kit.number(report.hosts.mge_clusters_with_several_hosts)),
+    ("Without host", kit.number(report.hosts.mge_clusters_without_host)),
+    ("MAGs hosting MGEs", kit.number(report.hosts.mags_hosting_mges)),
+  ] %}
+  {% endif %}
+  {{ kit.facts(mge_facts) }}
+  {% if "hosts" in tables and tables.hosts %}
+  <h3>From each MGE cluster to its hosts</h3>
+  {{ kit.plot("plot-hosts") }}
+  {% endif %}
+  <h3>The MGE clusters</h3>
+  {{ kit.table_tools("table-mges", meta.sample ~ "_mge_clusters.csv", "Filter the MGE clusters (name, host…)") }}
+  <div class="cx-report__scroll">
+  <table class="cx-table cx-report__table" id="table-mges" data-sortable>
+    <thead><tr><th>MGE cluster</th><th class="cx-report__num">Contigs</th><th class="cx-report__num">Length (bp)</th><th class="cx-report__num">GC (%)</th><th class="cx-report__num">Hosts</th><th>Host MAGs</th><th>Shares (%)</th></tr></thead>
+    <tbody>
+    {% for row in tables.mge_clusters %}
+    <tr>
+      <td>{{ row.name }}</td><td class="cx-report__num">{{ row.contigs }}</td><td class="cx-report__num" data-sort="{{ row.length_bp }}">{{ kit.number(row.length_bp) }}</td>
+      <td class="cx-report__num">{{ kit.number(row.gc_pct, 1) }}</td><td class="cx-report__num">{{ row.n_hosts if row.n_hosts is not none else "NA" }}</td>
+      <td>{{ row.hosts or "" }}</td><td>{{ row.host_shares_pct or "" }}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block run %}
+<p class="cx-report__lead">How the map was made and clustered, as it records its steps.</p>
+{{ kit.keys(report.run) }}
+{% if report.run.get("markers_predate_genomes") %}
+<p class="cx-report__note">The marker genes of the contigs (metator markers) predate the genomes of the map: they were found in another binning of its contigs, which a run changed since. Each contig keeps its own, but summed over a genome whose contigs changed, they give an estimate of miComplete's numbers. <code>metator markers MAP -a ASSEMBLY</code> finds them again in the genomes as they are.</p>
+{% endif %}
+<h3>Clustering rounds</h3>
+<div class="cx-report__scroll">
+<table class="cx-table cx-report__table" id="table-rounds" data-sortable>
+  <thead><tr><th>Round</th><th>Step</th><th class="cx-report__num">Clusters</th><th class="cx-report__num">Contigs</th><th class="cx-report__num">Length (bp)</th></tr></thead>
+  <tbody>
+  {% for row in tables.rounds %}
+  <tr><td>{{ row.round }}</td><td>{{ row.step or "" }}</td><td class="cx-report__num">{{ row.clusters }}</td><td class="cx-report__num">{{ row.contigs }}</td><td class="cx-report__num" data-sort="{{ row.length_bp }}">{{ kit.number(row.length_bp) }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+<details>
+  <summary>The command lines of the steps</summary>
+  {% for step, command in report.commands.items() %}{{ kit.command(command, step) }}{% endfor %}
+</details>
+{% endblock %}
+
+{% block files %}
+<p class="cx-report__lead">The outputs of the run in its output directory, beside this page (the FASTA and cool files of each MAG are linked from its row).</p>
+{{ kit.files(links.files, "No output of the run is beside this page: metator export MAP -a ASSEMBLY -o DIR writes them, and this report with them.") }}
+{% endblock %}

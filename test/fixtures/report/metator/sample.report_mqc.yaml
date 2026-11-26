@@ -1,0 +1,69 @@
+# metaTOR report of sample: MultiQC custom content (General Statistics); multiqc finds it.
+id: metator
+section_name: metaTOR
+description: 'metaTOR runs: the MAGs of the map of each run, and its MGE clusters
+  (format 1).'
+plot_type: generalstats
+pconfig:
+- contigs_bp:
+    title: Assembly
+    description: Length of the contigs of the map
+    suffix: ' bp'
+    format: '{:,.0f}'
+- contig_n50_bp:
+    title: Contig N50
+    description: N50 of the contigs of the map
+    suffix: ' bp'
+    format: '{:,.0f}'
+- trans_contig_ratio:
+    title: 3D ratio
+    description: Share of the contacts between two contigs
+    min: 0
+    max: 1
+    format: '{:,.3f}'
+- in_mags_pct:
+    title: Binned
+    description: Share of the length of the contigs in a MAG
+    suffix: '%'
+    min: 0
+    max: 100
+    format: '{:,.1f}'
+- hq_mags:
+    title: HQ MAGs
+    description: Final clusters of completeness >= 90% and contamination <= 5%
+    format: '{:,.0f}'
+    scale: Greens
+- mq_mags:
+    title: MQ MAGs
+    description: Final clusters of completeness >= 70% and contamination <= 10%
+    format: '{:,.0f}'
+    scale: Greens
+- lq_mags:
+    title: LQ MAGs
+    description: Final clusters of completeness >= 50% and contamination <= 10%
+    format: '{:,.0f}'
+- contaminated_mags:
+    title: Contaminated
+    description: Final clusters of completeness >= 50% and contamination > 10%
+    format: '{:,.0f}'
+    scale: Reds
+- mge_clusters:
+    title: MGE clusters
+    description: Clusters of the MGE contigs (metator mge)
+    format: '{:,.0f}'
+- mge_clusters_with_host:
+    title: Hosted MGEs
+    description: MGE clusters with at least one host MAG (metator host)
+    format: '{:,.0f}'
+data:
+  sample:
+    contigs_bp: 578000
+    contig_n50_bp: 13074
+    trans_contig_ratio: 0.526217
+    in_mags_pct: 96.88581314878893
+    hq_mags: 4
+    mq_mags: 1
+    lq_mags: 0
+    contaminated_mags: 0
+    mge_clusters: 2
+    mge_clusters_with_host: 2

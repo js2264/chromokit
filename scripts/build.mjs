@@ -665,6 +665,38 @@ ADAPTERS.sphinx = () => {
   }
 }
 
+/**
+ * The report kit: a tool's report of a run, in Python, copied as it is into
+ * src/<package>/_report/ by `chromokit add report` (lib/cli.mjs, KITS). The
+ * writers (`__init__.py`, after metaTOR's report.py), the page's templates,
+ * and the stylesheet and script the page carries inline, since a report is
+ * one file that opens anywhere: report.css is the tokens, the components a
+ * report uses and the page's own rules; report.js is theme.js and the page's
+ * behaviours. Each file names its version, and none names a package.
+ */
+const REPORT_COMPONENTS = ['00-base.css', '10-controls.css', '20-labels.css', '30-cards.css', '50-content.css']
+ADAPTERS.report = () => {
+  // ASCII only: the file sits in a Python package, under its linters' rules.
+  const stamp = `chromokit ${VERSION} - MIT - ${REPO} - the report kit: do not edit, chromokit sync replaces it and chromokit check refuses an edit`
+  const icons = (path) => {
+    const text = read(path).replace(/\[\[icon:([a-z0-9-]+)\]\]/g, (_, name) => icon(name))
+    if (/\[\[icon:/.test(text)) throw new Error(`${path}: an icon placeholder left`)
+    return text
+  }
+  // The package that holds it neither lints nor formats it: hosts format at
+  // different line lengths, and a newer ruff must not fail a file they
+  // cannot edit. chromokit lints and formats it (test/report.test.mjs).
+  const markers = '# Linted and formatted in chromokit, not by the package that holds it:\n# ruff: noqa\n# fmt: off\n'
+  emit('dist/report/__init__.py', `# ${stamp}\n${markers}${read('adapters/report/__init__.py')}`)
+  for (const name of ['base.html.j2', 'macros.html.j2']) emit(`dist/report/${name}`, `{#- ${stamp} -#}\n${icons(`adapters/report/${name}`)}`)
+  const components = hostRelative(REPORT_COMPONENTS.map((name) => read(`src/css/components/${name}`).trim()).join('\n\n'))
+  // Both go inside the page, in <style> and <script>: a `</style` or a
+  // `</script` (theme.js's comment shows how to load it) would end them early.
+  const inline = (text, tag) => text.replace(new RegExp(`</${tag}`, 'gi'), `<\\/${tag}`)
+  emit('dist/report/report.css', inline(bundle(tokensCss, components, hostRelative(read('adapters/report/report.css'))), 'style'))
+  emit('dist/report/report.js', inline(`${jsHeader}${theme}\n${read('adapters/report/report.js')}`, 'script'))
+}
+
 for (const [name, build] of Object.entries(ADAPTERS)) {
   try {
     build()
