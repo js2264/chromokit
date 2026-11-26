@@ -4,7 +4,7 @@ All notable changes to chromokit. Versions follow [semver](https://semver.org):
 a changed token value is a minor release; a renamed or removed `.cx-*` class,
 token or kit file is a major one.
 
-## [Unreleased]
+## [0.2.1] - 2026-11-26
 
 ### Fixed
 

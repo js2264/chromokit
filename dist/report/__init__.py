@@ -1,4 +1,4 @@
-# chromokit 0.2.0 - MIT - https://github.com/js2264/chromokit - the report kit: do not edit, chromokit sync replaces it and chromokit check refuses an edit
+# chromokit 0.2.1 - MIT - https://github.com/js2264/chromokit - the report kit: do not edit, chromokit sync replaces it and chromokit check refuses an edit
 # Linted and formatted in chromokit, not by the package that holds it:
 # ruff: noqa
 # fmt: off
