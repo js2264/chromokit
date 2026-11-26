@@ -122,9 +122,31 @@ jobs:
           path: r/docs
           retention-days: 7
 
+  # The report kit's sample: metaTOR's report of a run, as the kit writes it,
+  # with empty files where the page links to the run's outputs.
+  example-report:
+    name: Example (report)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: astral-sh/setup-uv@v7
+
+      - name: Write the report
+        run: uv run --no-project --with jinja2 --with pyyaml --with pandas python test/report/sample.py "$RUNNER_TEMP/report" --outputs
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: example-report
+          path: ${{ runner.temp }}/report
+          retention-days: 7
+
   site:
     name: Site and screenshots
-    needs: [example, example-r]
+    needs: [example, example-r, example-report]
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -160,9 +182,11 @@ jobs:
       - name: Every link of the site leads somewhere
         run: node scripts/links.mjs site/_build
 
+      # plotly.js at the version the report kit pins, for the report's plots.
       - name: Screenshots, light and dark
         run: |
-          npm install --no-save playwright
+          plotly=$(sed -n 's/^PLOTLY_JS = ".*plotly-\([0-9.]*\)\.min\.js"$/\1/p' dist/report/__init__.py)
+          npm install --no-save playwright "plotly.js-dist-min@$plotly"
           npx playwright install --with-deps chromium
           node scripts/screens.mjs site/_build site/_build/screens
 
@@ -193,7 +217,7 @@ jobs:
   deploy:
     name: Deploy to Pages
     # Every example and the site built: a partial site is never published.
-    needs: [example, example-r, site]
+    needs: [example, example-r, example-report, site]
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10

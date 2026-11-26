@@ -6,11 +6,14 @@
  *
  * Serves the built site on a local port and drives Chromium through each page:
  * the gallery and the docs pages, then each starter under examples/<target>/
- * when it is there. Quarto's pages start light whatever the system says, so in
- * the dark pass its toggle is pressed. Needs Playwright (`npm i -D playwright`
- * and `npx playwright install chromium`).
+ * when it is there, and the report kit's sample page (examples/report/), whole.
+ * Quarto's pages start light whatever the system says, so in the dark pass its
+ * toggle is pressed. A page with plots is taken once plotly.js has drawn them,
+ * or said why not; plotly.js comes from node_modules/plotly.js-dist-min when it
+ * is there, in place of its CDN. Needs Playwright (`npm i -D playwright` and
+ * `npx playwright install chromium`).
  */
-import { createReadStream, existsSync, mkdirSync, statSync } from 'node:fs'
+import { createReadStream, existsSync, mkdirSync, readFileSync, statSync } from 'node:fs'
 import { createServer } from 'node:http'
 import { extname, join, resolve } from 'node:path'
 
@@ -57,6 +60,12 @@ for (const [target, paths] of Object.entries(EXAMPLES)) {
   if (!existsSync(join(ROOT, at))) continue
   paths.forEach((path, i) => PAGES.push([`${target}-${i === 0 ? 'home' : 'page'}`, `/${at}/${path === '/' ? '' : path}`]))
 }
+// The report kit's sample: one long page, taken whole.
+if (existsSync(join(ROOT, 'examples', 'report', 'sample.report.html'))) PAGES.push(['report', '/examples/report/sample.report.html', true])
+
+// plotly.js, the version the report kit pins, when npm has it here.
+const PLOTLY = resolve('node_modules', 'plotly.js-dist-min', 'plotly.min.js')
+const plotly = existsSync(PLOTLY) ? readFileSync(PLOTLY) : null
 
 let chromium
 try {
@@ -71,6 +80,7 @@ const browser = await chromium.launch()
 const failures = []
 for (const scheme of ['light', 'dark']) {
   const context = await browser.newContext({ viewport: { width: 1280, height: 860 }, deviceScaleFactor: 1, colorScheme: scheme })
+  if (plotly) await context.route('https://cdn.plot.ly/**', (route) => route.fulfill({ body: plotly, contentType: 'text/javascript' }))
   const page = await context.newPage()
   const errors = []
   page.on('pageerror', (error) => errors.push(error.message))
@@ -82,6 +92,12 @@ for (const scheme of ['light', 'dark']) {
       continue
     }
     await page.waitForTimeout(400)
+    // A report: every plot drawn, or a word on why not.
+    await page
+      .waitForFunction(() => [...document.querySelectorAll('[data-figure]')].every((el) => el.querySelector('.main-svg, .cx-report__offline')), null, {
+        timeout: 30000,
+      })
+      .catch(() => failures.push(`${name} (${scheme}): its plots were not drawn`))
     if (scheme === 'dark') {
       const quartoLight = await page.evaluate(() => document.body.classList.contains('quarto-light'))
       if (quartoLight && (await page.$('.quarto-color-scheme-toggle'))) {
